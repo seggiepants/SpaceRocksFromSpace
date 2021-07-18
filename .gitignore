@@ -1,0 +1,10 @@
+*.dll
+*.lib
+/SDL.PNG
+/OLC.PNG
+/OLCvsSDL2.png
+/.vs
+/Debug
+/x64
+/SpaceRocksFromSpace/x64
+/SpaceRocksFromSpace/Debug
