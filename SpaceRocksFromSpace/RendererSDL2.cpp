@@ -24,6 +24,20 @@ namespace jam
         SDL_SetRenderDrawColor(this->renderer, r, g, b, a);
     }
 
+    void RendererSDL2::FillRect(int x1, int y1, int x2, int y2, rgb color)
+    {
+        Uint8 r, g, b, a;
+        SDL_GetRenderDrawColor(this->renderer, &r, &g, &b, &a);
+        SDL_SetRenderDrawColor(this->renderer, color.r, color.g, color.b, color.a);
+        SDL_Rect rect;
+        rect.x = x1 > x2 ? x2 : x1;
+        rect.y = y1 > y2 ? y2 : y1;
+        rect.w = abs(x2 - x1);
+        rect.h = abs(y2 - y1);
+        SDL_RenderFillRect(this->renderer, &rect);
+        SDL_SetRenderDrawColor(this->renderer, r, g, b, a);
+    }
+
     void RendererSDL2::GetScreenSize(int* width, int* height)
     {
         SDL_GetWindowSize(this->window, width, height);

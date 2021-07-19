@@ -36,7 +36,6 @@ namespace jam
 
         //Quit SDL subsystems
         SDL_Quit();
-#
     }
 
     bool BackendSDL2::Construct(std::string title, int screenWidth, int screenHeight)
@@ -104,12 +103,16 @@ namespace jam
         this->render = (IRenderer*)render;
 
         this->currentScene = scene;
+        int screenWidth, screenHeight;
+        this->render->GetScreenSize(&screenWidth, &screenHeight);
+        this->currentScene->Construct(screenWidth, screenHeight);
+
         current = SDL_GetPerformanceCounter();
         while (this->currentScene != nullptr) {
             previous = current;
             current = SDL_GetPerformanceCounter();
             Uint64 ticks = current - previous;
-            float dt = (float)((ticks * 1000000.0) / SDL_GetPerformanceFrequency());
+            float dt = (float)ticks / (float)SDL_GetPerformanceFrequency();
             SDL_Event e;
             while (SDL_PollEvent(&e))
             {

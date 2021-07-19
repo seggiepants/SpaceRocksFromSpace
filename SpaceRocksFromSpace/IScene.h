@@ -9,6 +9,7 @@ namespace jam
     class IScene
     {
     public:
+        virtual void Construct(int screenWidth, int screenHeight) = 0;
         virtual void Draw(jam::IRenderer*) = 0;
         virtual void Update(float dt) = 0;
     };

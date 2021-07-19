@@ -92,6 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,6 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -124,6 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,6 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -153,10 +157,13 @@
   <ItemGroup>
     <ClInclude Include="BackendPGE.h" />
     <ClInclude Include="BackendSDL2.h" />
+    <ClInclude Include="Star.h" />
+    <ClInclude Include="VectorFont.h" />
     <ClInclude Include="IBackend.h" />
     <ClInclude Include="IRenderer.h" />
     <ClInclude Include="IResourceManager.h" />
     <ClInclude Include="IScene.h" />
+    <ClInclude Include="Point2D.h" />
     <ClInclude Include="RendererPGE.h" />
     <ClInclude Include="RendererSDL2.h" />
     <ClInclude Include="ResourceManagerPGE.h" />
@@ -167,11 +174,14 @@
   <ItemGroup>
     <ClCompile Include="BackendPGE.cpp" />
     <ClCompile Include="BackendSDL2.cpp" />
+    <ClCompile Include="Star.cpp" />
+    <ClCompile Include="VectorFont.cpp" />
     <ClCompile Include="IBackend.cpp" />
     <ClCompile Include="IRenderer.cpp" />
     <ClCompile Include="IResourceManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="IScene.cpp" />
+    <ClCompile Include="Point2D.cpp" />
     <ClCompile Include="RendererPGE.cpp" />
     <ClCompile Include="RendererSDL2.cpp" />
     <ClCompile Include="ResourceManagerPGE.cpp" />

@@ -42,6 +42,9 @@ namespace jam
         this->render = (IRenderer*)pgeRender;
 
         this->currentScene = scene;
+        int screenWidth, screenHeight;
+        this->render->GetScreenSize(&screenWidth, &screenHeight);
+        this->currentScene->Construct(screenWidth, screenHeight);
         ((olc::PixelGameEngine*)this)->Start();
     }
 

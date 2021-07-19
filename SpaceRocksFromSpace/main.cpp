@@ -4,9 +4,8 @@
 #define BACKEND_PGE 0
 #define BACKEND_SDL2 1
 
-#define BACKEND BACKEND_SDL2
+#define BACKEND BACKEND_PGE
 
-// Compile errors if I don't include even if I just do the OLC_PGE_APPLICATION define.
 #if BACKEND == BACKEND_PGE
 #include "BackendPGE.h"
 #endif
