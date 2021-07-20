@@ -17,6 +17,8 @@ namespace game
         ~SceneMenu();
         void Construct(int screenWidth, int screenHeight);
         void Draw(jam::IRenderer* render);
+        void KeyDown(uint8_t key);
+        void KeyUp(uint8_t key);
         void Update(float dt);
     protected:
         VectorFont* vFont;
@@ -24,6 +26,7 @@ namespace game
         std::vector<game::Star>* stars;
         int screenWidth;
         int screenHeight;
+        int menuIndex;
         float maxStarDepth;
     };
 }

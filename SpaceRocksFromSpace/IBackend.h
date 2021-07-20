@@ -6,6 +6,7 @@
 #include <string>
 #include "IRenderer.h"
 #include "IScene.h"
+#include "KeyCodes.h"
 
 namespace jam
 {
@@ -20,6 +21,8 @@ namespace jam
     protected:
         IScene* currentScene;
         IRenderer* render;
+        bool oldKey[MAX_KEYS];
+        bool Key[MAX_KEYS];
     };
 }
 #endif

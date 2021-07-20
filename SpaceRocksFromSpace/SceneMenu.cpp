@@ -1,6 +1,5 @@
 #include <cstdlib>
 #include "SceneMenu.h"
-
 namespace game
 {
 	#define rndf(n) (float(rand())/float((RAND_MAX)) * n)
@@ -45,6 +44,7 @@ namespace game
 		{
 			this->stars->push_back({ 0.0, 0.0, 0.0, 0.0 });
 		}
+		this->menuIndex = 0;
 	}
 
 	void SceneMenu::Draw(jam::IRenderer* render)
@@ -120,17 +120,17 @@ namespace game
 		white.r = white.g = white.b = white.a = 255;
 		for (std::string menu : *this->menuText)
 		{
-			if (idx == 0)
+			if (idx == this->menuIndex)
 			{
 				render->FillRect(sx - border, sy - border, sx + maxWidth + (2 * border), sy + maxHeight + (2 * border), white);
-				this->vFont->DrawText(render, menu, sx, sy + maxHeight - border, black);
+				this->vFont->DrawText(render, menu, sx, sy + maxHeight, black);
 			}
 			else
 			{
 				render->FillRect(sx - border, sy - border, sx + maxWidth + (2 * border), sy + maxHeight + (2 * border), black);
-				this->vFont->DrawText(render, menu, sx, sy + maxHeight - border, white);
+				this->vFont->DrawText(render, menu, sx, sy + maxHeight, white);
 			}
-			sy += maxHeight + border;
+			sy += maxHeight + border * 3; // two for this item + one for the top of the next.
 			idx++;
 		}
 		/*
@@ -139,6 +139,30 @@ namespace game
 		this->vFont->DrawText(render, "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", 10, 92, color, 1.0, 2.0);
 		*/
 
+	}
+
+	void SceneMenu::KeyDown(uint8_t key)
+	{
+		// Nothing yet
+	}
+
+	void SceneMenu::KeyUp(uint8_t key)
+	{
+		if (key == jam::key::KEY_UP)
+		{
+			this->menuIndex--;
+			if (this->menuIndex < 0)
+				this->menuIndex = 0;
+
+		}
+		else if (key == jam::key::KEY_DOWN)
+		{
+			this->menuIndex++;
+			if (this->menuIndex >= this->menuText->size())
+			{
+				this->menuIndex = this->menuText->size() - 1;
+			}
+		}
 	}
 	
 	void SceneMenu::Update(float dt)

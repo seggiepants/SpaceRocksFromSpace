@@ -14,6 +14,9 @@ namespace jam
         BackendSDL2();
         ~BackendSDL2();
         bool Construct(std::string title, int screenWidth, int screenHeight);
+        bool IsKeyDown(uint8_t code);
+        bool IsKeyPressed(uint8_t code);
+        bool IsKeyReleased(uint8_t code);
         void Start(IScene* scene);
         bool OnUserCreate();
         bool OnUserUpdate(float dt);

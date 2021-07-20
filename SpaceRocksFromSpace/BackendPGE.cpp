@@ -1,13 +1,14 @@
 #define OLC_PGE_APPLICATION
 #include "BackendPGE.h"
 #include "RendererPGE.h"
+#include "KeyCodesPGE.h"
 
 namespace jam
 {
     BackendPGE::BackendPGE() : IBackend(), olc::PixelGameEngine()
     {
         this->render = nullptr;
-        
+        key::KeyInit_PGE();
     }
 
     BackendPGE::~BackendPGE()
@@ -30,6 +31,20 @@ namespace jam
         return ret == olc::rcode::OK;
     }
 
+    bool BackendPGE::IsKeyDown(uint8_t code)
+    {
+        return this->Key[code] && !this->oldKey[code];
+    }
+
+    bool BackendPGE::IsKeyPressed(uint8_t code)
+    {
+        return this->Key[code];
+    }
+
+    bool BackendPGE::IsKeyReleased(uint8_t code)
+    {
+        return !this->Key[code] && this->oldKey[code];
+    }
     void BackendPGE::Start(IScene* scene)
     {
         if (this->render != nullptr)

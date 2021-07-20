@@ -3,6 +3,7 @@
 #include "RendererSDL2.h"
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
+#include "KeyCodesSDL2.h"
 
 namespace jam
 {
@@ -11,7 +12,7 @@ namespace jam
         this->currentScene = nullptr;
         this->window = nullptr;
         this->renderer = nullptr;
-
+        key::KeyInit_SDL2();        
     }
 
     BackendSDL2::~BackendSDL2()
@@ -89,6 +90,21 @@ namespace jam
 		return success;
     }
 
+    bool BackendSDL2::IsKeyDown(uint8_t code)
+    {
+        return this->Key[code] && !this->oldKey[code];
+    }
+
+    bool BackendSDL2::IsKeyPressed(uint8_t code)
+    {
+        return this->Key[code];
+    }
+
+    bool BackendSDL2::IsKeyReleased(uint8_t code)
+    {
+        return !this->Key[code] && this->oldKey[code];
+    }
+
     void BackendSDL2::Start(IScene* scene)
     {
         Uint64 previous, current;
@@ -114,12 +130,39 @@ namespace jam
             Uint64 ticks = current - previous;
             float dt = (float)ticks / (float)SDL_GetPerformanceFrequency();
             SDL_Event e;
+            for (int i = 0; i < MAX_KEYS; i++)
+            {
+                this->oldKey[i] = this->Key[i];
+            }
             while (SDL_PollEvent(&e))
             {
                 //User requests quit
                 if (e.type == SDL_QUIT)
                 {
                     this->currentScene = nullptr;
+                }
+                else if (e.type == SDL_KEYDOWN)
+                {
+                    this->Key[e.key.keysym.scancode] = true;
+                    if (this->Key[e.key.keysym.scancode] != this->oldKey[e.key.keysym.scancode])
+                    {
+                        if (this->currentScene != nullptr)
+                        {
+                            this->currentScene->KeyDown(e.key.keysym.scancode);
+                        }
+                    }
+
+                }
+                else if (e.type == SDL_KEYUP)
+                {
+                    this->Key[e.key.keysym.scancode] = false;
+                    if (this->Key[e.key.keysym.scancode] != this->oldKey[e.key.keysym.scancode])
+                    {
+                        if (this->currentScene != nullptr)
+                        {
+                            this->currentScene->KeyUp(e.key.keysym.scancode);
+                        }
+                    }
                 }
             }
             if (this->currentScene != nullptr)
