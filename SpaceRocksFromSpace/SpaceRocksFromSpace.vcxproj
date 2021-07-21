@@ -160,6 +160,7 @@
     <ClInclude Include="KeyCodes.h" />
     <ClInclude Include="KeyCodesPGE.h" />
     <ClInclude Include="KeyCodesSDL2.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="Star.h" />
     <ClInclude Include="VectorFont.h" />
     <ClInclude Include="IBackend.h" />

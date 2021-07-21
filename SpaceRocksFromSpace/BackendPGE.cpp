@@ -70,6 +70,25 @@ namespace jam
 
     bool BackendPGE::OnUserUpdate(float dt) 
     {
+        olc::HWButton btnState;
+        for (int i = 0; i < MAX_KEYS; i++)
+        {
+            this->oldKey[i] = this->Key[i];
+            btnState = this->GetKey((olc::Key)i);
+            if (this->currentScene != nullptr)
+            {
+                if (btnState.bReleased)
+                {
+                    this->currentScene->KeyUp(i);
+                }
+                if (btnState.bPressed)
+                {
+                    this->currentScene->KeyDown(i);
+                }
+            }
+            this->Key[i] = btnState.bHeld;
+        }
+
         if (this->currentScene != nullptr)
         {
             this->currentScene->Update(dt);
@@ -78,6 +97,7 @@ namespace jam
                 this->currentScene->Draw((jam::IRenderer*)this->render);
             }
         }
+        this->currentScene = this->currentScene->NextScene();
         return this->currentScene != nullptr;
     }
 }

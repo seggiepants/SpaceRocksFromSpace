@@ -16,6 +16,7 @@ namespace jam
         virtual void Update(float dt) = 0;
         virtual void KeyDown(uint8_t key) {};
         virtual void KeyUp(uint8_t key) {};
+        virtual IScene* NextScene() = 0;
     };
 }
 #endif

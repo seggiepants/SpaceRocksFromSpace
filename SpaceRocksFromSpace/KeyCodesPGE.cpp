@@ -53,6 +53,54 @@ namespace jam
             KEY_LEFT = olc::Key::LEFT;
             KEY_RIGHT = olc::Key::RIGHT;
             KEY_UP = olc::Key::UP;
+            KEY_F1 = olc::Key::F1;
+            KEY_F2 = olc::Key::F2;
+            KEY_F3 = olc::Key::F3;
+            KEY_F4 = olc::Key::F4;
+            KEY_F5 = olc::Key::F5;
+            KEY_F6 = olc::Key::F6;
+            KEY_F7 = olc::Key::F7;
+            KEY_F8 = olc::Key::F8;
+            KEY_F9 = olc::Key::F9;
+            KEY_F10 = olc::Key::F10;
+            KEY_F11 = olc::Key::F11;
+            KEY_F12 = olc::Key::F12;
+            KEY_TAB = olc::Key::TAB;
+            KEY_LSHIFT = olc::Key::SHIFT;
+            KEY_RSHIFT = olc::Key::SHIFT;
+            KEY_LCTRL = olc::Key::CTRL;
+            KEY_RCTRL = olc::Key::CTRL;
+            KEY_INS = olc::Key::INS;
+            KEY_DEL = olc::Key::DEL;
+            KEY_HOME = olc::Key::HOME;
+            KEY_END = olc::Key::END;
+            KEY_PGUP = olc::Key::PGUP;
+            KEY_PGDN = olc::Key::PGDN;
+            KEY_BACKSPACE = olc::Key::BACK;
+            KEY_ESCAPE = olc::Key::ESCAPE;
+            KEY_RETURN = olc::Key::RETURN;
+            KEY_PAUSE = olc::Key::PAUSE;
+            KEY_SCROLL_LOCK = olc::Key::SCROLL;
+            KEY_NP0 = olc::Key::NP0;
+            KEY_NP1 = olc::Key::NP1;
+            KEY_NP2 = olc::Key::NP2;
+            KEY_NP3 = olc::Key::NP3;
+            KEY_NP4 = olc::Key::NP4;
+            KEY_NP5 = olc::Key::NP5;
+            KEY_NP6 = olc::Key::NP6;
+            KEY_NP7 = olc::Key::NP7;
+            KEY_NP8 = olc::Key::NP8;
+            KEY_NP9 = olc::Key::NP9;
+            KEY_NP_MUL = olc::Key::NP_MUL;
+            KEY_NP_DIV = olc::Key::NP_DIV;
+            KEY_NP_ADD = olc::Key::NP_ADD;
+            KEY_NP_SUB = olc::Key::NP_SUB;
+            KEY_NP_DECIMAL = olc::Key::NP_DECIMAL;
+            KEY_EQUALS = olc::Key::EQUALS;
+            KEY_COMMA = olc::Key::COMMA;
+            KEY_MINUS = olc::Key::MINUS;
+            KEY_CAPS_LOCK = olc::Key::CAPS_LOCK;
+
         }
     }
 }

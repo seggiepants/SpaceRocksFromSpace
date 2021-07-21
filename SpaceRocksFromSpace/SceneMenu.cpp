@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <iostream>
 #include "SceneMenu.h"
 namespace game
 {
@@ -9,8 +10,9 @@ namespace game
 		this->screenWidth = this->screenHeight = 0;
 		this->maxStarDepth = 0.0;
 		this->vFont = new VectorFont();
-		this->menuText = new std::vector<std::string>();
+		this->menuText = new std::vector<std::pair<std::string, jam::Rect>>();
 		this->stars = new std::vector<game::Star>();
+		this->nextScene = nullptr;
 	}
 
 	SceneMenu::~SceneMenu() 
@@ -31,9 +33,9 @@ namespace game
 	{
 		const int numStars = 4000;
 		this->menuText->clear();
-		this->menuText->push_back("PLAY");
-		this->menuText->push_back("HIGH SCORES");
-		this->menuText->push_back("EXIT");
+		this->menuText->push_back(std::pair<std::string, jam::Rect>("PLAY", { 0, 0, 0, 0 }));
+		this->menuText->push_back(std::pair<std::string, jam::Rect>("HIGH SCORES", { 0, 0, 0, 0 }));
+		this->menuText->push_back(std::pair<std::string, jam::Rect>("EXIT", { 0, 0, 0, 0 }));
 
 		this->stars->clear();
 		this->screenWidth = screenWidth;
@@ -45,6 +47,7 @@ namespace game
 			this->stars->push_back({ 0.0, 0.0, 0.0, 0.0 });
 		}
 		this->menuIndex = 0;
+		this->nextScene = (IScene*)this;
 	}
 
 	void SceneMenu::Draw(jam::IRenderer* render)
@@ -104,9 +107,9 @@ namespace game
 		// Find the biggest.
 		sy += height * 2;
 		int maxWidth = 0 , maxHeight = 0;
-		for (std::string menu : *this->menuText)
+		for (std::pair<std::string, jam::Rect> menu : *this->menuText)
 		{
-			this->vFont->MeasureText(menu, &width, &height);
+			this->vFont->MeasureText(menu.first, &width, &height);
 			maxWidth = width > maxWidth ? width : maxWidth;
 			maxHeight = height > maxHeight ? height: maxHeight;
 		}
@@ -118,17 +121,21 @@ namespace game
 		black.a = 255;
 		jam::rgb white;
 		white.r = white.g = white.b = white.a = 255;
-		for (std::string menu : *this->menuText)
+		for (std::pair<std::string, jam::Rect> menu : *this->menuText)
 		{
+			menu.second.x1 = sx - border;
+			menu.second.y1 = sy - border;
+			menu.second.x2 = sx + maxWidth + (2 * border);
+			menu.second.y2 = sy + maxHeight + (2 * border);
 			if (idx == this->menuIndex)
 			{
-				render->FillRect(sx - border, sy - border, sx + maxWidth + (2 * border), sy + maxHeight + (2 * border), white);
-				this->vFont->DrawText(render, menu, sx, sy + maxHeight, black);
+				render->FillRect(menu.second.x1, menu.second.y1, menu.second.x2, menu.second.y2, white);
+				this->vFont->DrawText(render, menu.first, sx, sy + maxHeight, black);
 			}
 			else
 			{
-				render->FillRect(sx - border, sy - border, sx + maxWidth + (2 * border), sy + maxHeight + (2 * border), black);
-				this->vFont->DrawText(render, menu, sx, sy + maxHeight, white);
+				render->FillRect(menu.second.x1, menu.second.y1, menu.second.x2, menu.second.y2, black);
+				this->vFont->DrawText(render, menu.first, sx, sy + maxHeight, white);
 			}
 			sy += maxHeight + border * 3; // two for this item + one for the top of the next.
 			idx++;
@@ -163,6 +170,25 @@ namespace game
 				this->menuIndex = this->menuText->size() - 1;
 			}
 		}
+		else if (key == jam::key::KEY_ENTER || key == jam::key::KEY_SPACE || key == jam::key::KEY_RETURN)
+		{
+			std::string menuItem = this->menuText->at(this->menuIndex).first;
+			if (menuItem == "PLAY")
+			{
+			}
+			else if (menuItem == "HIGH SCORES")
+			{
+			}
+			else if (menuItem == "EXIT")
+			{
+				this->nextScene = nullptr;
+			}
+		}
+	}
+
+	jam::IScene* SceneMenu::NextScene()
+	{
+		return this->nextScene;
 	}
 	
 	void SceneMenu::Update(float dt)

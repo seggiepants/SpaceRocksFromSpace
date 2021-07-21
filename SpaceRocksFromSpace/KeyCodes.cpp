@@ -47,6 +47,54 @@ namespace jam
         uint8_t KEY_LEFT;
         uint8_t KEY_RIGHT;
         uint8_t KEY_UP;
+        uint8_t KEY_F1;
+        uint8_t KEY_F2;
+        uint8_t KEY_F3;
+        uint8_t KEY_F4;
+        uint8_t KEY_F5;
+        uint8_t KEY_F6;
+        uint8_t KEY_F7;
+        uint8_t KEY_F8;
+        uint8_t KEY_F9;
+        uint8_t KEY_F10;
+        uint8_t KEY_F11;
+        uint8_t KEY_F12;
+        uint8_t KEY_TAB;
+        uint8_t KEY_LSHIFT;
+        uint8_t KEY_RSHIFT;
+        uint8_t KEY_LCTRL;
+        uint8_t KEY_RCTRL;
+        uint8_t KEY_INS;
+        uint8_t KEY_DEL;
+        uint8_t KEY_HOME;
+        uint8_t KEY_END;
+        uint8_t KEY_PGUP;
+        uint8_t KEY_PGDN;
+        uint8_t KEY_BACKSPACE;
+        uint8_t KEY_ESCAPE;
+        uint8_t KEY_RETURN;
+        uint8_t KEY_PAUSE;
+        uint8_t KEY_SCROLL_LOCK;
+        uint8_t KEY_NP0;
+        uint8_t KEY_NP1;
+        uint8_t KEY_NP2;
+        uint8_t KEY_NP3;
+        uint8_t KEY_NP4;
+        uint8_t KEY_NP5;
+        uint8_t KEY_NP6;
+        uint8_t KEY_NP7;
+        uint8_t KEY_NP8;
+        uint8_t KEY_NP9;
+        uint8_t KEY_NP_MUL;
+        uint8_t KEY_NP_DIV;
+        uint8_t KEY_NP_ADD;
+        uint8_t KEY_NP_SUB;
+        uint8_t KEY_NP_DECIMAL;
+        uint8_t KEY_EQUALS;
+        uint8_t KEY_COMMA;
+        uint8_t KEY_MINUS;
+        uint8_t KEY_CAPS_LOCK;
+
     }
 }
 

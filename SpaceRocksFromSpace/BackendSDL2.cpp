@@ -176,6 +176,7 @@ namespace jam
                 }
                 */
                 SDL_RenderPresent(this->renderer);
+                this->currentScene = this->currentScene->NextScene();
             }
         }
     }
