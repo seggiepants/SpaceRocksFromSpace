@@ -13,6 +13,7 @@ namespace game
 		this->menuText = new std::vector<std::pair<std::string, jam::Rect>>();
 		this->stars = new std::vector<game::Star>();
 		this->nextScene = nullptr;
+		this->rock = nullptr;
 	}
 
 	SceneMenu::~SceneMenu() 
@@ -27,6 +28,12 @@ namespace game
 
 		delete this->vFont;
 		this->vFont = nullptr;
+
+		if (this->rock != nullptr)
+		{
+			delete this->rock;
+			this->rock = nullptr;
+		}
 	}
 
 	void SceneMenu::Construct(int screenWidth, int screenHeight)
@@ -48,6 +55,9 @@ namespace game
 		}
 		this->menuIndex = 0;
 		this->nextScene = (IScene*)this;
+
+		this->rock = new Rock();
+		this->rock->SetPosition(300, 200);
 	}
 
 	void SceneMenu::Draw(jam::IRenderer* render)
@@ -145,7 +155,7 @@ namespace game
 		this->vFont->DrawText(render, "ABCDEFGHIJKLMNOPQRSTUVWXYZ ", 10, 52, color);
 		this->vFont->DrawText(render, "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", 10, 92, color, 1.0, 2.0);
 		*/
-
+		this->rock->Draw(render);
 	}
 
 	void SceneMenu::KeyDown(uint8_t key)
@@ -218,5 +228,6 @@ namespace game
 				(*iter).z -= dt * starSpeed;
 			}
 		}
+		this->rock->Update(this, dt);
 	}
 }

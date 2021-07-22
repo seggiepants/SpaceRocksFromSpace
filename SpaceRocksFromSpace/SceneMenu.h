@@ -6,6 +6,7 @@
 #include <vector>
 #include "IScene.h"
 #include "Rect.h"
+#include "Rock.h"
 #include "Star.h"
 #include "VectorFont.h"
 
@@ -31,6 +32,7 @@ namespace game
         int menuIndex;
         float maxStarDepth;
         IScene* nextScene;
+        Rock* rock;
     };
 }
 

@@ -157,10 +157,12 @@
   <ItemGroup>
     <ClInclude Include="BackendPGE.h" />
     <ClInclude Include="BackendSDL2.h" />
+    <ClInclude Include="IEntity.h" />
     <ClInclude Include="KeyCodes.h" />
     <ClInclude Include="KeyCodesPGE.h" />
     <ClInclude Include="KeyCodesSDL2.h" />
     <ClInclude Include="Rect.h" />
+    <ClInclude Include="Rock.h" />
     <ClInclude Include="Star.h" />
     <ClInclude Include="VectorFont.h" />
     <ClInclude Include="IBackend.h" />
@@ -178,9 +180,11 @@
   <ItemGroup>
     <ClCompile Include="BackendPGE.cpp" />
     <ClCompile Include="BackendSDL2.cpp" />
+    <ClCompile Include="IEntity.cpp" />
     <ClCompile Include="KeyCodes.cpp" />
     <ClCompile Include="KeyCodesPGE.cpp" />
     <ClCompile Include="KeyCodesSDL2.cpp" />
+    <ClCompile Include="Rock.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="VectorFont.cpp" />
     <ClCompile Include="IBackend.cpp" />

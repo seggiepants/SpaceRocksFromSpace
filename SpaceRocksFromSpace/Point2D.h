@@ -12,7 +12,7 @@ namespace jam
 		Point2D<T>(const Point2D<T>& source);
 		Point2D<T>(T x, T y); 
 		*/
-        T& operator=(const T& other);
+        // T& operator=(const T& other);
 		T x;
 		T y;
 	};
