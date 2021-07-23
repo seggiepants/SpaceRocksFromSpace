@@ -12,6 +12,7 @@ namespace jam
 		virtual void Draw(IRenderer* render) = 0;
 		virtual void Update(IScene* scene, float dt) = 0;
 		virtual bool IsDeleted() = 0;
+		virtual void SetPosition(float x, float y) = 0;
 	protected:
 		float x;
 		float y;

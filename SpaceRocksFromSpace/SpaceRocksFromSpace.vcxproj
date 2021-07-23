@@ -163,6 +163,7 @@
     <ClInclude Include="KeyCodesSDL2.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Rock.h" />
+    <ClInclude Include="Shot.h" />
     <ClInclude Include="Star.h" />
     <ClInclude Include="VectorFont.h" />
     <ClInclude Include="IBackend.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="KeyCodesPGE.cpp" />
     <ClCompile Include="KeyCodesSDL2.cpp" />
     <ClCompile Include="Rock.cpp" />
+    <ClCompile Include="Shot.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="VectorFont.cpp" />
     <ClCompile Include="IBackend.cpp" />

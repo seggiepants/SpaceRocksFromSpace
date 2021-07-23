@@ -9,8 +9,8 @@ namespace game
 	const float twoPi = M_PI * 2.0;
 	const float MAX_SPEED = 300;
 	const float MIN_SPEED = 50;
-	const float MAX_SCALE = 50.0;
-	const float MIN_SCALE = 0.25;
+	const float MAX_SCALE = 25.0;
+	const float MIN_SCALE = 5.0;
 	const int ROCK_POINTS = 8;
 
 	Rock::Rock()
@@ -19,11 +19,14 @@ namespace game
 		this->visible = true;
 		this->model = new std::vector<jam::Point2Df>();
 		this->screenModel = new std::vector<jam::Point2Df>();
-		this->rotateSpeed = (rand() / (float)RAND_MAX) * 6.0 - 2.9; // 0 to 3 seconds clockwise or counter clockwise.
+		this->rotateSpeed = (rand() / (float)RAND_MAX) * 20.0 - 9.9; // 0 to 3 seconds clockwise or counter clockwise.
 		this->moveSpeed = (rand() / (float)RAND_MAX) * (MAX_SPEED - MIN_SPEED) + MIN_SPEED;
 		this->scale = (rand() / (float)RAND_MAX) * (MAX_SCALE - MIN_SCALE) + MIN_SCALE;
 		this->heading = (rand() / (float)RAND_MAX) * twoPi;
 		this->angle = (rand() / (float)RAND_MAX) * twoPi;
+		if (rand() % 2 == 1)
+			this->angle *= -1.0;
+
 		float dAngle = twoPi / ROCK_POINTS;
 		float radius = 1.0;
 		for (int i = 0; i < ROCK_POINTS; i++)
@@ -73,6 +76,8 @@ namespace game
 
 	void Rock::Update(jam::IScene* scene, float dt)
 	{
+		int screenWidth, screenHeight;
+		scene->GetScreenSize(&screenWidth, &screenHeight);
 		if (this->deleted)
 			return;
 
@@ -92,22 +97,54 @@ namespace game
 		float sinHeading = sinf(this->heading);
 		this->x += this->moveSpeed * dt * cosHeading;
 		this->y += this->moveSpeed * dt * sinHeading;
-
+		float xMin, yMin, xMax, yMax, xScreen, yScreen;
+		xMin = yMin = xMax = yMax = 0.0;
 		for (int i = 0; i < this->model->size(); i++)
 		{
 			float x1 = (this->model->at(i).x * this->scale);
 			float y1 = (this->model->at(i).y * this->scale);
-			this->screenModel->at(i).x = ((x1 * cosAngle) - (y1 * sinAngle)) + this->x;
-			this->screenModel->at(i).y = ((y1 * cosAngle) + (x1 * sinAngle)) + this->y;
+			xScreen = ((x1 * cosAngle) - (y1 * sinAngle)) + this->x;
+			yScreen = ((y1 * cosAngle) + (x1 * sinAngle)) + this->y;
+			this->screenModel->at(i).x = xScreen;
+			this->screenModel->at(i).y = yScreen;
+			if (i == 0)
+			{
+				xMin = xMax = xScreen;
+				yMin = yMax = yScreen;
+			}
+			else
+			{
+				xMin = xScreen < xMin ? xScreen : xMin;
+				xMax = xScreen > xMax ? xScreen : xMax;
+				yMin = yScreen < yMin ? yScreen : yMin;
+				yMax = yScreen > yMax ? yScreen : yMax;
+
+			}
 		}
-		while (this->x < 0)
-			this->x += 640;
-		while (this->x >= 640)
-			this->x -= 640;
-		while (this->y < 0)
-			this->y += 480;
-		while (this->y >= 480)
-			this->y -= 480;
+		while (xMax < 0.0)
+		{
+			this->x += screenWidth;
+			xMax += screenWidth;
+			xMin += screenWidth;
+		}
+		while (xMin >= screenWidth)
+		{
+			this->x -= screenWidth;
+			xMax -= screenWidth;
+			xMin -= screenWidth;
+		}
+		while (yMax < 0.0)
+		{
+			this->y += screenHeight;
+			yMax += screenHeight;
+			yMin += screenHeight;
+		}
+		while (yMin >= screenHeight)
+		{
+			this->y -= screenHeight;
+			yMax -= screenHeight;
+			yMin -= screenHeight;
+		}
 	}
 
 	bool Rock::IsDeleted()

@@ -1,10 +1,12 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include "SceneMenu.h"
 namespace game
 {
 	#define rndf(n) (float(rand())/float((RAND_MAX)) * n)
-
+	#define SHOT_DELAY  0.1
 	SceneMenu::SceneMenu()  
 	{		
 		this->screenWidth = this->screenHeight = 0;
@@ -14,6 +16,7 @@ namespace game
 		this->stars = new std::vector<game::Star>();
 		this->nextScene = nullptr;
 		this->rock = nullptr;
+		this->shots = new std::vector<game::Shot*>();
 	}
 
 	SceneMenu::~SceneMenu() 
@@ -34,6 +37,18 @@ namespace game
 			delete this->rock;
 			this->rock = nullptr;
 		}
+
+		if (this->shots != nullptr)
+		{
+			for (int i = 0; i < this->shots->size(); i++)
+			{
+				delete shots->at(i);
+			}
+			this->shots->clear();
+			delete this->shots;
+			this->shots = nullptr;
+			this->shotWait = 0.0;
+		}
 	}
 
 	void SceneMenu::Construct(int screenWidth, int screenHeight)
@@ -43,6 +58,12 @@ namespace game
 		this->menuText->push_back(std::pair<std::string, jam::Rect>("PLAY", { 0, 0, 0, 0 }));
 		this->menuText->push_back(std::pair<std::string, jam::Rect>("HIGH SCORES", { 0, 0, 0, 0 }));
 		this->menuText->push_back(std::pair<std::string, jam::Rect>("EXIT", { 0, 0, 0, 0 }));
+
+		for (int i = 0; i < this->shots->size(); i++)
+		{
+			delete shots->at(i);
+		}
+		this->shots->clear();
 
 		this->stars->clear();
 		this->screenWidth = screenWidth;
@@ -156,6 +177,16 @@ namespace game
 		this->vFont->DrawText(render, "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", 10, 92, color, 1.0, 2.0);
 		*/
 		this->rock->Draw(render);
+		for (std::vector<game::Shot*>::iterator iter = this->shots->begin(); iter != this->shots->end(); iter++)
+		{
+			(*iter)->Draw(render);
+		}
+	}
+
+	void SceneMenu::GetScreenSize(int* screenWidth, int* screenHeight) 
+	{ 
+		*screenWidth = this->screenWidth; 
+		*screenHeight = this->screenHeight; 
 	}
 
 	void SceneMenu::KeyDown(uint8_t key)
@@ -205,6 +236,35 @@ namespace game
 	{
 		const float starSpeed = 10.0;
 		float x, y, z;
+		this->shotWait -= dt;
+		if (this->shotWait <= 0.0)
+		{
+			this->shotWait = SHOT_DELAY;
+			game::Shot* newShot = new game::Shot();
+			newShot->SetPosition(this->screenWidth / 2.0, this->screenHeight - 50);
+			newShot->SetHeading(M_PI / 2.0);
+			this->shots->push_back(newShot);
+		}
+		int i = this->shots->size() - 1;
+		
+		if (this->shots != nullptr)
+		{
+			for (int i = this->shots->size() - 1; i >= 0; i--)
+			{
+				Shot* shot = this->shots->at(i);
+				if (shot->IsDeleted())
+				{
+					this->shots->erase(this->shots->begin() + i);
+					delete shot;
+					shot = nullptr;
+				}
+				else
+				{
+					shot->Update(this, dt);
+				}
+
+			}
+		}
 
 		// Repopulate stars out of bounds. Update ones in bounds.
 		for (std::vector<game::Star>::iterator iter = this->stars->begin(); iter != this->stars->end(); iter++)

@@ -13,6 +13,7 @@ namespace jam
     public:
         virtual void Construct(int screenWidth, int screenHeight) = 0;
         virtual void Draw(jam::IRenderer*) = 0;
+        virtual void GetScreenSize(int* screenWidth, int* screenHeight) = 0;
         virtual void Update(float dt) = 0;
         virtual void KeyDown(uint8_t key) {};
         virtual void KeyUp(uint8_t key) {};
