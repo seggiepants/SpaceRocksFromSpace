@@ -23,6 +23,8 @@ namespace jam
     protected:
         SDL_Window* window;
         SDL_Renderer* renderer;
+        int mouseX, mouseY;
+        bool mouseBtnLeft, mouseBtnRight, oldMouseBtnLeft, oldMouseBtnRight;
     };
 }
 #endif

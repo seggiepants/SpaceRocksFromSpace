@@ -152,21 +152,21 @@ namespace game
 		black.a = 255;
 		jam::rgb white;
 		white.r = white.g = white.b = white.a = 255;
-		for (std::pair<std::string, jam::Rect> menu : *this->menuText)
+		for (std::vector<std::pair<std::string, jam::Rect>>::iterator menu = this->menuText->begin(); menu != this->menuText->end(); menu++)
 		{
-			menu.second.x1 = sx - border;
-			menu.second.y1 = sy - border;
-			menu.second.x2 = sx + maxWidth + (2 * border);
-			menu.second.y2 = sy + maxHeight + (2 * border);
+			menu->second.x1 = sx - border;
+			menu->second.y1 = sy - border;
+			menu->second.x2 = sx + maxWidth + (2 * border);
+			menu->second.y2 = sy + maxHeight + (2 * border);
 			if (idx == this->menuIndex)
 			{
-				render->FillRect(menu.second.x1, menu.second.y1, menu.second.x2, menu.second.y2, white);
-				this->vFont->DrawText(render, menu.first, sx, sy + maxHeight, black);
+				render->FillRect(menu->second.x1, menu->second.y1, menu->second.x2, menu->second.y2, white);
+				this->vFont->DrawText(render, menu->first, sx, sy + maxHeight, black);
 			}
 			else
 			{
-				render->FillRect(menu.second.x1, menu.second.y1, menu.second.x2, menu.second.y2, black);
-				this->vFont->DrawText(render, menu.first, sx, sy + maxHeight, white);
+				render->FillRect(menu->second.x1, menu->second.y1, menu->second.x2, menu->second.y2, black);
+				this->vFont->DrawText(render, menu->first, sx, sy + maxHeight, white);
 			}
 			sy += maxHeight + border * 3; // two for this item + one for the top of the next.
 			idx++;
@@ -214,17 +214,46 @@ namespace game
 		else if (key == jam::key::KEY_ENTER || key == jam::key::KEY_SPACE || key == jam::key::KEY_RETURN)
 		{
 			std::string menuItem = this->menuText->at(this->menuIndex).first;
-			if (menuItem == "PLAY")
+			this->MenuSelect(menuItem);
+		}
+	}
+
+	void SceneMenu::MenuSelect(std::string menuItem)
+	{
+		if (menuItem == "PLAY")
+		{
+		}
+		else if (menuItem == "HIGH SCORES")
+		{
+		}
+		else if (menuItem == "EXIT")
+		{
+			this->nextScene = nullptr;
+		}
+	}
+
+	void SceneMenu::MouseMove(int x, int y)
+	{
+
+	}
+
+	void SceneMenu::MouseClick(jam::MouseButton button, int x, int y)
+	{
+		if (button == jam::MouseButton::LEFT)
+		{
+			int index = 0;
+			for(std::vector<std::pair<std::string, jam::Rect>>::iterator item = this->menuText->begin(); item != this->menuText->end(); item++)
 			{
-			}
-			else if (menuItem == "HIGH SCORES")
-			{
-			}
-			else if (menuItem == "EXIT")
-			{
-				this->nextScene = nullptr;
+				jam::Rect r = (*item).second;
+				if (x > r.x1 && x <= r.x2 && y >= r.y1 && y <= r.y2)
+				{
+					this->menuIndex = index;
+					this->MenuSelect((*item).first);
+				}
+				index++;
 			}
 		}
+
 	}
 
 	jam::IScene* SceneMenu::NextScene()

@@ -12,6 +12,8 @@ namespace jam
         this->currentScene = nullptr;
         this->window = nullptr;
         this->renderer = nullptr;
+        this->mouseX = this->mouseY = 0;
+        this->mouseBtnLeft = this->mouseBtnRight = this->oldMouseBtnLeft = this->oldMouseBtnRight = false;
         key::KeyInit_SDL2();        
     }
 
@@ -163,6 +165,53 @@ namespace jam
                             this->currentScene->KeyUp(e.key.keysym.scancode);
                         }
                     }
+                }
+                else if (e.type == SDL_MOUSEBUTTONDOWN)
+                {
+                    switch (e.button.button)
+                    {
+                    case SDL_BUTTON_LEFT:
+                        this->oldMouseBtnLeft = this->mouseBtnLeft;
+                        this->mouseBtnLeft = true;
+                        break;
+                    case SDL_BUTTON_RIGHT:
+                        this->oldMouseBtnRight = this->mouseBtnRight;
+                        this->mouseBtnRight = true;
+                        break;
+                    }
+                }
+                else if (e.type == SDL_MOUSEBUTTONUP)
+                {
+                    switch (e.button.button)
+                    {
+                    case SDL_BUTTON_LEFT:
+                        this->oldMouseBtnLeft = this->mouseBtnLeft;
+                        this->mouseBtnLeft = false;
+                        if (this->oldMouseBtnLeft)
+                        {
+                            if (this->currentScene != nullptr)
+                            {
+                                this->currentScene->MouseClick(jam::MouseButton::LEFT, this->mouseX, this->mouseY);
+                            }
+                        }
+                        break;
+                    case SDL_BUTTON_RIGHT:
+                        this->oldMouseBtnRight = this->mouseBtnRight;
+                        this->mouseBtnRight = false;
+                        if (this->oldMouseBtnRight)
+                        {
+                            if (this->currentScene != nullptr)
+                            {
+                                this->currentScene->MouseClick(jam::MouseButton::RIGHT, this->mouseX, this->mouseY);
+                            }
+                        }
+                        break;
+                    }
+                }
+                else if (e.type == SDL_MOUSEMOTION)
+                {
+                    this->mouseX = e.motion.x;
+                    this->mouseY = e.motion.y;
                 }
             }
             if (this->currentScene != nullptr)

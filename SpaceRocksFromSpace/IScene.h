@@ -8,6 +8,11 @@
 
 namespace jam
 {
+
+    enum MouseButton
+    {
+        LEFT, RIGHT
+    };
     class IScene
     {
     public:
@@ -17,6 +22,8 @@ namespace jam
         virtual void Update(float dt) = 0;
         virtual void KeyDown(uint8_t key) {};
         virtual void KeyUp(uint8_t key) {};
+        virtual void MouseMove(int x, int y) = 0;
+        virtual void MouseClick(MouseButton button, int x, int y) = 0;
         virtual IScene* NextScene() = 0;
     };
 }

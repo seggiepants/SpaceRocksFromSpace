@@ -23,9 +23,12 @@ namespace game
         void GetScreenSize(int* screenWidth, int* screenHeight); 
         void KeyDown(uint8_t key);
         void KeyUp(uint8_t key);
-        IScene* NextScene();
+        void MouseMove(int x, int y);
+        void MouseClick(jam::MouseButton button, int x, int y);
+        jam::IScene* NextScene();
         void Update(float dt);
     protected:
+        void MenuSelect(std::string menuItem);
         VectorFont* vFont;
         std::vector<std::pair<std::string, jam::Rect>>* menuText;
         std::vector<game::Star>* stars;
@@ -37,6 +40,7 @@ namespace game
         Rock* rock;
         std::vector<game::Shot*>* shots;
         float shotWait;
+
     };
 }
 

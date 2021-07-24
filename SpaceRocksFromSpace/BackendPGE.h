@@ -23,6 +23,7 @@ namespace jam
         bool OnUserCreate() override;
         bool OnUserUpdate(float dt) override;
     protected:
+        olc::vi2d oldMousePos;
     };    
 }
 #endif

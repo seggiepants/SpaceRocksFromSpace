@@ -15,7 +15,7 @@ namespace game
 		this->vy = 1.0;
 		this->age = MAX_SHOT_AGE;
 		this->color.r = this->color.g = this->color.b = this->color.a = 255;
-		this->color.g = this->color.b = 0;
+		this->color.b = 0;
 	}
 
 	Shot::~Shot()
@@ -39,7 +39,16 @@ namespace game
 	{
 		if (this->alive && this->visible)
 		{
-			render->DrawLine(this->oldX, this->oldY, this->x, this->y, this->color);
+			// render->DrawLine(this->oldX, this->oldY, this->x, this->y, this->color);
+			float step = M_PI / 3;
+			float x, y, radius = 3.0;
+			for (float ang = 0.0; ang < M_PI * 2.0; ang += step)
+			{
+				x = this->x + (radius * cos(ang));
+				y = this->y + (radius * sin(ang));
+				render->DrawLine(this->x, this->y, x, y, this->color);
+			}
+
 		}
 	}
 
