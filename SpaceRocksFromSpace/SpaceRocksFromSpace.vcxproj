@@ -158,6 +158,7 @@
     <ClInclude Include="BackendPGE.h" />
     <ClInclude Include="BackendSDL2.h" />
     <ClInclude Include="IEntity.h" />
+    <ClInclude Include="JoystickButton.h" />
     <ClInclude Include="KeyCodes.h" />
     <ClInclude Include="KeyCodesPGE.h" />
     <ClInclude Include="KeyCodesSDL2.h" />

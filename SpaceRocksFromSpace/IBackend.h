@@ -6,6 +6,7 @@
 #include <string>
 #include "IRenderer.h"
 #include "IScene.h"
+#include "JoystickButton.h"
 #include "KeyCodes.h"
 
 namespace jam

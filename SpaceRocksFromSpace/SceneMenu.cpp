@@ -7,6 +7,8 @@ namespace game
 {
 	#define rndf(n) (float(rand())/float((RAND_MAX)) * n)
 	#define SHOT_DELAY  0.1
+	#define JOY_MOVE_DELAY 0.2
+
 	SceneMenu::SceneMenu()  
 	{		
 		this->screenWidth = this->screenHeight = 0;
@@ -17,6 +19,10 @@ namespace game
 		this->nextScene = nullptr;
 		this->rock = nullptr;
 		this->shots = new std::vector<game::Shot*>();
+		this->joyA = this->oldJoyA = false;
+		this->joyUp = this->oldJoyUp = false;
+		this->joyDown = this->oldJoyDown = false;
+		this->joyMoveTimeout = 0;
 	}
 
 	SceneMenu::~SceneMenu() 
@@ -189,6 +195,91 @@ namespace game
 		*screenHeight = this->screenHeight; 
 	}
 
+	void SceneMenu::JoystickButtonDown(int id, jam::JoystickButton btn)
+	{
+		if (id == 0)
+		{
+			if (btn == jam::JoystickButton::A)
+			{
+				this->oldJoyA = this->joyA;
+				this->joyA = true;
+			}
+			else if (btn == jam::JoystickButton::DPAD_UP)
+			{
+				this->oldJoyUp = this->joyUp;
+				this->joyUp = true;
+			}
+			else if (btn == jam::JoystickButton::DPAD_DOWN)
+			{
+				this->oldJoyDown = this->joyDown;
+				this->joyDown = true;
+			}
+		}
+	}
+
+	void SceneMenu::JoystickButtonUp(int id, jam::JoystickButton btn)
+	{
+		if (id == 0)
+		{
+			if (btn == jam::JoystickButton::A)
+			{
+				this->oldJoyA = this->joyA;
+				this->joyA = false;
+				if (this->oldJoyA != this->joyA)
+				{
+					this->MenuSelect(this->menuText->at(this->menuIndex).first);
+				}
+			}
+			else if (btn == jam::JoystickButton::DPAD_UP)
+			{
+				this->oldJoyUp = this->joyUp;
+				this->joyUp = false;
+				if (this->oldJoyUp != this->joyUp)
+				{
+					this->menuIndex--;
+					if (this->menuIndex < 0)
+						this->menuIndex = 0;
+				}
+			}
+			else if (btn == jam::JoystickButton::DPAD_DOWN)
+			{
+				this->oldJoyDown = this->joyDown;
+				this->joyDown = false;
+				if (this->oldJoyDown != this->joyDown)
+				{
+					this->menuIndex++;
+					if (this->menuIndex >= this->menuText->size())
+						this->menuIndex = this->menuText->size() - 1;
+				}
+			}
+
+		}
+		
+	}
+
+	void SceneMenu::JoystickMove(int id, int dx, int dy)
+	{
+		if (this->joyMoveTimeout <= 0.0)
+		{
+			if (dy != 0)
+			{
+				if (dy < 0)
+				{
+					this->menuIndex--;
+					if (this->menuIndex < 0)
+						this->menuIndex = 0;
+				}
+				else if (dy > 0)
+				{
+					this->menuIndex++;
+					if (this->menuIndex >= this->menuText->size())
+						this->menuIndex = this->menuText->size() - 1;
+				}
+				this->joyMoveTimeout = JOY_MOVE_DELAY;
+			}
+		}
+	}
+
 	void SceneMenu::KeyDown(uint8_t key)
 	{
 		// Nothing yet
@@ -266,6 +357,13 @@ namespace game
 		const float starSpeed = 10.0;
 		float x, y, z;
 		this->shotWait -= dt;
+		if (this->joyMoveTimeout > 0)
+		{
+			this->joyMoveTimeout -= dt;
+			if (this->joyMoveTimeout < 0.0)
+				this->joyMoveTimeout = 0.0;
+		}
+
 		if (this->shotWait <= 0.0)
 		{
 			this->shotWait = SHOT_DELAY;

@@ -41,6 +41,24 @@ namespace jam
         SDL_Quit();
     }
 
+    void BackendSDL2::CloseJoysticks()
+    {
+        for (std::vector<JoystickInfoSDL*>::iterator iter = this->joysticks.begin(); iter != this->joysticks.end(); iter++)
+        {
+            if ((*iter)->isGamePad)
+            {
+                SDL_GameControllerClose((*iter)->gamepad);
+            }
+            else
+            {
+                SDL_JoystickClose((*iter)->joystick);
+            }
+            delete (*iter);
+            (*iter) = nullptr;
+        }
+        this->joysticks.clear();
+    }
+
     bool BackendSDL2::Construct(std::string title, int screenWidth, int screenHeight)
     {
 		//Initialization flag
@@ -85,6 +103,8 @@ namespace jam
 				std::cout << "Font system could not be initialized : \"" << TTF_GetError() << "\"" << std::endl;
 				success = false;
 			}
+
+            this->OpenJoysticks();
 		}
 
         this->render = nullptr;
@@ -105,6 +125,95 @@ namespace jam
     bool BackendSDL2::IsKeyReleased(uint8_t code)
     {
         return !this->Key[code] && this->oldKey[code];
+    }
+
+    int BackendSDL2::JoystickButtonToSDL(JoystickButton btn)
+    {
+        switch (btn)
+        {
+        case JoystickButton::A:
+            return SDL_CONTROLLER_BUTTON_A;
+        case JoystickButton::B:
+            return SDL_CONTROLLER_BUTTON_B;
+        case JoystickButton::DPAD_DOWN:
+            return SDL_CONTROLLER_BUTTON_DPAD_DOWN;
+        case JoystickButton::DPAD_LEFT:
+            return SDL_CONTROLLER_BUTTON_DPAD_LEFT;
+        case JoystickButton::DPAD_RIGHT:
+            return SDL_CONTROLLER_BUTTON_DPAD_RIGHT;
+        case JoystickButton::DPAD_UP:
+            return SDL_CONTROLLER_BUTTON_DPAD_UP;
+        case JoystickButton::LEFT_SHOULDER:
+            return SDL_CONTROLLER_BUTTON_LEFTSHOULDER;
+        case JoystickButton::RIGHT_SHOULDER:
+            return SDL_CONTROLLER_BUTTON_RIGHTSHOULDER;
+        case JoystickButton::SELECT:
+            return SDL_CONTROLLER_BUTTON_BACK;
+        case JoystickButton::START:
+            return SDL_CONTROLLER_BUTTON_START;
+        case JoystickButton::X:
+            return SDL_CONTROLLER_BUTTON_X;
+        case JoystickButton::Y:
+            return SDL_CONTROLLER_BUTTON_Y;
+        default:
+            return (int)btn;
+        }
+    }
+
+    JoystickButton BackendSDL2::SDLToJoystickButton(int btn)
+    {
+        switch (btn)
+        {
+        case SDL_CONTROLLER_BUTTON_A:
+            return JoystickButton::A;
+        case SDL_CONTROLLER_BUTTON_B:
+            return JoystickButton::B;
+        case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+            return JoystickButton::DPAD_DOWN;
+        case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+            return JoystickButton::DPAD_LEFT;
+        case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+            return JoystickButton::DPAD_RIGHT;
+        case SDL_CONTROLLER_BUTTON_DPAD_UP:
+            return JoystickButton::DPAD_UP;
+        case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+            return JoystickButton::LEFT_SHOULDER;
+        case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+            return JoystickButton::RIGHT_SHOULDER;
+        case SDL_CONTROLLER_BUTTON_BACK:
+            return JoystickButton::SELECT;
+        case SDL_CONTROLLER_BUTTON_START:
+            return JoystickButton::START;
+        case SDL_CONTROLLER_BUTTON_X:
+            return JoystickButton::X;
+        case SDL_CONTROLLER_BUTTON_Y:
+            return JoystickButton::Y;
+        default:
+            return JoystickButton::UNKNOWN;
+        }
+     }
+
+
+    void BackendSDL2::OpenJoysticks()
+    {
+        this->CloseJoysticks();
+        for (int i = 0; i < SDL_NumJoysticks(); i++)
+        {
+            JoystickInfoSDL* info = new JoystickInfoSDL();
+            info->id = i;
+            info->isGamePad = SDL_IsGameController(i);
+            if (info->isGamePad)
+            {
+                info->joystick = nullptr;
+                info->gamepad = SDL_GameControllerOpen(i);
+            }
+            else
+            {
+                info->joystick = SDL_JoystickOpen(i);
+                info->gamepad = nullptr;
+            }
+            this->joysticks.push_back(info);
+        }
     }
 
     void BackendSDL2::Start(IScene* scene)
@@ -212,6 +321,90 @@ namespace jam
                 {
                     this->mouseX = e.motion.x;
                     this->mouseY = e.motion.y;
+                }
+                else if (e.type == SDL_JOYHATMOTION)
+                {
+                    // Dpad
+                    int id = e.jhat.which;
+                    if (e.jhat.hat == 0)
+                    {
+                        const int BIT_UP = 1;
+                        const int BIT_RIGHT = 2;
+                        const int BIT_DOWN = 4;
+                        const int BIT_LEFT = 8;
+                        int dx, dy;
+                        dx = dy = 0;
+                        if (e.jhat.value & BIT_LEFT)
+                            dx = -1;
+                        else if (e.jhat.value & BIT_RIGHT)
+                            dy = 1;
+
+                        if (e.jhat.value & BIT_UP)
+                            dy = -1;
+                        else if (e.jhat.value & BIT_DOWN)
+                            dy = 1;
+
+                        if (this->currentScene != nullptr)
+                        {
+                            this->currentScene->JoystickMove(id, dx, dy);
+                        }
+
+                    }
+                }
+                else if (e.type == SDL_JOYAXISMOTION)
+                {
+                    const int JOYSTICK_DEAD_ZONE = 8000;
+                    int id = e.jaxis.which;
+                    int dx, dy;
+                    dx = dy = 0;
+                    if (e.jaxis.axis == 0) // Left/Right
+                    {
+                        if (e.jaxis.value < -1 * JOYSTICK_DEAD_ZONE)
+                        {
+                            dx = -1;
+                        }
+                        else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
+                        {
+                            dx = 1;
+                        }
+                    }
+                    if (e.jaxis.axis == 1) // Up/Down
+                    {
+                        if (e.jaxis.value < -1 * JOYSTICK_DEAD_ZONE)
+                        {
+                            dy = -1;
+                        }
+                        else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
+                        {
+                            dy = 1;
+                        }
+                    }
+                    if (dx != 0 || dy != 0)
+                    {
+                        if (this->currentScene != nullptr)
+                        {
+                            this->currentScene->JoystickMove(id, dx, dy);
+                        }
+                    }
+
+                }
+                else if(e.type == SDL_JOYBUTTONDOWN)
+                {
+                    int id = e.cbutton.which;
+                    jam::JoystickButton btn = this->SDLToJoystickButton(e.jbutton.button);
+                    if (this->currentScene != nullptr)
+                    {
+                        this->currentScene->JoystickButtonDown(id, btn);
+                    }
+                }
+                else if (e.type == SDL_JOYBUTTONUP)
+                {
+                    int id = e.cbutton.which;
+                    jam::JoystickButton btn = this->SDLToJoystickButton(e.jbutton.button);
+                    if (this->currentScene != nullptr)
+                    {
+                        this->currentScene->JoystickButtonUp(id, btn);
+                    }
                 }
             }
             if (this->currentScene != nullptr)

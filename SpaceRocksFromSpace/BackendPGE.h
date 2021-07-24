@@ -23,7 +23,10 @@ namespace jam
         bool OnUserCreate() override;
         bool OnUserUpdate(float dt) override;
     protected:
+        olc::GPButtons JoystickButtonToPGE(JoystickButton btn);
+        JoystickButton PGEToJoystickButton(olc::GPButtons btn);
         olc::vi2d oldMousePos;
+        std::vector<olc::GamePad*> gamePads;
     };    
 }
 #endif

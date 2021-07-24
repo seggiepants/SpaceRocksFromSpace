@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "IScene.h"
+#include "JoystickButton.h"
 #include "Rect.h"
 #include "Rock.h"
 #include "Shot.h"
@@ -21,6 +22,9 @@ namespace game
         void Construct(int screenWidth, int screenHeight);
         void Draw(jam::IRenderer* render);
         void GetScreenSize(int* screenWidth, int* screenHeight); 
+        void JoystickButtonDown(int id, jam::JoystickButton btn);
+        void JoystickButtonUp(int id, jam::JoystickButton btn);
+        void JoystickMove(int id, int dx, int dy);
         void KeyDown(uint8_t key);
         void KeyUp(uint8_t key);
         void MouseMove(int x, int y);
@@ -40,6 +44,8 @@ namespace game
         Rock* rock;
         std::vector<game::Shot*>* shots;
         float shotWait;
+        bool joyA, joyUp, joyDown, oldJoyA, oldJoyUp, oldJoyDown;
+        float joyMoveTimeout;
 
     };
 }
