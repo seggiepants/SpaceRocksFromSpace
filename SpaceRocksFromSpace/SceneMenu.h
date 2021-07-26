@@ -10,6 +10,7 @@
 #include "Rock.h"
 #include "Shot.h"
 #include "Star.h"
+#include "Utility.h"
 #include "VectorFont.h"
 
 namespace game

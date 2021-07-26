@@ -2,10 +2,10 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include "SceneGame.h"
 #include "SceneMenu.h"
 namespace game
-{
-	#define rndf(n) (float(rand())/float((RAND_MAX)) * n)
+{	
 	#define SHOT_DELAY  0.1
 	#define JOY_MOVE_DELAY 0.2
 
@@ -313,6 +313,8 @@ namespace game
 	{
 		if (menuItem == "PLAY")
 		{
+			this->nextScene = new SceneGame();
+			this->nextScene->Construct(this->screenWidth, this->screenHeight);
 		}
 		else if (menuItem == "HIGH SCORES")
 		{

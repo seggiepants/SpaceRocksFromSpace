@@ -162,10 +162,13 @@
     <ClInclude Include="KeyCodes.h" />
     <ClInclude Include="KeyCodesPGE.h" />
     <ClInclude Include="KeyCodesSDL2.h" />
+    <ClInclude Include="MouseButton.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Rock.h" />
+    <ClInclude Include="SceneGame.h" />
     <ClInclude Include="Shot.h" />
     <ClInclude Include="Star.h" />
+    <ClInclude Include="Utility.h" />
     <ClInclude Include="VectorFont.h" />
     <ClInclude Include="IBackend.h" />
     <ClInclude Include="IRenderer.h" />
@@ -187,6 +190,7 @@
     <ClCompile Include="KeyCodesPGE.cpp" />
     <ClCompile Include="KeyCodesSDL2.cpp" />
     <ClCompile Include="Rock.cpp" />
+    <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="Shot.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="VectorFont.cpp" />

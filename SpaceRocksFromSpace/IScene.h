@@ -5,15 +5,11 @@
 #include <cstdint>
 #include "JoystickButton.h"
 #include "KeyCodes.h"
+#include "MouseButton.h"
 #include "IRenderer.h"
 
 namespace jam
 {
-
-    enum MouseButton
-    {
-        LEFT, RIGHT
-    };
     class IScene
     {
     public:

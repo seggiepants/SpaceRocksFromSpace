@@ -2,6 +2,7 @@
 #include <cmath>
 #include "RGB.h"
 #include "Rock.h"
+#include "Utility.h"
 
 namespace game
 {
@@ -9,8 +10,8 @@ namespace game
 	const float twoPi = M_PI * 2.0;
 	const float MAX_SPEED = 300;
 	const float MIN_SPEED = 50;
-	const float MAX_SCALE = 25.0;
-	const float MIN_SCALE = 5.0;
+	const float MAX_SCALE = 30.0;
+	const float MIN_SCALE = 10.0;
 	const int ROCK_POINTS = 8;
 
 	Rock::Rock()
@@ -19,11 +20,11 @@ namespace game
 		this->visible = true;
 		this->model = new std::vector<jam::Point2Df>();
 		this->screenModel = new std::vector<jam::Point2Df>();
-		this->rotateSpeed = (rand() / (float)RAND_MAX) * 20.0 - 9.9; // 0 to 3 seconds clockwise or counter clockwise.
-		this->moveSpeed = (rand() / (float)RAND_MAX) * (MAX_SPEED - MIN_SPEED) + MIN_SPEED;
-		this->scale = (rand() / (float)RAND_MAX) * (MAX_SCALE - MIN_SCALE) + MIN_SCALE;
-		this->heading = (rand() / (float)RAND_MAX) * twoPi;
-		this->angle = (rand() / (float)RAND_MAX) * twoPi;
+		this->rotateSpeed = rndf(20.0) - 9.9; // 0 to 3 seconds clockwise or counter clockwise.
+		this->moveSpeed = rndf(MAX_SPEED - MIN_SPEED) + MIN_SPEED;
+		this->scale = rndf(MAX_SCALE - MIN_SCALE) + MIN_SCALE;
+		this->heading = rndf(twoPi);
+		this->angle = rndf(twoPi);
 		if (rand() % 2 == 1)
 			this->angle *= -1.0;
 
@@ -32,8 +33,8 @@ namespace game
 		for (int i = 0; i < ROCK_POINTS; i++)
 		{
 			float angle = dAngle * i;
-			float rx = radius * (1.0 + (rand() / float(RAND_MAX))) * cos(angle);
-			float ry = radius * (1.0 + (rand() / float(RAND_MAX))) * sin(angle);
+			float rx = radius * (1.0 + rndf(1.0)) * cos(angle);
+			float ry = radius * (1.0 + rndf(1.0)) * sin(angle);
 			this->model->push_back({ rx, ry });
 			this->screenModel->push_back({ rx, ry });
 		}
