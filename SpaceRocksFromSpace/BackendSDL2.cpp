@@ -107,7 +107,7 @@ namespace jam
             this->OpenJoysticks();
 		}
 
-        this->render = nullptr;
+        this->render = nullptr;        
 
 		return success;
     }
@@ -219,7 +219,8 @@ namespace jam
     void BackendSDL2::Start(IScene* scene)
     {
         Uint64 previous, current;
-
+        bool joyMotion, oldJoyMotion;
+        int joyID;
         if (this->render != nullptr)
         {
             delete this->render;
@@ -235,6 +236,8 @@ namespace jam
         this->currentScene->Construct(screenWidth, screenHeight);
 
         current = SDL_GetPerformanceCounter();
+        joyMotion = false;
+        joyID = false;
         while (this->currentScene != nullptr) {
             previous = current;
             current = SDL_GetPerformanceCounter();
@@ -245,6 +248,7 @@ namespace jam
             {
                 this->oldKey[i] = this->Key[i];
             }
+            //this->currentScene->JoystickMove(0, 0, 0);
             while (SDL_PollEvent(&e))
             {
                 //User requests quit
@@ -337,7 +341,7 @@ namespace jam
                         if (e.jhat.value & BIT_LEFT)
                             dx = -1;
                         else if (e.jhat.value & BIT_RIGHT)
-                            dy = 1;
+                            dx = 1;
 
                         if (e.jhat.value & BIT_UP)
                             dy = -1;
@@ -356,7 +360,7 @@ namespace jam
                     const int JOYSTICK_DEAD_ZONE = 8000;
                     int id = e.jaxis.which;
                     int dx, dy;
-                    dx = dy = 0;
+                    dx = dy = 0;                    
                     if (e.jaxis.axis == 0) // Left/Right
                     {
                         if (e.jaxis.value < -1 * JOYSTICK_DEAD_ZONE)
@@ -379,12 +383,9 @@ namespace jam
                             dy = 1;
                         }
                     }
-                    if (dx != 0 || dy != 0)
+                    if (this->currentScene != nullptr)
                     {
-                        if (this->currentScene != nullptr)
-                        {
-                            this->currentScene->JoystickMove(id, dx, dy);
-                        }
+                        this->currentScene->JoystickMove(id, dx, dy);
                     }
 
                 }
@@ -407,6 +408,7 @@ namespace jam
                     }
                 }
             }
+
             if (this->currentScene != nullptr)
             {
                 this->currentScene->Update(dt);

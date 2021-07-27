@@ -25,6 +25,7 @@ namespace jam
     bool BackendPGE::Construct(std::string title, int screenWidth, int screenHeight)
     {
         olc::rcode ret;
+        this->joyMotion = this->oldJoyMotion = false;
         ret = ((olc::PixelGameEngine*)this)->Construct(screenWidth, screenHeight, 1, 1);
         if (ret == olc::rcode::OK)
         {
@@ -162,9 +163,11 @@ namespace jam
             this->Key[i] = btnState.bHeld;
         }
 
-        int id = 0;
+        int id = 0, joyId = 0;
         float lx, ly;
         int dx, dy;
+        this->oldJoyMotion = this->joyMotion;
+        this->joyMotion = false;
         if (this->currentScene != nullptr)
         {
             if (this->gamePads.size() == 0)
@@ -209,12 +212,19 @@ namespace jam
                     }
                     if (dx != 0 || dy != 0)
                     {
+                        this->joyMotion = true;
+                        joyId = id;
                         currentScene->JoystickMove(id, dx, dy);
                     }
                 }
 
                 id++;
             }
+        }
+
+        if (this->joyMotion == false && this->oldJoyMotion == true)
+        {
+            this->currentScene->JoystickMove(joyId, 0, 0);
         }
 
         olc::HWButton mouseLeft = this->GetMouse(0);

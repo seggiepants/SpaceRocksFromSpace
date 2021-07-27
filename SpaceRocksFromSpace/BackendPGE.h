@@ -27,6 +27,7 @@ namespace jam
         JoystickButton PGEToJoystickButton(olc::GPButtons btn);
         olc::vi2d oldMousePos;
         std::vector<olc::GamePad*> gamePads;
+        bool joyMotion, oldJoyMotion;
     };    
 }
 #endif

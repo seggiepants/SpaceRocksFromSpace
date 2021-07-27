@@ -166,6 +166,7 @@
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="Ship.h" />
     <ClInclude Include="Shot.h" />
     <ClInclude Include="Star.h" />
     <ClInclude Include="Utility.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="KeyCodesSDL2.cpp" />
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Shot.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="VectorFont.cpp" />

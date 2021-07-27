@@ -37,7 +37,7 @@ namespace jam
         SDL_Window* window;
         SDL_Renderer* renderer;
         int mouseX, mouseY;
-        bool mouseBtnLeft, mouseBtnRight, oldMouseBtnLeft, oldMouseBtnRight;
+        bool mouseBtnLeft, mouseBtnRight, oldMouseBtnLeft, oldMouseBtnRight;        
         int numJoysticks;
         std::vector<JoystickInfoSDL*> joysticks;
     };

@@ -3,6 +3,7 @@
 #define __SCENE_GAME_H__
 #include <vector>
 #include "IScene.h"
+#include "Ship.h"
 #include "Shot.h"
 #include "Rock.h"
 #include "VectorFont.h"
@@ -34,8 +35,10 @@ protected:
     IScene* nextScene;
     std::vector<game::Rock*> rocks;
     std::vector<game::Shot*> shots;
+    game::Ship* ship;
     float shotWait;
-    bool joyA, joyUp, joyDown, joyLeft, joyRight, oldJoyA, oldJoyUp, oldJoyDown, oldJoyLeft, oldJoyRight;
+    bool joyA, joyUp, joyDown, joyLeft, joyRight;
+    bool keyA, keyUp, keyDown, keyLeft, keyRight;
 };
 
 }

@@ -7,8 +7,6 @@
 #include "IScene.h"
 #include "JoystickButton.h"
 #include "Rect.h"
-#include "Rock.h"
-#include "Shot.h"
 #include "Star.h"
 #include "Utility.h"
 #include "VectorFont.h"
@@ -42,9 +40,6 @@ namespace game
         int menuIndex;
         float maxStarDepth;
         IScene* nextScene;
-        Rock* rock;
-        std::vector<game::Shot*>* shots;
-        float shotWait;
         bool joyA, joyUp, joyDown, oldJoyA, oldJoyUp, oldJoyDown;
         float joyMoveTimeout;
 

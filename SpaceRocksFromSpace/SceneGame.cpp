@@ -5,9 +5,7 @@ namespace game
 	#define SHOT_DELAY  0.1
 	SceneGame::SceneGame()
 	{
-		this->joyA = this->oldJoyA = this->joyUp = this->oldJoyUp = false;
-		this->joyDown = this->oldJoyDown = this->joyLeft = this->oldJoyLeft = false;
-		this->joyRight = this->oldJoyRight = false;
+		this->ship = nullptr;
 		this->nextScene = nullptr;
 		this->screenWidth = this->screenHeight = 0;
 		this->shotWait = 0;
@@ -41,12 +39,21 @@ namespace game
 		const int COUNT_ROCKS = 10;
 		this->screenWidth = screenWidth;
 		this->screenHeight = screenHeight;
+		this->joyA = this->joyDown = this->joyLeft = this->joyRight = this->joyUp = false;
+		this->keyA = this->keyDown = this->keyLeft = this->keyRight = this->keyUp = false;
 		this->ClearObjects();
 		for (int i = 0; i < COUNT_ROCKS; i++)
 		{
 			game::Rock* rock = new Rock();
 			this->rocks.push_back(rock);
 		}
+		if (this->ship != nullptr)
+		{
+			delete this->ship;
+			this->ship = nullptr;
+		}
+		this->ship = new Ship();
+		this->ship->Construct(this->screenWidth, this->screenHeight);
 		this->nextScene = (IScene*)this;
 	}
 
@@ -67,6 +74,8 @@ namespace game
 		{
 			(*iter)->Draw(render);
 		}
+
+		this->ship->Draw(render);
 	}
 
 	void SceneGame::GetScreenSize(int* screenWidth, int* screenHeight)
@@ -77,22 +86,155 @@ namespace game
 
 	void SceneGame::JoystickButtonDown(int id, jam::JoystickButton btn)
 	{
+		if (id == 0)
+		{
+			if (btn == jam::JoystickButton::A)
+			{
+				this->joyA = true;
+			}
+
+			if (btn == jam::JoystickButton::DPAD_LEFT)
+			{
+				this->joyLeft = true;
+			}
+
+			if (btn == jam::JoystickButton::DPAD_RIGHT)
+			{
+				this->joyRight = true;
+			}
+
+			if (btn == jam::JoystickButton::DPAD_UP)
+			{
+				this->joyUp = true;
+			}
+
+			if (btn == jam::JoystickButton::DPAD_DOWN)
+			{
+				this->joyDown = true;
+			}
+		}
+
 	}
 
 	void SceneGame::JoystickButtonUp(int id, jam::JoystickButton btn)
 	{
+		if (id == 0)
+		{
+			if (btn == jam::JoystickButton::A)
+			{
+				this->joyA = false;
+			}
+
+			if (btn == jam::JoystickButton::DPAD_LEFT)
+			{
+				this->joyLeft = false;
+			}
+
+			if (btn == jam::JoystickButton::DPAD_RIGHT)
+			{
+				this->joyRight = false;
+			}
+
+			if (btn == jam::JoystickButton::DPAD_UP)
+			{
+				this->joyUp = false;
+			}
+
+			if (btn == jam::JoystickButton::DPAD_DOWN)
+			{
+				this->joyDown = false;
+			}
+		}
 	}
 
 	void SceneGame::JoystickMove(int id, int dx, int dy)
 	{
+		if (id == 0)
+		{
+			if (dx < 0)
+			{
+				this->joyLeft = true;
+				this->joyRight = false;
+			}
+			else if (dx > 0)
+			{
+				this->joyLeft = false;
+				this->joyRight = true;
+			}
+			else
+			{
+				this->joyLeft = false;
+				this->joyRight = false;
+			}
+
+			if (dy < 0)
+			{
+				this->joyUp = true;
+				this->joyDown = false;
+			}
+			else if (dy > 0)
+			{
+				this->joyUp = false;
+				this->joyDown = true;
+			}
+			else
+			{
+				this->joyUp = false;
+				this->joyDown = false;
+			}
+		}
 	}
 
 	void SceneGame::KeyDown(uint8_t key)
 	{
+		if (key == jam::key::KEY_A || key == jam::key::KEY_LEFT)
+		{
+			this->keyLeft = true;
+		}
+		if (key == jam::key::KEY_D || key == jam::key::KEY_RIGHT)
+		{
+			this->keyRight = true;
+		}
+		if (key == jam::key::KEY_W || key == jam::key::KEY_UP)
+		{
+			this->keyLeft = true;
+		}
+		if (key == jam::key::KEY_S || key == jam::key::KEY_DOWN)
+		{
+			this->keyRight = true;
+		}
+		if (key == jam::key::KEY_SPACE || key == jam::key::KEY_ENTER)
+		{
+			this->keyA = true;
+		}
 	}
 
 	void SceneGame::KeyUp(uint8_t key)
 	{
+		if (key == jam::key::KEY_A || key == jam::key::KEY_LEFT)
+		{
+			this->keyLeft = false;
+		}
+		if (key == jam::key::KEY_D || key == jam::key::KEY_RIGHT)
+		{
+			this->keyRight = false;
+		}
+		if (key == jam::key::KEY_W || key == jam::key::KEY_UP)
+		{
+			this->keyLeft = false;
+		}
+		if (key == jam::key::KEY_S || key == jam::key::KEY_DOWN)
+		{
+			this->keyRight = false;
+		}
+		if (key == jam::key::KEY_SPACE || key == jam::key::KEY_ENTER)
+		{
+			this->keyA = false;
+		}
+		if (key == jam::key::KEY_ESCAPE)
+		{
+			this->nextScene = nullptr;
+		}
 	}
 
 	void SceneGame::MouseMove(int x, int y)
@@ -101,6 +243,10 @@ namespace game
 
 	void SceneGame::MouseClick(jam::MouseButton button, int x, int y)
 	{
+		if (button == jam::MouseButton::LEFT)
+		{
+			// Shoot
+		}
 	}
 
 	jam::IScene* SceneGame::NextScene()
@@ -119,5 +265,19 @@ namespace game
 		{
 			(*iter)->Update(this, dt);
 		}
+
+		if (this->keyLeft || this->joyLeft)
+		{
+			this->ship->Rotate(-1);
+		}
+		else if (this->keyRight || this->joyRight)
+		{
+			this->ship->Rotate(1);
+		}
+		else
+		{
+			this->ship->Rotate(0);
+		}
+		this->ship->Update(this, dt);
 	}
 }

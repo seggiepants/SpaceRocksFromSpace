@@ -22,7 +22,7 @@ namespace game
 		this->screenModel = new std::vector<jam::Point2Df>();
 		this->rotateSpeed = rndf(20.0) - 9.9; // 0 to 3 seconds clockwise or counter clockwise.
 		this->moveSpeed = rndf(MAX_SPEED - MIN_SPEED) + MIN_SPEED;
-		this->scale = rndf(MAX_SCALE - MIN_SCALE) + MIN_SCALE;
+		this->scale = abs(rndf(MAX_SCALE - MIN_SCALE)) + MIN_SCALE;
 		this->heading = rndf(twoPi);
 		this->angle = rndf(twoPi);
 		if (rand() % 2 == 1)
