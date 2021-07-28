@@ -22,6 +22,7 @@ namespace game
         bool IsDeleted() { return false; };
         void Rotate(int dir);
         void SetPosition(float x, float y);
+        void GetCanonPosition(float* x, float* y, float* heading);
     protected:
         int rotateDir;
         int screenWidth, screenHeight;

@@ -21,6 +21,7 @@ namespace game
         float GetHeading() { return this->heading; }
         void SetHeading(float heading) { this->heading = heading; };
         void SetPosition(float x, float y) { this->x = x; this->y = y; }
+        void SetScale(float scale) { this->scale = scale; }
     protected:
         bool deleted;
         bool visible;

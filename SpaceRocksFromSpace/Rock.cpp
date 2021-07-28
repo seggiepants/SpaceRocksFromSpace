@@ -74,7 +74,7 @@ namespace game
 
 		}
 	}
-
+	
 	void Rock::Update(jam::IScene* scene, float dt)
 	{
 		int screenWidth, screenHeight;
@@ -152,4 +152,5 @@ namespace game
 	{
 		return this->deleted;
 	}
+
 }

@@ -52,6 +52,14 @@ namespace game
         }
     }
 
+	void Ship::GetCanonPosition(float* x, float* y, float* heading)
+	{
+		const float offset = 8.0;
+		*heading = M_PI_2 - this->heading;
+		*x = this->x + offset * cos(*heading);
+		*y = this->y - offset * sin(*heading);
+	}
+
 	void Ship::Rotate(int dir)
 	{
 		if (dir < 0)

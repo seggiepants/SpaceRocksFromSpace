@@ -2,7 +2,8 @@
 
 namespace game
 {
-	#define SHOT_DELAY  0.1
+	#define SHOT_DELAY  0.2
+
 	SceneGame::SceneGame()
 	{
 		this->ship = nullptr;
@@ -246,12 +247,28 @@ namespace game
 		if (button == jam::MouseButton::LEFT)
 		{
 			// Shoot
+			this->Shoot();
 		}
 	}
 
 	jam::IScene* SceneGame::NextScene()
 	{
 		return this->nextScene;
+	}
+
+	void SceneGame::Shoot()
+	{
+		if (shotWait <= 0.0)
+		{
+			float x, y, heading;
+			x = y = heading = 0.0;
+			this->ship->GetCanonPosition(&x, &y, &heading);
+			game::Shot* shot = new game::Shot();
+			shot->SetHeading(heading);
+			shot->SetPosition(x, y);
+			this->shots.push_back(shot);
+			this->shotWait = SHOT_DELAY;
+		}
 	}
 
 	void SceneGame::Update(float dt)
@@ -278,6 +295,37 @@ namespace game
 		{
 			this->ship->Rotate(0);
 		}
+
+		if (this->shots.size() != 0)
+		{
+			for (int i = this->shots.size() - 1; i >= 0; i--)
+			{
+				Shot* shot = this->shots[i];
+				if (shot->IsDeleted())
+				{
+					this->shots.erase(this->shots.begin() + i);
+					delete shot;
+					shot = nullptr;
+					i--;
+				}
+				else
+				{
+					shot->Update(this, dt);
+				}
+			}
+		}
+
+
+		if (this->shotWait > 0)
+		{
+			this->shotWait -= dt;
+			if (this->shotWait < 0)
+				this->shotWait = 0;
+		}
 		this->ship->Update(this, dt);
+		if ((this->keyA || this->joyA) && this->shotWait <= 0)
+		{
+			this->Shoot();
+		}
 	}
 }

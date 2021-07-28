@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="BackendPGE.h" />
     <ClInclude Include="BackendSDL2.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="IEntity.h" />
     <ClInclude Include="JoystickButton.h" />
     <ClInclude Include="KeyCodes.h" />
@@ -186,6 +187,7 @@
   <ItemGroup>
     <ClCompile Include="BackendPGE.cpp" />
     <ClCompile Include="BackendSDL2.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="IEntity.cpp" />
     <ClCompile Include="KeyCodes.cpp" />
     <ClCompile Include="KeyCodesPGE.cpp" />

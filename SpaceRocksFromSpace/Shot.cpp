@@ -15,7 +15,6 @@ namespace game
 		this->vy = 1.0;
 		this->age = MAX_SHOT_AGE;
 		this->color.r = this->color.g = this->color.b = this->color.a = 255;
-		this->color.b = 0;
 	}
 
 	Shot::~Shot()

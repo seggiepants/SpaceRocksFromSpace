@@ -29,6 +29,7 @@ public:
     void Update(float dt);
 protected:
     void ClearObjects();
+    void Shoot();
     VectorFont* vFont;
     int screenWidth;
     int screenHeight;
