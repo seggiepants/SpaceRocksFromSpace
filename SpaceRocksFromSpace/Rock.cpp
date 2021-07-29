@@ -1,5 +1,6 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include "Collision.h"
 #include "RGB.h"
 #include "Rock.h"
 #include "Utility.h"
@@ -57,6 +58,32 @@ namespace game
 		}
 	}
 
+	bool Rock::Collide_Circle_Point(float x, float y)
+	{
+		jam::Point2Df center{ this->x, this->y };
+		jam::Point2Df point{ x, y };
+		return jam::Collision::Circle_Point(&center, this->scale, &point);
+	}
+
+	bool Rock::Collide_Line(float x1, float y1, float x2, float y2)
+	{
+		bool ret = false;
+		float xa, ya, xb, yb;
+		xa = this->screenModel->at(this->screenModel->size() - 1).x;
+		ya = this->screenModel->at(this->screenModel->size() - 1).y;
+		for (int i = 0; i < this->screenModel->size(); i++)
+		{
+			xb = xa;
+			yb = ya;
+			xa = this->screenModel->at(i).x;
+			ya = this->screenModel->at(i).y;
+			ret = jam::Collision::Line_Line(xa, ya, xb, yb, x1, y1, x2, y2);
+			if (ret)
+				break;
+		}
+		return ret;
+	}
+
 	void Rock::Draw(jam::IRenderer* render)
 	{
 		if (this->visible && this->screenModel->size() > 0)
@@ -71,6 +98,24 @@ namespace game
 				render->DrawLine(pointTo.x, pointTo.y, pointFrom.x, pointFrom.y, white);
 				iPrevious = i;
 			}
+
+			// Debug draw
+			/*
+			float step = M_PI / 4;
+			float x, y;
+			float oldX, oldY;
+			oldX = this->x + this->scale;
+			oldY = this->y;
+			jam::rgb color{ 255, 255, 0, 255 };
+			for (float ang = step; ang <= M_PI * 2.0 + step; ang += step)
+			{
+				x = this->x + (this->scale * cos(ang));
+				y = this->y + (this->scale * sin(ang));
+				render->DrawLine(oldX, oldY, x, y, color);
+				oldX = x;
+				oldY = y;
+			}
+			*/
 
 		}
 	}

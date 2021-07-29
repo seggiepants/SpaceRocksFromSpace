@@ -1,4 +1,8 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
+#include <sstream>
 #include "SceneGame.h"
+#include "Utility.h"
 
 namespace game
 {
@@ -40,6 +44,7 @@ namespace game
 		const int COUNT_ROCKS = 10;
 		this->screenWidth = screenWidth;
 		this->screenHeight = screenHeight;
+		this->score = 0;
 		this->joyA = this->joyDown = this->joyLeft = this->joyRight = this->joyUp = false;
 		this->keyA = this->keyDown = this->keyLeft = this->keyRight = this->keyUp = false;
 		this->ClearObjects();
@@ -60,12 +65,20 @@ namespace game
 
 	void SceneGame::Draw(jam::IRenderer* render)
 	{
+		const int SCORE_RESERVE = 50;
 		int width, height;
 		jam::rgb bg(0, 0, 0, 255);
+		jam::rgb fg(255, 255, 255, 255);
 		render->Clear(bg);
 		render->GetScreenSize(&width, &height);
 		this->screenWidth = width;
 		this->screenHeight = height;
+		std::ostringstream s;
+		s << "SCORE " << std::to_string(this->score);
+		std::string scoreDisplay = s.str();
+		int tw, th;
+		this->vFont->MeasureText(scoreDisplay, &tw, &th);
+		this->vFont->DrawText(render, scoreDisplay, 8, 8 + th, fg);
 		for (std::vector<game::Shot*>::iterator iter = this->shots.begin(); iter != this->shots.end(); iter++)
 		{
 			(*iter)->Draw(render);
@@ -273,6 +286,7 @@ namespace game
 
 	void SceneGame::Update(float dt)
 	{
+		const int SPLIT_COUNT = 2;
 		for (std::vector<game::Shot*>::iterator iter = this->shots.begin(); iter != this->shots.end(); iter++)
 		{
 			(*iter)->Update(this, dt);
@@ -281,6 +295,71 @@ namespace game
 		for (std::vector<game::Rock*>::iterator iter = this->rocks.begin(); iter != this->rocks.end(); iter++)
 		{
 			(*iter)->Update(this, dt);
+		}
+		for (std::vector<game::Shot*>::iterator shotIter = this->shots.begin(); shotIter != this->shots.end(); shotIter++)
+		{
+			game::Shot* shot = *shotIter;
+			if (shot->IsDeleted())
+				continue;
+			for (std::vector<game::Rock*>::iterator iter = this->rocks.begin(); iter != this->rocks.end(); iter++)
+			{
+				game::Rock* rock = *iter;
+				if (rock->IsDeleted())
+					continue;
+				float x1, y1, x2, y2;
+				shot->GetCollisionLine(&x1, &y1, &x2, &y2);
+				if (rock->Collide_Line(x1, y1, x2, y2))
+				{
+					shot->SetDeleted();
+					float scale = rock->GetScale();
+					rock->SetDeleted();
+					if (scale >= 10.0)
+					{
+						float minSpeed = rock->GetSpeed() * 1.25;
+						for (int j = 0; j < SPLIT_COUNT; j++)
+						{
+							game::Rock* newRock = new game::Rock();
+							float rx, ry;
+							rock->GetPosition(&rx, &ry);
+							rx += rndf(scale) - (scale / 2.0);
+							ry += rndf(scale) - (scale / 2.0);
+							newRock->SetPosition(rx, ry);
+							newRock->SetScale(scale / 2.0);
+							newRock->SetHeading(rndf(M_PI * 2.0));
+							float newSpeed = rndf(1.0) / 15.0;
+							while (newSpeed < minSpeed)
+								newSpeed *= 1.1;
+							newRock->SetSpeed(newSpeed);
+							this->rocks.push_back(newRock);
+						}
+						if (scale >= 15.0)
+						{
+							this->score += 10;
+						}
+						else
+						{
+							this->score += 20;
+						}
+					}
+					else
+					{
+						this->score += 50;
+					}
+					rock->SetDeleted();
+					break;
+				}
+			}
+		}
+
+		// Delete old Rocks.
+		for (int i = this->rocks.size() - 1; i >= 0; i--)
+		{
+			game::Rock* rock = this->rocks[i];
+			if (rock->IsDeleted())
+			{
+				this->rocks.erase(this->rocks.begin() + i);
+				delete rock;
+			}
 		}
 
 		if (this->keyLeft || this->joyLeft)

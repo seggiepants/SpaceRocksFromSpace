@@ -38,6 +38,7 @@ protected:
     std::vector<game::Shot*> shots;
     game::Ship* ship;
     float shotWait;
+    int score;
     bool joyA, joyUp, joyDown, joyLeft, joyRight;
     bool keyA, keyUp, keyDown, keyLeft, keyRight;
 };

@@ -36,9 +36,10 @@ namespace game
 
 	void Shot::Draw(jam::IRenderer* render)
 	{
+		//jam::rgb color = { 255, 0, 0, 255 };
 		if (this->alive && this->visible)
 		{
-			// render->DrawLine(this->oldX, this->oldY, this->x, this->y, this->color);
+			// render->DrawLine(this->oldX, this->oldY, this->x, this->y, color);
 			float step = M_PI / 3;
 			float x, y, radius = 3.0;
 			for (float ang = 0.0; ang < M_PI * 2.0; ang += step)
@@ -46,8 +47,7 @@ namespace game
 				x = this->x + (radius * cos(ang));
 				y = this->y + (radius * sin(ang));
 				render->DrawLine(this->x, this->y, x, y, this->color);
-			}
-
+			}			
 		}
 	}
 
@@ -61,8 +61,8 @@ namespace game
 		this->oldX = this->x;
 		this->oldY = this->y;
 
-		this->x += this->vx * dt * SHOT_SPEED;
-		this->y += this->vy * dt * SHOT_SPEED;
+		this->x += (float)this->vx * dt * SHOT_SPEED;
+		this->y += (float)this->vy * dt * SHOT_SPEED;
 
 		if (this->x < 0 || this->x >= screenWidth || this->y < 0 || this->y >= screenHeight)
 		{

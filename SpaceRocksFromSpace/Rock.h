@@ -15,13 +15,20 @@ namespace game
     public:
         Rock();
         ~Rock();
+        bool Collide_Line(float x1, float y1, float x2, float y2);
+        bool Collide_Circle_Point(float x, float y);
         void Draw(jam::IRenderer* render);
         void Update(jam::IScene* scene, float dt);
         bool IsDeleted();
+        void SetDeleted() { this->deleted = true; }
         float GetHeading() { return this->heading; }
         void SetHeading(float heading) { this->heading = heading; };
+        void GetPosition(float* x, float* y) { *x = this->x; *y = this->y; }
         void SetPosition(float x, float y) { this->x = x; this->y = y; }
+        float GetScale() { return this->scale; } 
         void SetScale(float scale) { this->scale = scale; }
+        float GetSpeed() { return this->moveSpeed; }
+        void SetSpeed(float speed) { this->moveSpeed = speed; }
     protected:
         bool deleted;
         bool visible;
