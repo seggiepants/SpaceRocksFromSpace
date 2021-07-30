@@ -6,6 +6,7 @@
 #include <olcPGEX_Gamepad.h>
 #include <olcPGEX_TTF.h>
 #include "IBackend.h"
+#include "ResourceManagerPGE.h"
 
 namespace jam
 {
@@ -22,6 +23,7 @@ namespace jam
         void Start(IScene* scene);
         bool OnUserCreate() override;
         bool OnUserUpdate(float dt) override;
+        IResourceManager* ResourceManager() { return ResourceManagerPGE::Instance(); };
     protected:
         olc::GPButtons JoystickButtonToPGE(JoystickButton btn);
         JoystickButton PGEToJoystickButton(olc::GPButtons btn);

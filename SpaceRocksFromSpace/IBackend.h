@@ -8,6 +8,7 @@
 #include "IScene.h"
 #include "JoystickButton.h"
 #include "KeyCodes.h"
+#include "IResourceManager.h"
 
 namespace jam
 {
@@ -19,6 +20,7 @@ namespace jam
         virtual void Start(IScene* scene) = 0;
         virtual bool OnUserCreate() = 0;
         virtual bool OnUserUpdate(float dt) = 0;        
+        virtual IResourceManager* ResourceManager() = 0;
     protected:
         IScene* currentScene;
         IRenderer* render;

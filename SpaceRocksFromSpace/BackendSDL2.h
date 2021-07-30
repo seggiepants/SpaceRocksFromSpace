@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include "IBackend.h"
+#include "ResourceManagerSDL2.h"
 
 namespace jam
 {
@@ -29,6 +30,7 @@ namespace jam
         void Start(IScene* scene);
         bool OnUserCreate();
         bool OnUserUpdate(float dt);
+        IResourceManager* ResourceManager() { return ResourceManagerSDL2::Instance(); };
     protected:
         void CloseJoysticks();
         void OpenJoysticks();
