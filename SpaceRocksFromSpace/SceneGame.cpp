@@ -2,6 +2,7 @@
 #include <cmath>
 #include <sstream>
 #include "SceneGame.h"
+#include "SceneManager.h"
 #include "Shared.h"
 #include "Utility.h"
 
@@ -256,7 +257,9 @@ namespace game
 		}
 		if (key == jam::key::KEY_ESCAPE)
 		{
-			this->nextScene = nullptr;
+			this->nextScene = jam::SceneManager::Instance()->GetScene("menu");
+			if (this->nextScene != nullptr)
+				this->nextScene->Construct(this->screenWidth, this->screenHeight);
 		}
 	}
 

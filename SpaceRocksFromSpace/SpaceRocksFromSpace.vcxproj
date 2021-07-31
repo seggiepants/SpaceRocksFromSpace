@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AudioPGE.h" />
+    <ClInclude Include="AudioSDL2.h" />
     <ClInclude Include="BackendPGE.h" />
     <ClInclude Include="BackendSDL2.h" />
     <ClInclude Include="Collision.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shared.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Shot.h" />
@@ -189,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioPGE.cpp" />
+    <ClCompile Include="AudioSDL2.cpp" />
     <ClCompile Include="BackendPGE.cpp" />
     <ClCompile Include="BackendSDL2.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -199,6 +202,7 @@
     <ClCompile Include="KeyCodesSDL2.cpp" />
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shared.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Shot.cpp" />

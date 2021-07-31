@@ -1,4 +1,13 @@
 #pragma once
+#ifndef __RESOURCE_MANAGER_SDL2_H__
+#define __RESOURCE_MANAGER_SDL2_H__
+#include <SDL2\SDL.h>
+#include <SDL2\SDL_image.h>
+#include <SDL2\SDL_mixer.h>
+#include <SDL2\SDL_ttf.h>
+#include <string>
+#include <unordered_map>
+#include "AudioSDL2.h"
 #include "IResourceManager.h"
 namespace jam
 {
@@ -31,6 +40,10 @@ namespace jam
 	private:
 		ResourceManagerSDL2();
 		static ResourceManagerSDL2* instance;
+		std::unordered_map<std::string, AudioSDL2*> audio;
+		std::unordered_map<std::string, SDL_Texture*> image;
+		std::unordered_map<std::string, TTF_Font*> font;
     };
 }
 
+#endif

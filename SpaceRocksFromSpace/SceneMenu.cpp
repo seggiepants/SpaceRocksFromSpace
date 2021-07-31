@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "SceneGame.h"
+#include "SceneManager.h"
 #include "SceneMenu.h"
 #include "Shared.h"
 
@@ -288,8 +289,9 @@ namespace game
 		this->click->Play();
 		if (menuItem == "PLAY")
 		{
-			this->nextScene = new SceneGame();
-			this->nextScene->Construct(this->screenWidth, this->screenHeight);
+			this->nextScene = jam::SceneManager::Instance()->GetScene("game");
+			if (this->nextScene != nullptr)
+				this->nextScene->Construct(this->screenWidth, this->screenHeight);
 			this->bgMusic->Stop();
 		}
 		else if (menuItem == "HIGH SCORES")
@@ -297,7 +299,9 @@ namespace game
 		}
 		else if (menuItem == "EXIT")
 		{
-			this->nextScene = nullptr;
+			this->nextScene = jam::SceneManager::Instance()->GetScene("exit");
+			if (this->nextScene != nullptr)
+				this->nextScene->Construct(this->screenWidth, this->screenHeight);
 		}
 	}
 

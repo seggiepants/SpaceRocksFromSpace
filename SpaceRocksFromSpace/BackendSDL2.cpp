@@ -19,6 +19,9 @@ namespace jam
 
     BackendSDL2::~BackendSDL2()
     {
+        Mix_CloseAudio();
+        Mix_Quit();
+
         if (this->render != nullptr)
         {
             delete this->render;
