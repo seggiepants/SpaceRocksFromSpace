@@ -2,6 +2,7 @@
 #ifndef __SCENE_GAME_H__
 #define __SCENE_GAME_H__
 #include <vector>
+#include "IAudio.h"
 #include "IScene.h"
 #include "Ship.h"
 #include "Shot.h"
@@ -41,6 +42,9 @@ protected:
     int score;
     bool joyA, joyUp, joyDown, joyLeft, joyRight;
     bool keyA, keyUp, keyDown, keyLeft, keyRight;
+    jam::IAudio* zap;
+    jam::IAudio* teleport;
+    jam::IAudio* explosion;
 };
 
 }

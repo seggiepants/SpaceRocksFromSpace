@@ -28,7 +28,7 @@ namespace game
         int screenWidth, screenHeight;
         float heading, moveSpeed;
         std::vector<jam::Point2Df> model;
-        std::vector<jam::Point2Df> screenModel;
+        std::vector<jam::Point2Df> screenModel;        
     };
 }
 #endif

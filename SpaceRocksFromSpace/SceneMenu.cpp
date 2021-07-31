@@ -4,6 +4,8 @@
 #include <iostream>
 #include "SceneGame.h"
 #include "SceneMenu.h"
+#include "Shared.h"
+
 namespace game
 {	
 	#define SHOT_DELAY  0.1
@@ -21,6 +23,8 @@ namespace game
 		this->joyUp = this->oldJoyUp = false;
 		this->joyDown = this->oldJoyDown = false;
 		this->joyMoveTimeout = 0;
+		this->bgMusic = nullptr;
+		this->click = nullptr;
 	}
 
 	SceneMenu::~SceneMenu() 
@@ -56,6 +60,10 @@ namespace game
 		}
 		this->menuIndex = 0;
 		this->nextScene = (IScene*)this;
+
+		this->click = jam::backEnd->ResourceManager()->GetAudio("assets/sound/select.wav");
+		this->bgMusic = jam::backEnd->ResourceManager()->GetAudio("assets/sound/main_menu.wav");
+		this->bgMusic->Play();
 	}
 
 	void SceneMenu::Draw(jam::IRenderer* render)
@@ -277,10 +285,12 @@ namespace game
 
 	void SceneMenu::MenuSelect(std::string menuItem)
 	{
+		this->click->Play();
 		if (menuItem == "PLAY")
 		{
 			this->nextScene = new SceneGame();
 			this->nextScene->Construct(this->screenWidth, this->screenHeight);
+			this->bgMusic->Stop();
 		}
 		else if (menuItem == "HIGH SCORES")
 		{

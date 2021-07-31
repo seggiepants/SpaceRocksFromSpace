@@ -155,9 +155,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AudioPGE.h" />
     <ClInclude Include="BackendPGE.h" />
     <ClInclude Include="BackendSDL2.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="IAudio.h" />
     <ClInclude Include="IEntity.h" />
     <ClInclude Include="JoystickButton.h" />
     <ClInclude Include="KeyCodes.h" />
@@ -167,6 +169,7 @@
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="Shared.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Shot.h" />
     <ClInclude Include="Star.h" />
@@ -185,15 +188,18 @@
     <ClInclude Include="SceneMenu.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioPGE.cpp" />
     <ClCompile Include="BackendPGE.cpp" />
     <ClCompile Include="BackendSDL2.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="IAudio.cpp" />
     <ClCompile Include="IEntity.cpp" />
     <ClCompile Include="KeyCodes.cpp" />
     <ClCompile Include="KeyCodesPGE.cpp" />
     <ClCompile Include="KeyCodesSDL2.cpp" />
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="Shared.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Shot.cpp" />
     <ClCompile Include="Star.cpp" />

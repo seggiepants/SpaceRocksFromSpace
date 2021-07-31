@@ -4,6 +4,7 @@
 #define __SCENE_MENU_H__
 #include <string>
 #include <vector>
+#include "IAudio.h"
 #include "IScene.h"
 #include "JoystickButton.h"
 #include "Rect.h"
@@ -42,7 +43,8 @@ namespace game
         IScene* nextScene;
         bool joyA, joyUp, joyDown, oldJoyA, oldJoyUp, oldJoyDown;
         float joyMoveTimeout;
-
+        jam::IAudio* bgMusic;
+        jam::IAudio* click;
     };
 }
 

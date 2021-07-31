@@ -15,6 +15,7 @@ namespace jam
 
     BackendPGE::~BackendPGE()
     {
+        olc::SOUND::DestroyAudio();
         if (this->render != nullptr)
         {
             delete this->render;
@@ -31,6 +32,7 @@ namespace jam
         {
             this->sAppName = title;
         }
+        olc::SOUND::InitialiseAudio();
         return ret == olc::rcode::OK;
     }
 

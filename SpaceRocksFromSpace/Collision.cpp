@@ -25,19 +25,6 @@ namespace jam
 
 	bool Collision::Line_Line(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
 	{
-		float x1a, y1a, x2a, y2a;
-		float x1b, y1b, x2b, y2b;
-
-		x1a = x1 <= x2 ? x1 : x2;
-		x2a = x1 <= x2 ? x2 : x1;
-		y1a = y1 <= y2 ? y1 : y2;
-		y2a = y1 <= y2 ? y2 : y1;
-
-		x1b = x3 <= x4 ? x3 : x4;
-		x2b = x3 <= x4 ? x4 : x3;
-		y1b = y3 <= y4 ? y3 : y4;
-		y2b = y3 <= y4 ? y4 : y3;
-
 		float s02_x, s02_y, s10_x, s10_y;
 		float s32_x, s32_y, s_numer, t_numer;
 		float denom, t;
@@ -45,14 +32,14 @@ namespace jam
 
 		// Bounding Box check.
 		jam::Rect a, b;
-		a.x1 = x1a; a.x2 = x2a; a.y1 = y1a; a.y2 = y2a;
-		b.x1 = x1b; b.x2 = x2b; b.y1 = y1b; b.y2 = y2b;
+		a.x1 = x1; a.x2 = x2; a.y1 = y1; a.y2 = y2;
+		b.x1 = x3; b.x2 = x4; b.y1 = y3; b.y2 = y4;
 		if (Collision::Rect_Rect(&a, &b))
 		{
-			s10_x = x2a - x1a;
-			s10_y = y2a - y1a;
-			s32_x = x2b - x1b;
-			s32_y = y2b - y1b;
+			s10_x = x2 - x1;
+			s10_y = y2 - y1;
+			s32_x = x4 - x3;
+			s32_y = y4 - y3;
 
 			denom = (s10_x * s32_y) - (s32_x * s10_y);
 			if (denom == 0.0)
@@ -60,8 +47,8 @@ namespace jam
 				return false; // co-linear
 			}
 			denom_positive = denom > 0;
-			s02_x = x1a - x1b;
-			s02_y = y1a - y1b;
+			s02_x = x1 - x3;
+			s02_y = y1 - y3;
 			s_numer = (s10_x * s02_y) - (s10_y * s02_x);
 			if ((s_numer < 0.0) == denom_positive)
 			{

@@ -2,6 +2,7 @@
 #include <cmath>
 #include <sstream>
 #include "SceneGame.h"
+#include "Shared.h"
 #include "Utility.h"
 
 namespace game
@@ -15,6 +16,10 @@ namespace game
 		this->screenWidth = this->screenHeight = 0;
 		this->shotWait = 0;
 		this->vFont = new VectorFont();
+		this->zap = nullptr;
+		this->teleport = nullptr;
+		this->explosion = nullptr;
+
 	}
 
 	SceneGame::~SceneGame()
@@ -61,6 +66,10 @@ namespace game
 		this->ship = new Ship();
 		this->ship->Construct(this->screenWidth, this->screenHeight);
 		this->nextScene = (IScene*)this;
+		this->zap = jam::backEnd->ResourceManager()->GetAudio("assets/sound/laser.wav");
+		this->teleport = jam::backEnd->ResourceManager()->GetAudio("assets/sound/teleport.wav");
+		this->explosion = jam::backEnd->ResourceManager()->GetAudio("assets/sound/explosion.wav");
+
 	}
 
 	void SceneGame::Draw(jam::IRenderer* render)
@@ -281,6 +290,7 @@ namespace game
 			shot->SetPosition(x, y);
 			this->shots.push_back(shot);
 			this->shotWait = SHOT_DELAY;
+			this->zap->Play();
 		}
 	}
 

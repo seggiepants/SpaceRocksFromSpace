@@ -9,7 +9,7 @@ namespace jam
 
 	ResourceManagerPGE::ResourceManagerPGE()
 	{
-		instance->Clear();
+		//instance->Clear();
 	}
 
 	ResourceManagerPGE::~ResourceManagerPGE()
@@ -90,6 +90,9 @@ namespace jam
 		if (instance != NULL)
 		{
 			// PGE Audio extension doesn't appear to have an unload sample command.
+			for (const auto& element : instance->audio) {
+				delete element.second;
+			}
 			instance->audio.clear();
 
 			for (const auto& element : instance->font) {
@@ -107,9 +110,17 @@ namespace jam
 		}
 	}
 
+	IAudio* ResourceManagerPGE::GetAudio(std::string filePath)
+	{
+		this->PreloadAudio(filePath);
+		return this->audio[filePath];
+	}
+	void ResourceManagerPGE::GetFont(std::string, int size) {}
+	void ResourceManagerPGE::GetImage(std::string) {}
+
 	bool ResourceManagerPGE::HasAudio(std::string path)
 	{
-		std::unordered_map<std::string, int>::const_iterator search = instance->audio.find(path);
+		std::unordered_map<std::string, AudioPGE*>::const_iterator search = instance->audio.find(path);
 
 		return (search != instance->audio.end());
 
@@ -134,14 +145,13 @@ namespace jam
 	{
 		if (!instance->HasAudio(path))
 		{
-			int sampleID = olc::SOUND::LoadAudioSample(path);
+			AudioPGE* sample = new AudioPGE();
+			sample->Load(path);
+			bool success = olc::SOUND::LoadAudioSample(path);
 
-			if (sampleID < 0) {
-				std::cout << "Failed to load sound \"" << path << "\"" << std::endl;
-			}
-			else
+			if (success) 
 			{
-				instance->audio[path] = sampleID;
+				instance->audio[path] = sample;
 			}
 		}
 	}
@@ -179,17 +189,5 @@ namespace jam
 				instance->image[path] = sprite;
 			}
 		}
-	}
-
-	void ResourceManagerPGE::PlayAudio(std::string path)
-	{
-		instance->PreloadAudio(path);
-		int sampleID = instance->audio[path];
-		olc::SOUND::PlaySample(sampleID);
-	}
-
-	void ResourceManagerPGE::StopAudio()
-	{
-		olc::SOUND::StopAll();
 	}
 }
