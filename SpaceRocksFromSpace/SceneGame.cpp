@@ -20,12 +20,16 @@ namespace game
 		this->zap = nullptr;
 		this->teleport = nullptr;
 		this->explosion = nullptr;
-
+		this->lifeIcon.push_back({ -6, 6 });
+		this->lifeIcon.push_back({ 0, 3 });
+		this->lifeIcon.push_back({ 6, 6 });
+		this->lifeIcon.push_back({ 0, -6 });
 	}
 
 	SceneGame::~SceneGame()
 	{
 		this->ClearObjects();
+		this->lifeIcon.clear();
 	}
 
 	void SceneGame::ClearObjects()
@@ -93,6 +97,26 @@ namespace game
 		{
 			(*iter)->Draw(render);
 		}
+
+		int x = th;
+		int y = th * 2;
+		int px = this->lifeIcon[this->lifeIcon.size() - 1].x;
+		int py = this->lifeIcon[this->lifeIcon.size() - 1].y;
+		int cx, cy;
+		jam::rgb white{ 255, 255, 255, 255 };
+		for (int j = 0; j < this->ship->GetLives(); j++)
+		{
+			for (int i = 0; i < this->lifeIcon.size(); i++)
+			{
+				cx = this->lifeIcon[i].x;
+				cy = this->lifeIcon[i].y;
+				render->DrawLine(px + x, py + y, cx + x, cy + y, white);
+				px = cx;
+				py = cy;
+			}
+			x += th;
+		}
+
 
 		for (std::vector<game::Rock*>::iterator iter = this->rocks.begin(); iter != this->rocks.end(); iter++)
 		{
@@ -309,6 +333,8 @@ namespace game
 		{
 			(*iter)->Update(this, dt);
 		}
+
+		// Shots break rocks
 		for (std::vector<game::Shot*>::iterator shotIter = this->shots.begin(); shotIter != this->shots.end(); shotIter++)
 		{
 			game::Shot* shot = *shotIter;
@@ -358,7 +384,6 @@ namespace game
 					{
 						this->score += 50;
 					}
-					rock->SetDeleted();
 					break;
 				}
 			}
@@ -373,6 +398,29 @@ namespace game
 				this->rocks.erase(this->rocks.begin() + i);
 				delete rock;
 			}
+		}
+
+		// Rocks hit the ship
+		bool hit = false;
+		for (std::vector<game::Rock*>::iterator rockIter = this->rocks.begin(); rockIter != this->rocks.end(); rockIter++)
+		{
+			game::Rock* rock = *rockIter;
+			float x1, y1, x2, y2;
+			for (int i = 0; i < ship->GetScreenPoints(); i++)
+			{
+				this->ship->GetScreenLine(i, &x1, &y1, &x2, &y2);
+				if (rock->Collide_Line(x1, y1, x2, y2))
+				{
+					hit = true;
+					break;
+				}
+			}
+			if (hit)
+				break;
+		}
+		if (hit)
+		{
+			this->ship->Hit();
 		}
 
 		if (this->keyLeft || this->joyLeft)

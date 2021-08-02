@@ -3,6 +3,7 @@
 #include "Collision.h"
 #include "RGB.h"
 #include "Rock.h"
+#include "Shared.h"
 #include "Utility.h"
 
 namespace game
@@ -118,6 +119,12 @@ namespace game
 			*/
 
 		}
+	}
+
+	void Rock::SetDeleted() 
+	{
+		this->deleted = true; 
+		jam::backEnd->ResourceManager()->GetAudio(jam::SOUND_EXPLOSION)->Play();
 	}
 	
 	void Rock::Update(jam::IScene* scene, float dt)

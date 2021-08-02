@@ -20,7 +20,7 @@ namespace game
         void Draw(jam::IRenderer* render);
         void Update(jam::IScene* scene, float dt);
         bool IsDeleted();
-        void SetDeleted() { this->deleted = true; }
+        void SetDeleted();
         float GetHeading() { return this->heading; }
         void SetHeading(float heading) { this->heading = heading; };
         void GetPosition(float* x, float* y) { *x = this->x; *y = this->y; }

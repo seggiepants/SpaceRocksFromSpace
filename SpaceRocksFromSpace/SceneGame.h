@@ -4,6 +4,7 @@
 #include <vector>
 #include "IAudio.h"
 #include "IScene.h"
+#include "Point2D.h"
 #include "Ship.h"
 #include "Shot.h"
 #include "Rock.h"
@@ -37,6 +38,7 @@ protected:
     IScene* nextScene;
     std::vector<game::Rock*> rocks;
     std::vector<game::Shot*> shots;
+    std::vector<jam::Point2Df> lifeIcon;
     game::Ship* ship;
     float shotWait;
     int score;

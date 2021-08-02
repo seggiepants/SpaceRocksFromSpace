@@ -6,5 +6,6 @@
 namespace jam
 {
 	extern IBackend* backEnd;
+	const std::string SOUND_EXPLOSION = "assets/sound/explosion.wav";
 }
 #endif
