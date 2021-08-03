@@ -232,7 +232,7 @@ namespace game
 		}
 		if (this->moveSpeed > 0.0)
 			this->moveSpeed = this->moveSpeed >= 0 ? this->moveSpeed  - (shipMoveSpeed * 0.5  * dt) : 0.0;		
-		this->teleportWait -= dt * 10.0;
+		this->teleportWait -= dt;
 		if (this->teleportWait < 0.0)
 			this->teleportWait = 0;
 
