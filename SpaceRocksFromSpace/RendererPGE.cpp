@@ -19,6 +19,13 @@ namespace jam
 		app->DrawLine((int32_t)x1, (int32_t)y1, (int32_t)x2, (int32_t)y2, p);
 	}
 
+	void RendererPGE::DrawPoint(int x, int y, rgb color)
+	{
+		olc::Pixel p((uint8_t)color.r, (uint8_t)color.g, (uint8_t)color.b, (uint8_t)color.a);
+		olc::vi2d point{ x, y };
+		app->Draw(point, p);
+	}
+
 	void RendererPGE::FillRect(int x1, int y1, int x2, int y2, rgb color)
 	{
 		olc::Pixel p((uint8_t)color.r, (uint8_t)color.g, (uint8_t)color.b, (uint8_t)color.a);

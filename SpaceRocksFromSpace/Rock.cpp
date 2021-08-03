@@ -1,6 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include "Collision.h"
+#include "GameAssets.h"
 #include "RGB.h"
 #include "Rock.h"
 #include "Shared.h"
@@ -124,7 +125,7 @@ namespace game
 	void Rock::SetDeleted() 
 	{
 		this->deleted = true; 
-		jam::backEnd->ResourceManager()->GetAudio(jam::SOUND_EXPLOSION)->Play();
+		jam::backEnd->ResourceManager()->GetAudio(game::SOUND_EXPLOSION)->Play();
 	}
 	
 	void Rock::Update(jam::IScene* scene, float dt)

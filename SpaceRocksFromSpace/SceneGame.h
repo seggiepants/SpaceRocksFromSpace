@@ -4,6 +4,7 @@
 #include <vector>
 #include "IAudio.h"
 #include "IScene.h"
+#include "Particle.h"
 #include "Point2D.h"
 #include "Ship.h"
 #include "Shot.h"
@@ -39,13 +40,13 @@ protected:
     std::vector<game::Rock*> rocks;
     std::vector<game::Shot*> shots;
     std::vector<jam::Point2Df> lifeIcon;
+    std::vector<game::Particle*> particles;
     game::Ship* ship;
     float shotWait;
     int score;
     bool joyA, joyUp, joyDown, joyLeft, joyRight;
     bool keyA, keyUp, keyDown, keyLeft, keyRight;
     jam::IAudio* zap;
-    jam::IAudio* teleport;
     jam::IAudio* explosion;
 };
 

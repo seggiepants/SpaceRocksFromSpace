@@ -24,6 +24,15 @@ namespace jam
         SDL_SetRenderDrawColor(this->renderer, r, g, b, a);
     }
 
+    void RendererSDL2::DrawPoint(int x, int y, rgb color)
+    {
+        Uint8 r, g, b, a;
+        SDL_GetRenderDrawColor(this->renderer, &r, &g, &b, &a);
+        SDL_SetRenderDrawColor(this->renderer, color.r, color.g, color.b, color.a);
+        SDL_RenderDrawPoint(this->renderer, x, y);
+        SDL_SetRenderDrawColor(this->renderer, r, g, b, a);
+    }
+
     void RendererSDL2::FillRect(int x1, int y1, int x2, int y2, rgb color)
     {
         Uint8 r, g, b, a;

@@ -1,5 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <cstdlib>
+#include "GameAssets.h"
 #include "Ship.h"
 #include "Shared.h"
 
@@ -10,7 +12,7 @@ namespace game
 	const float INVINCIBLE_TIME = 1.5;
 	const float rotateSpeed = 3 * M_PI;
 	const float shipMoveSpeed = 300.0;
-	
+	const float teleportDelay = 0.5;
 
     Ship::Ship()
     {
@@ -43,6 +45,8 @@ namespace game
 		this->rotateDir = 0;
 		this->toggle = false;
 		this->invincibleTime = 0.0;
+		this->teleportWait = 0.0;
+		this->vx = this->vy = 0.0;
     }
 
     void Ship::Draw(jam::IRenderer* render)
@@ -86,11 +90,13 @@ namespace game
 		*y2 = this->screenModel[cur].y;
 	}
 
-	void Ship::Hit()
+	bool Ship::Hit()
 	{
+		bool retVal = false;
 		if (this->invincibleTime <= 0.0)
 		{
-			jam::backEnd->ResourceManager()->GetAudio(jam::SOUND_EXPLOSION)->Play();;
+			retVal = true;
+			jam::backEnd->ResourceManager()->GetAudio(game::SOUND_EXPLOSION)->Play();;
 			this->invincibleTime = INVINCIBLE_TIME;
 			this->lives--;
 			if (this->lives <= 0)
@@ -98,6 +104,7 @@ namespace game
 				// Game Over.
 			}
 		}
+		return retVal;
 	}
 
 	void Ship::Rotate(int dir)
@@ -122,8 +129,34 @@ namespace game
         this->y = y;
     }
 
+	void Ship::Teleport()
+	{
+		if (this->teleportWait <= 0.0)
+		{
+			this->teleportWait = teleportDelay;
+			this->x = (float)(std::rand() % this->screenWidth);
+			this->y = (float)(std::rand() % this->screenHeight);
+			this->vx = 0.0;
+			this->vy = 0.0;
+			jam::IAudio* audio = jam::backEnd->ResourceManager()->GetAudio(game::SOUND_TELEPORT);
+			if (audio != nullptr) audio->Play();
+		}
+	}
+
+	void Ship::Thrust()
+	{
+		const float headingAdjust = M_PI / 2.0;
+		this->moveSpeed = shipMoveSpeed;
+		this->vx += cos(this->heading - headingAdjust);
+		this->vy += sin(this->heading - headingAdjust);
+		float magnitude = std::sqrtf(this->vx * this->vx + this->vy * this->vy);
+		this->vx /= magnitude;
+		this->vy /= magnitude;
+	}
+
     void Ship::Update(jam::IScene* scene, float dt)
     {
+		const float headingAdjust = M_PI / 2.0;
 		int screenWidth, screenHeight;
 		scene->GetScreenSize(&screenWidth, &screenHeight);
 
@@ -139,8 +172,8 @@ namespace game
 
 		float cosAngle = cosf(this->heading);
 		float sinAngle = sinf(this->heading);
-		this->x += this->moveSpeed * dt * cosAngle;
-		this->y += this->moveSpeed * dt * sinAngle;
+		this->x += this->moveSpeed* dt* vx;
+		this->y += this->moveSpeed* dt* vy;
 		float xMin, yMin, xMax, yMax, xScreen, yScreen;
 		xMin = yMin = xMax = yMax = 0.0;
 		for (int i = 0; i < this->model.size(); i++)
@@ -197,6 +230,11 @@ namespace game
 			if (this->invincibleTime < 0.0)
 				this->invincibleTime = 0.0;
 		}
+		if (this->moveSpeed > 0.0)
+			this->moveSpeed = this->moveSpeed >= 0 ? this->moveSpeed  - (shipMoveSpeed * 0.5  * dt) : 0.0;		
+		this->teleportWait -= dt * 10.0;
+		if (this->teleportWait < 0.0)
+			this->teleportWait = 0;
 
     }
 }

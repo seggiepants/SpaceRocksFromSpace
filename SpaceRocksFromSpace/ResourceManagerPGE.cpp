@@ -146,8 +146,7 @@ namespace jam
 		if (!instance->HasAudio(path))
 		{
 			AudioPGE* sample = new AudioPGE();
-			sample->Load(path);
-			bool success = olc::SOUND::LoadAudioSample(path);
+			bool success = sample->Load(path);
 
 			if (success) 
 			{

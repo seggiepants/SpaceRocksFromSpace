@@ -1,6 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <sstream>
+#include "GameAssets.h"
 #include "SceneGame.h"
 #include "SceneManager.h"
 #include "Shared.h"
@@ -18,7 +19,6 @@ namespace game
 		this->shotWait = 0;
 		this->vFont = new VectorFont();
 		this->zap = nullptr;
-		this->teleport = nullptr;
 		this->explosion = nullptr;
 		this->lifeIcon.push_back({ -6, 6 });
 		this->lifeIcon.push_back({ 0, 3 });
@@ -47,6 +47,13 @@ namespace game
 			*iter = nullptr;
 		}
 		this->rocks.clear();
+
+		for (std::vector<game::Particle*>::iterator iter = this->particles.begin(); iter != this->particles.end(); iter++)
+		{
+			delete (*iter);
+			*iter = nullptr;
+		}
+		this->particles.clear();
 	}
 
 	void SceneGame::Construct(int screenWidth, int screenHeight)
@@ -71,8 +78,7 @@ namespace game
 		this->ship = new Ship();
 		this->ship->Construct(this->screenWidth, this->screenHeight);
 		this->nextScene = (IScene*)this;
-		this->zap = jam::backEnd->ResourceManager()->GetAudio("assets/sound/laser.wav");
-		this->teleport = jam::backEnd->ResourceManager()->GetAudio("assets/sound/teleport.wav");
+		this->zap = jam::backEnd->ResourceManager()->GetAudio("assets/sound/laser.wav");		
 		this->explosion = jam::backEnd->ResourceManager()->GetAudio("assets/sound/explosion.wav");
 
 	}
@@ -93,6 +99,12 @@ namespace game
 		int tw, th;
 		this->vFont->MeasureText(scoreDisplay, &tw, &th);
 		this->vFont->DrawText(render, scoreDisplay, 8, 8 + th, fg);
+
+		for (std::vector<game::Particle*>::iterator iter = this->particles.begin(); iter != this->particles.end(); iter++)
+		{
+			(*iter)->Draw(render);
+		}
+
 		for (std::vector<game::Shot*>::iterator iter = this->shots.begin(); iter != this->shots.end(); iter++)
 		{
 			(*iter)->Draw(render);
@@ -245,11 +257,11 @@ namespace game
 		}
 		if (key == jam::key::KEY_W || key == jam::key::KEY_UP)
 		{
-			this->keyLeft = true;
+			this->keyUp = true;
 		}
 		if (key == jam::key::KEY_S || key == jam::key::KEY_DOWN)
 		{
-			this->keyRight = true;
+			this->keyDown = true;
 		}
 		if (key == jam::key::KEY_SPACE || key == jam::key::KEY_ENTER)
 		{
@@ -269,11 +281,11 @@ namespace game
 		}
 		if (key == jam::key::KEY_W || key == jam::key::KEY_UP)
 		{
-			this->keyLeft = false;
+			this->keyUp = false;
 		}
 		if (key == jam::key::KEY_S || key == jam::key::KEY_DOWN)
 		{
-			this->keyRight = false;
+			this->keyDown = false;
 		}
 		if (key == jam::key::KEY_SPACE || key == jam::key::KEY_ENTER)
 		{
@@ -334,6 +346,11 @@ namespace game
 			(*iter)->Update(this, dt);
 		}
 
+		for (std::vector<game::Particle*>::iterator iter = this->particles.begin(); iter != this->particles.end(); iter++)
+		{
+			(*iter)->Update(this, dt);
+		}
+
 		// Shots break rocks
 		for (std::vector<game::Shot*>::iterator shotIter = this->shots.begin(); shotIter != this->shots.end(); shotIter++)
 		{
@@ -389,6 +406,17 @@ namespace game
 			}
 		}
 
+		// Delete old Particles.
+		for (int i = this->particles.size() - 1; i >= 0; i--)
+		{
+			game::Particle* particle= this->particles[i];
+			if (particle->IsDeleted())
+			{
+				this->particles.erase(this->particles.begin() + i);
+				delete particle;
+			}
+		}
+
 		// Delete old Rocks.
 		for (int i = this->rocks.size() - 1; i >= 0; i--)
 		{
@@ -420,7 +448,17 @@ namespace game
 		}
 		if (hit)
 		{
-			this->ship->Hit();
+			if (this->ship->Hit())
+			{
+				const float lifeTime = 0.5; 
+				const float speed = 64.0;
+				for (float rad = 0.0; rad < M_PI * 2.0; rad += (M_PI / 20.0))
+				{
+					game::Particle* particle = new game::Particle();
+					particle->Construct(this->ship->GetX(), this->ship->GetY(), rad, speed, lifeTime);
+					this->particles.push_back(particle);
+				}
+			}
 		}
 
 		if (this->keyLeft || this->joyLeft)
@@ -434,6 +472,16 @@ namespace game
 		else
 		{
 			this->ship->Rotate(0);
+		}
+
+		if (this->keyUp || this->joyUp)
+		{
+			this->ship->Thrust();
+		}
+
+		if (this->keyDown || this->joyDown)
+		{
+			this->ship->Teleport();
 		}
 
 		if (this->shots.size() != 0)
