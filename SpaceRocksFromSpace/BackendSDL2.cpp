@@ -209,6 +209,8 @@ namespace jam
             {
                 info->joystick = nullptr;
                 info->gamepad = SDL_GameControllerOpen(i);
+                const char* name = SDL_GameControllerNameForIndex(i);
+                std::cout << "Found Joystick #" << i + 1 << ": \"" << name << "\"" << std::endl;
             }
             else
             {

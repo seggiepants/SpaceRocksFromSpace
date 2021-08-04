@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include "GameAssets.h"
 #include "SceneGame.h"
 #include "SceneManager.h"
 #include "SceneMenu.h"
@@ -62,7 +63,7 @@ namespace game
 		this->menuIndex = 0;
 		this->nextScene = (IScene*)this;
 
-		this->click = jam::backEnd->ResourceManager()->GetAudio("assets/sound/select.wav");
+		this->click = jam::backEnd->ResourceManager()->GetAudio(SOUND_SELECT);
 		this->bgMusic = jam::backEnd->ResourceManager()->GetAudio("assets/sound/main_menu.wav");
 		this->bgMusic->Play();
 	}

@@ -157,6 +157,7 @@ namespace game
     void Ship::Update(jam::IScene* scene, float dt)
     {
 		const float headingAdjust = M_PI / 2.0;
+
 		int screenWidth, screenHeight;
 		scene->GetScreenSize(&screenWidth, &screenHeight);
 

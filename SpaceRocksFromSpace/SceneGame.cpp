@@ -2,6 +2,9 @@
 #include <cmath>
 #include <sstream>
 #include "GameAssets.h"
+#include "IAudio.h"
+#include "IResourceManager.h"
+#include "Rect.h"
 #include "SceneGame.h"
 #include "SceneManager.h"
 #include "Shared.h"
@@ -80,7 +83,7 @@ namespace game
 		this->nextScene = (IScene*)this;
 		this->zap = jam::backEnd->ResourceManager()->GetAudio("assets/sound/laser.wav");		
 		this->explosion = jam::backEnd->ResourceManager()->GetAudio("assets/sound/explosion.wav");
-
+		this->pause = false;
 	}
 
 	void SceneGame::Draw(jam::IRenderer* render)
@@ -136,6 +139,25 @@ namespace game
 		}
 
 		this->ship->Draw(render);
+
+		if (this->pause)
+		{
+			const int BORDER = 8;
+			const float SCALE = 2.0;
+			int w, h;
+			jam::Rect r;
+			std::string pauseMessage = "PAUSE";
+			this->vFont->MeasureText(pauseMessage, &w, &h, SCALE, SCALE);
+			int x, y;
+			x = (this->screenWidth - w - (BORDER * 2)) / 2;
+			if (x < 0)
+				x = 0;
+			y = (this->screenHeight - h - (BORDER * 2)) / 2;
+			if (y < 0)
+				y = 0;
+			render->FillRect(x, y, x + w + (2 * BORDER), y + h + (2 * BORDER), fg);
+			this->vFont->DrawText(render, pauseMessage, x + BORDER, y + h + BORDER, bg, SCALE, SCALE);
+		}
 	}
 
 	void SceneGame::GetScreenSize(int* screenWidth, int* screenHeight)
@@ -203,6 +225,11 @@ namespace game
 			if (btn == jam::JoystickButton::DPAD_DOWN)
 			{
 				this->joyDown = false;
+			}
+
+			if (btn == jam::JoystickButton::START)
+			{
+				this->TogglePause();
 			}
 		}
 	}
@@ -291,6 +318,10 @@ namespace game
 		{
 			this->keyA = false;
 		}
+		if (key == jam::key::KEY_P)
+		{
+			this->TogglePause();
+		}
 		if (key == jam::key::KEY_ESCAPE)
 		{
 			this->nextScene = jam::SceneManager::Instance()->GetScene("menu");
@@ -333,9 +364,23 @@ namespace game
 		}
 	}
 
+	void SceneGame::TogglePause()
+	{
+		this->pause = !this->pause;
+		jam::IAudio* sample = jam::backEnd->ResourceManager()->GetAudio(SOUND_SELECT);
+		if (sample != nullptr)
+		{
+			sample->Play();
+		}
+	}
+
 	void SceneGame::Update(float dt)
 	{
 		const int SPLIT_COUNT = 2;
+
+		if (this->pause)
+			return;
+
 		for (std::vector<game::Shot*>::iterator iter = this->shots.begin(); iter != this->shots.end(); iter++)
 		{
 			(*iter)->Update(this, dt);
@@ -455,7 +500,7 @@ namespace game
 				for (float rad = 0.0; rad < M_PI * 2.0; rad += (M_PI / 20.0))
 				{
 					game::Particle* particle = new game::Particle();
-					particle->Construct(this->ship->GetX(), this->ship->GetY(), rad, speed, lifeTime);
+					particle->Construct(this->ship->GetX(), this->ship->GetY(), rad, speed + ((rand() % 100)/5.0), lifeTime);
 					this->particles.push_back(particle);
 				}
 			}

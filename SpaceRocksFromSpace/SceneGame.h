@@ -29,10 +29,12 @@ public:
     void MouseMove(int x, int y);
     void MouseClick(jam::MouseButton button, int x, int y);
     jam::IScene* NextScene();
+    void TogglePause();
     void Update(float dt);
 protected:
     void ClearObjects();
     void Shoot();
+    bool pause;
     VectorFont* vFont;
     int screenWidth;
     int screenHeight;
