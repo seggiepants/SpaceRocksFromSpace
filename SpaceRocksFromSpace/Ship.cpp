@@ -10,7 +10,7 @@ namespace game
 
 	const int DEFAULT_LIVES = 3;
 	const float INVINCIBLE_TIME = 1.5;
-	const float rotateSpeed = 3 * M_PI;
+	const float rotateSpeed = 2.5 * M_PI;
 	const float shipMoveSpeed = 300.0;
 	const float teleportDelay = 0.5;
 
@@ -40,7 +40,7 @@ namespace game
         this->screenWidth = screenWidth;
         this->screenHeight = screenHeight;
         this->SetPosition(screenWidth / 2.0, screenHeight / 2.0);
-        this->heading = 0.00;
+		this->heading = 0.00;
 		this->moveSpeed = 0.0;
 		this->rotateDir = 0;
 		this->toggle = false;
@@ -73,6 +73,14 @@ namespace game
 		*heading = M_PI_2 - this->heading;
 		*x = this->x + offset * cos(*heading);
 		*y = this->y - offset * sin(*heading);
+	}
+
+	void Ship::GetThrustPosition(float* x, float* y, float* heading)
+	{
+		const float offset = 10.0;
+		*heading = M_PI_2 + this->heading;
+		*x = this->x + offset * cos(*heading);
+		*y = this->y + offset * sin(*heading);
 	}
 
 	void Ship::GetScreenLine(int index, float* x1, float* y1, float* x2, float* y2)
@@ -127,6 +135,8 @@ namespace game
     {
         this->x = x;
         this->y = y;
+		this->vx = 0.0;
+		this->vy = 0.0;
     }
 
 	void Ship::Teleport()
@@ -143,7 +153,7 @@ namespace game
 		}
 	}
 
-	void Ship::Thrust()
+	bool Ship::Thrust()
 	{
 		const float headingAdjust = M_PI / 2.0;
 		this->moveSpeed = shipMoveSpeed;
@@ -152,6 +162,7 @@ namespace game
 		float magnitude = std::sqrtf(this->vx * this->vx + this->vy * this->vy);
 		this->vx /= magnitude;
 		this->vy /= magnitude;
+		return true;
 	}
 
     void Ship::Update(jam::IScene* scene, float dt)

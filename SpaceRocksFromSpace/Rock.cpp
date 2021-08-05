@@ -33,6 +33,7 @@ namespace game
 
 		float dAngle = twoPi / ROCK_POINTS;
 		float radius = 1.0;
+		
 		for (int i = 0; i < ROCK_POINTS; i++)
 		{
 			float angle = dAngle * i;
@@ -41,6 +42,39 @@ namespace game
 			this->model->push_back({ rx, ry });
 			this->screenModel->push_back({ rx, ry });
 		}
+		this->RecalculateScreenModel();
+		/*
+		float cosAngle = cosf(this->angle);
+		float sinAngle = sinf(this->angle);
+		float cosHeading = cosf(this->heading);
+		float sinHeading = sinf(this->heading);
+		this->x += this->moveSpeed * dt * cosHeading;
+		this->y += this->moveSpeed * dt * sinHeading;
+		float xMin, yMin, xMax, yMax, xScreen, yScreen;
+		xMin = yMin = xMax = yMax = 0.0;
+		for (int i = 0; i < this->model->size(); i++)
+		{
+			float x1 = (this->model->at(i).x * this->scale);
+			float y1 = (this->model->at(i).y * this->scale);
+			xScreen = ((x1 * cosAngle) - (y1 * sinAngle)) + this->x;
+			yScreen = ((y1 * cosAngle) + (x1 * sinAngle)) + this->y;
+			this->screenModel->at(i).x = xScreen;
+			this->screenModel->at(i).y = yScreen;
+			if (i == 0)
+			{
+				xMin = xMax = xScreen;
+				yMin = yMax = yScreen;
+			}
+			else
+			{
+				xMin = xScreen < xMin ? xScreen : xMin;
+				xMax = xScreen > xMax ? xScreen : xMax;
+				yMin = yScreen < yMin ? yScreen : yMin;
+				yMax = yScreen > yMax ? yScreen : yMax;
+
+			}
+		}
+		*/
 	}
 
 	Rock::~Rock()
@@ -119,6 +153,23 @@ namespace game
 			}
 			*/
 
+		}
+	}
+
+	void Rock::RecalculateScreenModel()
+	{
+		float x, y, x1, y1, xScreen, yScreen;
+		float sinAngle, cosAngle;
+		sinAngle = std::sinf(this->angle);
+		cosAngle = std::cosf(this->angle);
+		for (int i = 0; i < this->model->size(); i++)
+		{
+			x = this->model->at(i).x * this->scale;
+			y = this->model->at(i).y * this->scale;
+			xScreen = ((x * cosAngle) - (y * sinAngle)) + this->x;
+			yScreen = ((y * cosAngle) + (x * sinAngle)) + this->y;
+			this->screenModel->at(i).x = xScreen;
+			this->screenModel->at(i).y = yScreen;
 		}
 	}
 

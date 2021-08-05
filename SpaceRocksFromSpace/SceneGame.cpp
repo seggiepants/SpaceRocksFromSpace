@@ -21,8 +21,6 @@ namespace game
 		this->screenWidth = this->screenHeight = 0;
 		this->shotWait = 0;
 		this->vFont = new VectorFont();
-		this->zap = nullptr;
-		this->explosion = nullptr;
 		this->lifeIcon.push_back({ -6, 6 });
 		this->lifeIcon.push_back({ 0, 3 });
 		this->lifeIcon.push_back({ 6, 6 });
@@ -61,18 +59,11 @@ namespace game
 
 	void SceneGame::Construct(int screenWidth, int screenHeight)
 	{
-		const int COUNT_ROCKS = 10;
 		this->screenWidth = screenWidth;
 		this->screenHeight = screenHeight;
+		this->level = 0;
 		this->score = 0;
-		this->joyA = this->joyDown = this->joyLeft = this->joyRight = this->joyUp = false;
-		this->keyA = this->keyDown = this->keyLeft = this->keyRight = this->keyUp = false;
-		this->ClearObjects();
-		for (int i = 0; i < COUNT_ROCKS; i++)
-		{
-			game::Rock* rock = new Rock();
-			this->rocks.push_back(rock);
-		}
+
 		if (this->ship != nullptr)
 		{
 			delete this->ship;
@@ -81,14 +72,16 @@ namespace game
 		this->ship = new Ship();
 		this->ship->Construct(this->screenWidth, this->screenHeight);
 		this->nextScene = (IScene*)this;
-		this->zap = jam::backEnd->ResourceManager()->GetAudio("assets/sound/laser.wav");		
-		this->explosion = jam::backEnd->ResourceManager()->GetAudio("assets/sound/explosion.wav");
-		this->pause = false;
+		
+		this->NextLevel();
 	}
 
 	void SceneGame::Draw(jam::IRenderer* render)
 	{
 		const int SCORE_RESERVE = 50;
+		const int BORDER = 8.0;
+		const float SCALE = 2.0;
+
 		int width, height;
 		jam::rgb bg(0, 0, 0, 255);
 		jam::rgb fg(255, 255, 255, 255);
@@ -101,7 +94,12 @@ namespace game
 		std::string scoreDisplay = s.str();
 		int tw, th;
 		this->vFont->MeasureText(scoreDisplay, &tw, &th);
-		this->vFont->DrawText(render, scoreDisplay, 8, 8 + th, fg);
+		this->vFont->DrawText(render, scoreDisplay, BORDER, BORDER + th, fg);
+		std::ostringstream lvl;
+		lvl << "LEVEL " << std::to_string(this->level);
+		std::string levelDisplay = lvl.str();
+		this->vFont->MeasureText(levelDisplay, &tw, &th);
+		this->vFont->DrawText(render, levelDisplay,this->screenWidth - tw - BORDER, BORDER + th, fg);
 
 		for (std::vector<game::Particle*>::iterator iter = this->particles.begin(); iter != this->particles.end(); iter++)
 		{
@@ -140,10 +138,8 @@ namespace game
 
 		this->ship->Draw(render);
 
-		if (this->pause)
+		if (this->gameState == GameState::PAUSE)
 		{
-			const int BORDER = 8;
-			const float SCALE = 2.0;
 			int w, h;
 			jam::Rect r;
 			std::string pauseMessage = "PAUSE";
@@ -158,6 +154,24 @@ namespace game
 			render->FillRect(x, y, x + w + (2 * BORDER), y + h + (2 * BORDER), fg);
 			this->vFont->DrawText(render, pauseMessage, x + BORDER, y + h + BORDER, bg, SCALE, SCALE);
 		}
+		else if (this->gameState == GameState::GAME_OVER || this->gameState == GameState::NEXT_LEVEL)
+		{
+			int w, h;
+			this->vFont->MeasureText(this->message, &w, &h, SCALE, SCALE);
+			int x = (this->screenWidth - w) / 2;
+			render->FillRect(0, this->messageY - h - BORDER, this->screenWidth, this->messageY + BORDER, fg);
+			this->vFont->DrawText(render, this->message, x, this->messageY, bg, SCALE, SCALE);
+		}
+	}
+
+	void SceneGame::GameOver()
+	{
+		this->message = "GAME OVER";
+		int w, h;
+		this->vFont->MeasureText(this->message, &w, &h, 2.0, 2.0);
+		this->messageTargetY = this->screenHeight / 2;
+		this->messageY = this->screenHeight + h;
+		this->gameState = game::GameState::GAME_OVER;
 	}
 
 	void SceneGame::GetScreenSize(int* screenWidth, int* screenHeight)
@@ -230,6 +244,11 @@ namespace game
 			if (btn == jam::JoystickButton::START)
 			{
 				this->TogglePause();
+			}
+
+			if (btn == jam::JoystickButton::SELECT)
+			{
+				this->ReturnToMenu();
 			}
 		}
 	}
@@ -324,9 +343,7 @@ namespace game
 		}
 		if (key == jam::key::KEY_ESCAPE)
 		{
-			this->nextScene = jam::SceneManager::Instance()->GetScene("menu");
-			if (this->nextScene != nullptr)
-				this->nextScene->Construct(this->screenWidth, this->screenHeight);
+			this->ReturnToMenu();
 		}
 	}
 
@@ -343,9 +360,53 @@ namespace game
 		}
 	}
 
+	void SceneGame::NextLevel()
+	{
+		const int MIN_ROCKS = 2;
+		const float MIN_DIST_SQUARED = 1600;
+		this->level++;
+		std::ostringstream s;
+		s << "LEVEL " << std::to_string(this->level);
+		this->message = s.str();
+		int w, h;
+		this->vFont->MeasureText(this->message, &w, &h, 2.0, 2.0);
+		this->messageTargetY = this->screenHeight / 2;
+		this->messageY = this->screenHeight + h;		
+
+		this->joyA = this->joyDown = this->joyLeft = this->joyRight = this->joyUp = false;
+		this->keyA = this->keyDown = this->keyLeft = this->keyRight = this->keyUp = false;
+		this->ClearObjects();
+		for (int i = 0; i < MIN_ROCKS + this->level; i++)
+		{
+			game::Rock* rock = new Rock();
+			rock->SetPosition(rndf(this->screenWidth), rndf(this->screenHeight));
+			float dx = this->ship->GetX() - rock->GetX();
+			float dy = this->ship->GetY() - rock->GetY();
+			while (dx * dx + dy * dy < MIN_DIST_SQUARED)
+			{
+				rock->SetPosition(rndf(this->screenWidth), rndf(this->screenHeight));
+				dx = this->ship->GetX() - rock->GetX();
+				dy = this->ship->GetY() - rock->GetY();
+			}
+			this->rocks.push_back(rock);
+		}
+
+		this->ship->SetPosition(this->screenWidth / 2.0, this->screenHeight / 2.0);
+		this->ship->SetHeading(0.00);
+		
+		this->gameState = game::GameState::NEXT_LEVEL;
+	}
+
 	jam::IScene* SceneGame::NextScene()
 	{
 		return this->nextScene;
+	}
+
+	void SceneGame::ReturnToMenu()
+	{
+		this->nextScene = jam::SceneManager::Instance()->GetScene("menu");
+		if (this->nextScene != nullptr)
+			this->nextScene->Construct(this->screenWidth, this->screenHeight);
 	}
 
 	void SceneGame::Shoot()
@@ -360,26 +421,76 @@ namespace game
 			shot->SetPosition(x, y);
 			this->shots.push_back(shot);
 			this->shotWait = SHOT_DELAY;
-			this->zap->Play();
+			jam::IAudio* sample = jam::backEnd->ResourceManager()->GetAudio(SOUND_ZAP);
+			if (sample != nullptr)
+			{
+				sample->Play();
+			}
 		}
 	}
 
 	void SceneGame::TogglePause()
 	{
-		this->pause = !this->pause;
-		jam::IAudio* sample = jam::backEnd->ResourceManager()->GetAudio(SOUND_SELECT);
-		if (sample != nullptr)
+		if (this->gameState == GameState::PAUSE || this->gameState == GameState::PLAY)
 		{
-			sample->Play();
+			if (this->gameState == GameState::PAUSE)
+				this->gameState = GameState::PLAY;
+			else
+				this->gameState = GameState::PAUSE;
+			jam::IAudio* sample = jam::backEnd->ResourceManager()->GetAudio(SOUND_PAUSE);
+			if (sample != nullptr)
+			{
+				sample->Play();
+			}
 		}
 	}
 
 	void SceneGame::Update(float dt)
 	{
 		const int SPLIT_COUNT = 2;
+		const float SPLIT_SCALE_1 = 20.0;
+		const float SPLIT_SCALE_2 = 30.0;
+		const int POINTS_ROCKS_SPLIT_1 = 10;
+		const int POINTS_ROCKS_SPLIT_2 = 20;
+		const int POINTS_ROCKS_DESTROY = 50;
 
-		if (this->pause)
+		const float MESSAGE_SPEED = 200.0;
+		const float MESSAGE_TIMEOUT_MAX = 0.5;
+
+		if (this->gameState == game::GameState::PAUSE)
 			return;
+
+		else if (this->gameState == game::GameState::NEXT_LEVEL || this->gameState == game::GameState::GAME_OVER)
+		{
+			if (this->messageY > this->messageTargetY)
+			{
+				this->messageY -= MESSAGE_SPEED * dt;
+				if (this->messageY <= this->messageTargetY)
+				{
+					this->messageY = this->messageTargetY;
+					this->messageTimeout = MESSAGE_TIMEOUT_MAX;
+					if (this->gameState == game::GameState::GAME_OVER)
+						this->messageTimeout *= 2;
+				}
+			}
+			else
+			{
+				this->messageTimeout -= dt;
+				if (this->messageTimeout <= 0.0)
+				{
+					this->messageTimeout = 0.0;
+					if (this->gameState == game::GameState::NEXT_LEVEL)
+					{
+						this->gameState = game::GameState::PLAY;
+					}
+					else if (this->gameState == game::GameState::GAME_OVER)
+					{
+						this->ReturnToMenu();
+					}
+				}
+			}
+			return; 
+		}
 
 		for (std::vector<game::Shot*>::iterator iter = this->shots.begin(); iter != this->shots.end(); iter++)
 		{
@@ -414,7 +525,7 @@ namespace game
 					shot->SetDeleted();
 					float scale = rock->GetScale();
 					rock->SetDeleted();
-					if (scale >= 10.0)
+					if (scale >= SPLIT_SCALE_1)
 					{
 						float minSpeed = rock->GetSpeed() * 1.25;
 						for (int j = 0; j < SPLIT_COUNT; j++)
@@ -433,18 +544,18 @@ namespace game
 							newRock->SetSpeed(newSpeed);
 							this->rocks.push_back(newRock);
 						}
-						if (scale >= 15.0)
+						if (scale >= SPLIT_SCALE_2)
 						{
-							this->score += 10;
+							this->score += POINTS_ROCKS_SPLIT_1;
 						}
 						else
 						{
-							this->score += 20;
+							this->score += POINTS_ROCKS_SPLIT_2;
 						}
 					}
 					else
 					{
-						this->score += 50;
+						this->score += POINTS_ROCKS_DESTROY;
 					}
 					break;
 				}
@@ -522,6 +633,17 @@ namespace game
 		if (this->keyUp || this->joyUp)
 		{
 			this->ship->Thrust();
+			// Add an exhaust particle.
+			const float particle_angle = (30.0 * M_PI) / 180.0;
+			const float particle_speed = 450.0;
+			const float particle_lifetime = 0.05;
+
+			Particle* p = new Particle();
+			float x, y, heading;
+			ship->GetThrustPosition(&x, &y, &heading);
+			heading += rndf(particle_angle) - (particle_angle / 2.0);
+			p->Construct(x, y, heading, particle_speed, particle_lifetime);
+			this->particles.push_back(p);
 		}
 
 		if (this->keyDown || this->joyDown)
@@ -559,6 +681,15 @@ namespace game
 		if ((this->keyA || this->joyA) && this->shotWait <= 0)
 		{
 			this->Shoot();
+		}
+
+		if (this->ship->IsDeleted())
+		{
+			this->GameOver();
+		}
+		else if (this->rocks.size() == 0)
+		{
+			this->NextLevel();
 		}
 	}
 }

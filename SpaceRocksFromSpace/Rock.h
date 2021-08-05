@@ -22,13 +22,14 @@ namespace game
         bool IsDeleted();
         void SetDeleted();
         float GetHeading() { return this->heading; }
-        void SetHeading(float heading) { this->heading = heading; };
+        void SetHeading(float heading) { this->heading = heading; this->RecalculateScreenModel(); };
         void GetPosition(float* x, float* y) { *x = this->x; *y = this->y; }
-        void SetPosition(float x, float y) { this->x = x; this->y = y; }
+        void SetPosition(float x, float y) { this->x = x; this->y = y; this->RecalculateScreenModel(); }
         float GetScale() { return this->scale; } 
         void SetScale(float scale) { this->scale = scale; }
         float GetSpeed() { return this->moveSpeed; }
         void SetSpeed(float speed) { this->moveSpeed = speed; }
+        void RecalculateScreenModel();
     protected:
         bool deleted;
         bool visible;

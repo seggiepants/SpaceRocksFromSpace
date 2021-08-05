@@ -20,15 +20,17 @@ namespace game
         void Draw(jam::IRenderer* render);
         void Update(jam::IScene* scene, float dt);
         void GetCanonPosition(float* x, float* y, float* heading);
+        void GetThrustPosition(float* x, float* y, float* heading);
         int GetLives() { return this->lives; };
         int GetScreenPoints() { return this->screenModel.size(); }
         void GetScreenLine(int index, float* x1, float* y1, float* x2, float* y2);
         bool Hit();
-        bool IsDeleted() { return false; };
+        bool IsDeleted() { return this->lives <= 0; };
         void Rotate(int dir);
         void SetPosition(float x, float y);
+        void SetHeading(float heading) { this->heading = heading; };
         void Teleport();
-        void Thrust();
+        bool Thrust();
     protected:
         int lives;
         int rotateDir;

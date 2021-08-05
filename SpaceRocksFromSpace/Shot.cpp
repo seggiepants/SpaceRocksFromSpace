@@ -4,8 +4,8 @@
 
 namespace game
 {
-#define MAX_SHOT_AGE 2.0
-#define SHOT_SPEED 200.0
+#define MAX_SHOT_AGE 1.5
+#define SHOT_SPEED 300.0
 	Shot::Shot()
 	{
 		this->alive = true;
@@ -48,6 +48,7 @@ namespace game
 				y = this->y + (radius * sin(ang));
 				render->DrawLine(this->x, this->y, x, y, this->color);
 			}			
+			//render->DrawLine(this->oldX, this->oldY, this->x, this->y, this->color);
 		}
 	}
 
