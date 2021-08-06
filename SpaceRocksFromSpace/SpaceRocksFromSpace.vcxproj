@@ -172,6 +172,7 @@
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Rock.h" />
     <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="SceneHighScoreEntry.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shared.h" />
     <ClInclude Include="Ship.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Rock.cpp" />
     <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="SceneHighScoreEntry.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shared.cpp" />
     <ClCompile Include="Ship.cpp" />

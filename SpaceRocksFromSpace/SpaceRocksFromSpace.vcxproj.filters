@@ -120,6 +120,9 @@
     <ClInclude Include="GameAssets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SceneHighScoreEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IScene.cpp">
@@ -213,6 +216,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneHighScoreEntry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

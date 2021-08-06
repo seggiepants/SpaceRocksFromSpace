@@ -17,6 +17,7 @@
 
 #include "SceneManager.h"
 #include "SceneGame.h"
+#include "SceneHighScoreEntry.h"
 #include "SceneMenu.h"
 
 #define SCREEN_WIDTH 640
@@ -34,12 +35,16 @@
         std::srand((unsigned int)time(nullptr));
         if (game.Construct("Space Rocks From Space", SCREEN_WIDTH, SCREEN_HEIGHT))
         {
-            game::SceneMenu* sceneMenu = new game::SceneMenu();
             game::SceneGame* sceneGame = new game::SceneGame();
+            game::SceneHighScoreEntry* sceneHighScoreEntry = new game::SceneHighScoreEntry();
+            game::SceneMenu* sceneMenu = new game::SceneMenu();
             jam::SceneManager::Instance()->AddScene("menu", sceneMenu);
             jam::SceneManager::Instance()->AddScene("game", sceneGame);
+            jam::SceneManager::Instance()->AddScene("highScoreEntry", sceneHighScoreEntry);
             jam::SceneManager::Instance()->AddScene("exit", nullptr);
-            game.Start(jam::SceneManager::Instance()->GetScene("menu"));
+
+            sceneHighScoreEntry->Construct(SCREEN_WIDTH, SCREEN_HEIGHT);
+            game.Start(jam::SceneManager::Instance()->GetScene("highScoreEntry")); // menu"));
         }
         return 0;
     }
