@@ -1,3 +1,4 @@
+#include <iostream>
 #include <sstream>
 #include "Configuration.h"
 #ifdef OS_WIN
@@ -8,8 +9,35 @@
 #pragma comment(lib,"shlwapi.lib")
 #include "shlobj.h"
 #endif
+
 namespace jam
 {
+
+	void Configuration::CreatePathIfNotExist(std::filesystem::path& p)
+	{
+		std::filesystem::path fldr("");
+		for (std::filesystem::path::iterator folder = p.begin(); folder != p.end(); folder++)
+		{
+			fldr /= *folder;
+			if (!std::filesystem::exists(fldr))
+			{
+				try
+				{
+					std::filesystem::create_directory(fldr);
+				}
+				catch (std::exception& ex)
+				{
+					std::cerr << "Unable to create folder " << fldr << std::endl << ex.what() << std::endl;
+					break;
+				}
+			}
+		}
+		if (!std::filesystem::exists(p))
+		{
+			std::cerr << "Path Not Found: " << p << std::endl;
+		}
+	}
+
 	std::string Configuration::GetAppPath()
 	{
 #ifdef OS_WIN
@@ -28,7 +56,7 @@ namespace jam
 
 	std::string Configuration::GetDataPath()
 	{
-#ifdef OS_WIN
+#ifdef OS_WIN		
 		TCHAR szPath[MAX_PATH];
 		// Get path for each computer, non-user specific and non-roaming data.
 		if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, 0, szPath)))
@@ -45,7 +73,11 @@ namespace jam
 			PathAppend(szPath, buffer);
 			delete buffer;
 			std::wstring wPath(szPath);
-			return std::string(wPath.begin(), wPath.end());
+			std::string ret = std::string(wPath.begin(), wPath.end());
+			std::filesystem::path p;
+			p.assign(ret.c_str());
+			Configuration::CreatePathIfNotExist(p);
+			return ret;
 		}
 		else
 		{
@@ -54,22 +86,19 @@ namespace jam
 				appPath.push_back('\\');
 			std::ostringstream ss;
 			ss << appPath.c_str() << game::COMPANY << "\\" << game::PRODUCT << game::VERSION << "\\";
-			return std::string(ss.str());
+			return ss.str();
 		}
 #elif defined(OS_UNIX)
-		std::string appPath = Configuration::GetAppPath();
-		if (appPath[appPath.size() - 1] != '\\' && appPath[appPath.size() - 1] != '/')
-			appPath.push_back('\\');
 		std::ostringstream ss;
-		ss << appPath.c_str() << game::COMPANY << "\\" << game::PRODUCT << game::VERSION << "\\";
-		return std::string(ss.str());
+		ss << "~/.config/" << game::COMPANY << "/" << game::PRODUCT << "/" << game::VERSION << "/";
+		return ss.str();
 
 #elif defined(OS_UNKOWN)
 		std::string appPath = Configuration::GetAppPath();
 		if (appPath[appPath.size() - 1] != '\\' && appPath[appPath.size() - 1] != '/')
-			appPath.push_back('\\');
+			appPath.push_back('/');
 		std::ostringstream ss;
-		ss << appPath.c_str() << game::COMPANY << "\\" << game::PRODUCT << game::VERSION << "\\";
+		ss << appPath.c_str() << game::COMPANY << "/" << game::PRODUCT << "/" << game::VERSION << "/";
 		return std::string(ss.str());
 #endif
 	}

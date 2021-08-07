@@ -12,6 +12,7 @@ namespace jam
 	class Configuration
 	{
 	public:
+		static void CreatePathIfNotExist(std::filesystem::path& p);
 		static std::string GetAppPath();
 		static std::string GetDataPath();
 	};
