@@ -115,12 +115,12 @@ namespace game
 		else if (btn == jam::JoystickButton::DPAD_LEFT)
 		{
 			// Move the cursor back if index > 0
-			this->MoveNext();
+			this->MovePrev();
 		}
 		else if (btn == jam::JoystickButton::DPAD_RIGHT)
 		{
 			// Change character at current position to previous.
-			this->MovePrev();
+			this->MoveNext();
 		}
 		else if (btn == jam::JoystickButton::DPAD_UP)
 		{
