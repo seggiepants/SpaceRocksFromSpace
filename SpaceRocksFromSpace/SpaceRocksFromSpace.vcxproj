@@ -160,6 +160,7 @@
     <ClInclude Include="BackendPGE.h" />
     <ClInclude Include="BackendSDL2.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="Configuration.h" />
     <ClInclude Include="GameAssets.h" />
     <ClInclude Include="IAudio.h" />
     <ClInclude Include="IEntity.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="ResourceManagerSDL2.h" />
     <ClInclude Include="RGB.h" />
     <ClInclude Include="SceneMenu.h" />
+    <ClInclude Include="Version.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioPGE.cpp" />
@@ -198,6 +200,7 @@
     <ClCompile Include="BackendPGE.cpp" />
     <ClCompile Include="BackendSDL2.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="IAudio.cpp" />
     <ClCompile Include="IEntity.cpp" />
     <ClCompile Include="KeyCodes.cpp" />

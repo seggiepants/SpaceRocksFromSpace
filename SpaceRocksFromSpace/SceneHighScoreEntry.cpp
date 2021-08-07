@@ -3,6 +3,9 @@
 #include "Shared.h"
 #include "VectorFont.h"
 
+#include <iostream>
+#include "Configuration.h"
+
 namespace game
 {
 
@@ -10,6 +13,9 @@ namespace game
 	{
 		this->vFont = new VectorFont();
 		this->entryCharacters = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+		std::cout << "App Path: " << jam::Configuration::GetAppPath() << std::endl;
+		std::cout << "Data Path: " << jam::Configuration::GetDataPath() << std::endl;
 	}
 
 	SceneHighScoreEntry::~SceneHighScoreEntry()
