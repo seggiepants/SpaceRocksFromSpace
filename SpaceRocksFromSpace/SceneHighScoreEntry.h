@@ -26,10 +26,18 @@ namespace game
         void MouseClick(jam::MouseButton button, int x, int y);
         jam::IScene* NextScene();
     private:
+        void NextChar();
+        void PrevChar();
+        void SetChar(char ch);
+        void MoveNext();
+        void MovePrev();
+        void SaveInitials();
         game::VectorFont* vFont;
         int screenWidth, screenHeight;
         jam::IScene* nextScene;
         std::string entryCharacters;
+        std::string initials;
+        int charIndex, joyDX, joyDY;
     };
 
 }

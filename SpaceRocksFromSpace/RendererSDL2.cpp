@@ -33,6 +33,28 @@ namespace jam
         SDL_SetRenderDrawColor(this->renderer, r, g, b, a);
     }
 
+    void RendererSDL2::DrawPolygon(float x, float y, std::vector<jam::Point2Df>* points, jam::rgb color)
+    {
+        SDL_Point* polygonPoints = new SDL_Point[points->size() + 1];
+        for (int i = 0; i < points->size(); i++)
+        {
+            polygonPoints[i].x = points->at(i).x + x;
+            polygonPoints[i].y = points->at(i).y + y;
+        }
+        // Connect last point to first.
+        polygonPoints[points->size()].x = polygonPoints[0].x;
+        polygonPoints[points->size()].y = polygonPoints[0].y;
+        Uint8 r, g, b, a;
+        SDL_GetRenderDrawColor(this->renderer, &r, &g, &b, &a);
+        SDL_SetRenderDrawColor(this->renderer, color.r, color.g, color.b, color.a);
+
+        SDL_RenderDrawLines(this->renderer, polygonPoints, points->size() + 1);
+
+        SDL_SetRenderDrawColor(this->renderer, r, g, b, a);
+
+        delete polygonPoints;
+    }
+
     void RendererSDL2::FillRect(int x1, int y1, int x2, int y2, rgb color)
     {
         Uint8 r, g, b, a;

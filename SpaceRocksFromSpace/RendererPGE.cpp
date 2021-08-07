@@ -26,6 +26,24 @@ namespace jam
 		app->Draw(point, p);
 	}
 
+	void RendererPGE::DrawPolygon(float x, float y, std::vector<jam::Point2Df>* points, jam::rgb color)
+	{
+		olc::vi2d from, to;
+		olc::Pixel clr((uint8_t)color.r, (uint8_t)color.g, (uint8_t)color.b, (uint8_t)color.a);
+		
+		// Prime with last point to make a closed shape.
+		to.x = points->at(points->size() - 1).x + x;
+		to.y = points->at(points->size() - 1).y + y;
+		for (int i = 0; i < points->size(); i++)
+		{
+			from.x = to.x;
+			from.y = to.y;
+			to.x = points->at(i).x + x;
+			to.y = points->at(i).y + y;
+			app->DrawLine(from, to, clr);
+		}
+	}
+
 	void RendererPGE::FillRect(int x1, int y1, int x2, int y2, rgb color)
 	{
 		olc::Pixel p((uint8_t)color.r, (uint8_t)color.g, (uint8_t)color.b, (uint8_t)color.a);

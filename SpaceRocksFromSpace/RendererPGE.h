@@ -12,6 +12,7 @@ namespace jam
         void Clear(rgb bg);
         void DrawLine(int x1, int y1, int x2, int y2, rgb color);
         void DrawPoint(int x1, int y1, rgb color);
+        void DrawPolygon(float x, float y, std::vector<jam::Point2Df>* points, jam::rgb color);
         void FillRect(int x1, int y1, int x2, int y2, rgb color);
         void GetScreenSize(int* width, int* height);
     protected:

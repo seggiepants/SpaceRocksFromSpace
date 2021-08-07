@@ -9,7 +9,7 @@ namespace game
 	SceneHighScoreEntry::SceneHighScoreEntry()
 	{
 		this->vFont = new VectorFont();
-		this->entryCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		this->entryCharacters = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	}
 
 	SceneHighScoreEntry::~SceneHighScoreEntry()
@@ -20,9 +20,12 @@ namespace game
 
 	void SceneHighScoreEntry::Construct(int screenWidth, int screenHeight)
 	{
+		this->initials = "SEG";
 		this->screenWidth = screenWidth;
 		this->screenHeight = screenHeight;
 		this->nextScene = this;
+		this->charIndex = 0;
+		this->joyDX = this->joyDY = 0;
 
 	}
 
@@ -31,6 +34,10 @@ namespace game
 		const float BORDER = 8.0;
 		const float SCALE = 2.0;
 		int x, y, w, h, charW, charH;
+		std::vector<jam::Point2Df> triangleUp;
+		std::vector<jam::Point2Df> triangleDown;
+
+
 		jam::rgb white = { 255, 255, 255, 255 };
 		jam::rgb black = { 0, 0, 0, 255 };
 		render->Clear(black);
@@ -51,6 +58,29 @@ namespace game
 
 		message = "W";
 		this->vFont->MeasureText(message, &charW, &charH, SCALE, SCALE);
+
+		triangleUp.push_back({ 0.0, 0.0 });
+		triangleUp.push_back({ (float)charW, 0.0 });
+		triangleUp.push_back({ (float)(charW / 2.0), (float)(charW / 2.0) });
+
+		triangleDown.push_back({ (float)(charW / 2.0), 0.0 });
+		triangleDown.push_back({ 0.0, (float)(charW / 2.0) });
+		triangleDown.push_back({ (float)charW, (float)(charW / 2.0) });
+
+		int offset = (this->screenWidth - (this->initials.size() * charW * 1.5)) / 2;
+		y += BORDER + h;
+		render->DrawPolygon(offset + (1.5 * this->charIndex * charW), y, &triangleUp, white);
+		y += (charW / 2) + BORDER;
+		std::string temp;
+		for (int i = 0; i < initials.size(); i++)
+		{
+			int x1 = offset + (1.5 * i * charW);
+			temp = initials[i];
+			this->vFont->DrawText(render, temp, x1, y + charH, white, SCALE, SCALE);
+			render->DrawLine(x1, y + charH + BORDER, x1 + charW, y + charH + BORDER, white);
+		}
+		y += charH + (BORDER * 2);
+		render->DrawPolygon(offset + (1.5 * this->charIndex * charW), y, &triangleDown, white);
 	}
 
 	void SceneHighScoreEntry::GetScreenSize(int* screenWidth, int* screenHeight)
@@ -61,7 +91,6 @@ namespace game
 
 	void SceneHighScoreEntry::Update(float dt)
 	{
-
 	}
 
 	void SceneHighScoreEntry::JoystickButtonDown(int id, jam::JoystickButton btn)
@@ -71,12 +100,72 @@ namespace game
 
 	void SceneHighScoreEntry::JoystickButtonUp(int id, jam::JoystickButton btn)
 	{
+		if (btn == jam::JoystickButton::A)
+		{
+			// Accept and next or done.
+			if (this->charIndex >= this->initials.size() - 1)
+			{
+				this->SaveInitials();
+			}
+			else
+			{
+				this->MoveNext();
+			}
+		}
+		else if (btn == jam::JoystickButton::DPAD_LEFT)
+		{
+			// Move the cursor back if index > 0
+			this->MoveNext();
+		}
+		else if (btn == jam::JoystickButton::DPAD_RIGHT)
+		{
+			// Change character at current position to previous.
+			this->MovePrev();
+		}
+		else if (btn == jam::JoystickButton::DPAD_UP)
+		{
+			// Change character at current position to next.
+			this->PrevChar();
+		}
+		else if (btn == jam::JoystickButton::DPAD_DOWN)
+		{
+			// Move the cursor forward if index < initials.size() - 1
+			this->NextChar();
+		}
 
+		else if (btn == jam::JoystickButton::START)
+		{
+			// Accept string as-is and save.
+			this->SaveInitials();
+		}
 	}
 
 	void SceneHighScoreEntry::JoystickMove(int id, int dx, int dy)
 	{
+		if (dx == 0 && this->joyDX < 0)
+		{
+			// Move Left if index >= 0
+			this->MovePrev();
+		}
+		else if (dx == 0 && this->joyDX > 0)
+		{
+			// Move Right if index >= 0
+			this->MoveNext();
+		}
+		
+		if (dy == 0 && this->joyDY < 0)
+		{
+			// Change current index to previous character
+			this->PrevChar();
+		}
+		else if (dy == 0 && this->joyDY > 0)
+		{
+			// Change current index to next character
+			this->NextChar();
+		}
 
+		this->joyDX = dx;
+		this->joyDY = dy;
 	}
 
 	void SceneHighScoreEntry::KeyDown(uint8_t key)
@@ -86,11 +175,60 @@ namespace game
 
 	void SceneHighScoreEntry::KeyUp(uint8_t key)
 	{
-		if (key == jam::key::KEY_ESCAPE)
+		if (key == jam::key::KEY_ENTER || key == jam::key::KEY_RETURN)
 		{
-			this->nextScene = jam::SceneManager::Instance()->GetScene("menu");
-			this->nextScene->Construct(this->screenWidth, this->screenHeight);
+			// Accept and next or done.
+			if (this->charIndex >= this->initials.size() - 1)
+			{
+				this->SaveInitials();
+			}
+			else
+			{
+				this->NextChar();
+			}
 		}
+		else if (key == jam::key::KEY_LEFT)
+		{
+			// Move the cursor back if index > 0
+			this->MovePrev();
+		}
+		else if (key == jam::key::KEY_RIGHT)
+		{
+			// Move the cursor forward if index < initials.size() - 1
+			this->MoveNext();
+		}
+		else if (key == jam::key::KEY_UP)
+		{
+			// Change character at current position to previous.
+			this->PrevChar();
+		}
+		else if (key == jam::key::KEY_DOWN)
+		{
+			// Change character at current position to next.
+			this->NextChar();
+		}
+		else if (key == jam::key::KEY_ESCAPE)
+		{
+			// Accept string as-is and save.
+			this->SaveInitials();
+		}
+		else if (key == jam::key::KEY_0)
+		{
+			this->SetChar('0');
+		}
+		else if (key >= jam::key::KEY_1 && key <= jam::key::KEY_9)
+		{
+			this->SetChar((char)(key - jam::key::KEY_1) + (int) '1');
+		}
+		else if (key >= jam::key::KEY_A && key <= jam::key::KEY_Z)
+		{
+			this->SetChar((char)(key - jam::key::KEY_A) + (int) 'A');
+		}
+		else if (key == jam::key::KEY_SPACE)
+		{
+			this->SetChar(' ');
+		}
+
 	}
 
 	void SceneHighScoreEntry::MouseMove(int x, int y)
@@ -103,8 +241,81 @@ namespace game
 
 	}
 
+	void SceneHighScoreEntry::MoveNext()
+	{
+		this->charIndex++;
+		if (this->charIndex >= this->initials.size())
+			this->charIndex = this->initials.size() - 1;
+	}
+
+	void SceneHighScoreEntry::MovePrev()
+	{
+		this->charIndex--;
+		if (this->charIndex < 0)
+			this->charIndex = 0;
+	}
+
+	void SceneHighScoreEntry::NextChar()
+	{
+		if (this->charIndex >= 0 && this->charIndex < this->initials.size())
+		{
+			char current = this->initials[this->charIndex];
+			int pos = this->entryCharacters.find(current, 0);
+			if (pos >= 0 && pos < this->entryCharacters.size())
+			{
+				pos++;
+				if (pos >= this->entryCharacters.size())
+					pos -= this->entryCharacters.size();
+				this->initials[this->charIndex] = this->entryCharacters[pos];
+			}
+		}
+	}
+
 	jam::IScene* SceneHighScoreEntry::NextScene()
 	{
 		return this->nextScene;
+	}
+
+	void SceneHighScoreEntry::PrevChar()
+	{
+		if (this->charIndex >= 0 && this->charIndex < this->initials.size())
+		{
+			char current = this->initials[this->charIndex];
+			int pos = this->entryCharacters.find(current, 0);
+			if (pos >= 0 && pos < this->entryCharacters.size())
+			{
+				pos--;
+				if (pos < 0)
+					pos += this->entryCharacters.size();
+				this->initials[this->charIndex] = this->entryCharacters[pos];
+			}
+		}
+
+	}
+
+	void SceneHighScoreEntry::SaveInitials()
+	{
+		// Save the data to high score table.
+		// TO DO
+
+		// Change to next screen.
+		this->nextScene = jam::SceneManager::Instance()->GetScene("menu");
+		this->nextScene->Construct(this->screenWidth, this->screenHeight);
+	}
+
+	void SceneHighScoreEntry::SetChar(char ch)
+	{
+		char tmp = toupper((int)ch);
+		if (this->charIndex >= 0 && this->charIndex < this->initials.size())
+		{
+			int pos = this->entryCharacters.find(tmp, 0);
+			if (pos >= 0 && pos < this->entryCharacters.size())
+			{
+				this->initials[this->charIndex] = this->entryCharacters[pos];
+				this->charIndex++;
+				if (this->charIndex >= this->initials.size())
+					this->charIndex = this->initials.size() - 1;
+			}
+		}
 	}
 }
