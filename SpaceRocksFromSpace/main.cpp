@@ -44,7 +44,7 @@
             jam::SceneManager::Instance()->AddScene("exit", nullptr);
 
             sceneHighScoreEntry->Construct(SCREEN_WIDTH, SCREEN_HEIGHT);
-            game.Start(jam::SceneManager::Instance()->GetScene("highScoreEntry")); // menu"));
+            game.Start(jam::SceneManager::Instance()->GetScene("menu")); // menu"));
         }
         return 0;
     }

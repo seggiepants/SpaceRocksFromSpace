@@ -49,6 +49,7 @@ namespace game
         VectorFont* vFont;
         int screenWidth;
         int screenHeight;
+        float gameTime;
         IScene* nextScene;
         std::vector<game::Rock*> rocks;
         std::vector<game::Shot*> shots;

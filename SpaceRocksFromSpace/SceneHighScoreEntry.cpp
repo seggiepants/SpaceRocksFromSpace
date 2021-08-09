@@ -1,21 +1,23 @@
+#include "Configuration.h"
 #include "SceneHighScoreEntry.h"
 #include "SceneManager.h"
 #include "Shared.h"
-#include "VectorFont.h"
-
+#include <fstream>
 #include <iostream>
-#include "Configuration.h"
+#include <sstream>
 
 namespace game
 {
-
+	const int MAX_SCORES = 10;
+	const std::string HIGHSCORE_FILENAME = "highscore.json";
+		
 	SceneHighScoreEntry::SceneHighScoreEntry()
 	{
 		this->vFont = new VectorFont();
 		this->entryCharacters = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-		std::cout << "App Path: " << jam::Configuration::GetAppPath() << std::endl;
-		std::cout << "Data Path: " << jam::Configuration::GetDataPath() << std::endl;
+		//std::cout << "App Path: " << jam::Configuration::GetAppPath() << std::endl;
+		//std::cout << "Data Path: " << jam::Configuration::GetDataPath() << std::endl;
 	}
 
 	SceneHighScoreEntry::~SceneHighScoreEntry()
@@ -26,13 +28,41 @@ namespace game
 
 	void SceneHighScoreEntry::Construct(int screenWidth, int screenHeight)
 	{
-		this->initials = "SEG";
+		this->initials = "   ";
 		this->screenWidth = screenWidth;
 		this->screenHeight = screenHeight;
 		this->nextScene = this;
 		this->charIndex = 0;
 		this->joyDX = this->joyDY = 0;
+	}
 
+	bool SceneHighScoreEntry::IsNewHighScore(float gameTime, int score, int level)
+	{
+		std::filesystem::path  filePath = std::filesystem::path(jam::Configuration::GetDataPath());
+		filePath /= HIGHSCORE_FILENAME;
+
+		this->gameTime = gameTime;
+		this->score = score;
+		this->level = level;
+		nlohmann::json ret = LoadHighScore(filePath.string());
+		if (ret == nullptr)
+		{
+			return true; // No file then yes, new high score.
+		}
+		int scoreCount = ret["scores"].size();
+		if (scoreCount < MAX_SCORES)
+		{
+			return true; // Room for a new one.
+		}
+		for (auto& item : ret["scores"])
+		{
+			if (item["score"].get<int>() < this->score)
+			{
+				// New high score.
+				return true;
+			}
+		}
+		return false;
 	}
 
 	void SceneHighScoreEntry::Draw(jam::IRenderer* render)
@@ -299,10 +329,82 @@ namespace game
 
 	}
 
+	nlohmann::json SceneHighScoreEntry::LoadHighScore(std::string fileName)
+	{
+		std::ostringstream buffer;
+		try
+		{
+			std::ifstream file(fileName);
+			if (file.is_open())
+			{
+				std::string line;
+				while (std::getline(file, line))
+				{
+					buffer << line << std::endl;
+				}
+				file.close();
+			}
+		}
+		catch (std::exception ex)
+		{
+			std::cerr << "Unable to read high score table " << fileName << std::endl << ex.what() << std::endl;
+		}
+		try
+		{
+			return nlohmann::json::parse(buffer.str());
+		}
+		catch (std::exception ex)
+		{
+			std::cerr << "Unable to parse high score table " << fileName << std::endl << ex.what() << std::endl;
+			return nullptr;
+		}
+	}
+
 	void SceneHighScoreEntry::SaveInitials()
 	{
 		// Save the data to high score table.
-		// TO DO
+		std::filesystem::path  filePath = std::filesystem::path(jam::Configuration::GetDataPath());
+		filePath /= HIGHSCORE_FILENAME;
+		nlohmann::json saveData = this->LoadHighScore(filePath.string());
+		bool inserted = false;
+		int index = 0;
+		if (!saveData["scores"].is_array())
+		{
+			saveData["scores"] = nlohmann::json::array();
+		}
+		for (auto& score : saveData["scores"])
+		{
+			if (score["score"].get<int>() < this->score)
+			{
+				break;
+			}
+			index++;
+		}
+		nlohmann::json newRow = nlohmann::json::object();
+		newRow["initials"] = this->initials.c_str();
+		newRow["score"] = this->score;
+		newRow["level"] = this->level;
+		newRow["gameTime"] = this->gameTime;
+
+		saveData["scores"].insert(saveData["scores"].begin() + index, newRow);
+		if (saveData["scores"].size() > MAX_SCORES)
+		{
+			saveData["scores"].erase(saveData["scores"].size() - 1);
+		}
+
+		try
+		{
+			std::ofstream file(filePath.string());
+			if (file.is_open())
+			{
+				file << std::setw(4) << saveData << std::endl;
+				file.close();
+			}
+		}
+		catch (std::exception ex)
+		{
+			std::cerr << "Unable to read high score table " << filePath.string() << std::endl << ex.what() << std::endl;
+		}
 
 		// Change to next screen.
 		this->nextScene = jam::SceneManager::Instance()->GetScene("menu");

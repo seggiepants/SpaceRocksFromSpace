@@ -6,6 +6,7 @@
 #include "IResourceManager.h"
 #include "Rect.h"
 #include "SceneGame.h"
+#include "SceneHighScoreEntry.h"
 #include "SceneManager.h"
 #include "Shared.h"
 #include "Utility.h"
@@ -63,6 +64,7 @@ namespace game
 		this->screenHeight = screenHeight;
 		this->level = 0;
 		this->score = 0;
+		this->gameTime = 0.0;
 
 		if (this->ship != nullptr)
 		{
@@ -404,9 +406,21 @@ namespace game
 
 	void SceneGame::ReturnToMenu()
 	{
-		this->nextScene = jam::SceneManager::Instance()->GetScene("menu");
-		if (this->nextScene != nullptr)
-			this->nextScene->Construct(this->screenWidth, this->screenHeight);
+		SceneHighScoreEntry* enterHighScore = (game::SceneHighScoreEntry*) jam::SceneManager::Instance()->GetScene("highScoreEntry");
+		if (enterHighScore != nullptr)
+		{
+			enterHighScore->Construct(this->screenWidth, this->screenHeight);
+			if (enterHighScore->IsNewHighScore(this->gameTime, this->score, this->level))
+			{
+				this->nextScene = enterHighScore;
+			}
+			else
+			{
+				this->nextScene = jam::SceneManager::Instance()->GetScene("menu");
+				if (this->nextScene != nullptr)
+					this->nextScene->Construct(this->screenWidth, this->screenHeight);
+			}
+		}
 	}
 
 	void SceneGame::Shoot()
@@ -459,7 +473,6 @@ namespace game
 
 		if (this->gameState == game::GameState::PAUSE)
 			return;
-
 		else if (this->gameState == game::GameState::NEXT_LEVEL || this->gameState == game::GameState::GAME_OVER)
 		{
 			if (this->messageY > this->messageTargetY)
@@ -491,6 +504,7 @@ namespace game
 			}
 			return; 
 		}
+		this->gameTime += dt;
 
 		for (std::vector<game::Shot*>::iterator iter = this->shots.begin(); iter != this->shots.end(); iter++)
 		{
