@@ -5,7 +5,7 @@
 #define BACKEND_PGE 0
 #define BACKEND_SDL2 1
 
-#define BACKEND BACKEND_PGE
+#define BACKEND BACKEND_SDL2
 
 #if BACKEND == BACKEND_PGE
 #include "BackendPGE.h"
@@ -18,6 +18,7 @@
 #include "SceneManager.h"
 #include "SceneGame.h"
 #include "SceneHighScoreEntry.h"
+#include "SceneHighScoreList.h"
 #include "SceneMenu.h"
 
 #define SCREEN_WIDTH 640
@@ -37,10 +38,12 @@
         {
             game::SceneGame* sceneGame = new game::SceneGame();
             game::SceneHighScoreEntry* sceneHighScoreEntry = new game::SceneHighScoreEntry();
+            game::SceneHighScoreList* sceneHighScoreList = new game::SceneHighScoreList();
             game::SceneMenu* sceneMenu = new game::SceneMenu();
             jam::SceneManager::Instance()->AddScene("menu", sceneMenu);
             jam::SceneManager::Instance()->AddScene("game", sceneGame);
             jam::SceneManager::Instance()->AddScene("highScoreEntry", sceneHighScoreEntry);
+            jam::SceneManager::Instance()->AddScene("highScoreList", sceneHighScoreList);
             jam::SceneManager::Instance()->AddScene("exit", nullptr);
 
             sceneHighScoreEntry->Construct(SCREEN_WIDTH, SCREEN_HEIGHT);

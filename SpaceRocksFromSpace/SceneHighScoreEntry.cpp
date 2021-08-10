@@ -1,4 +1,5 @@
 #include "Configuration.h"
+#include "GameAssets.h"
 #include "SceneHighScoreEntry.h"
 #include "SceneManager.h"
 #include "Shared.h"
@@ -8,8 +9,6 @@
 
 namespace game
 {
-	const int MAX_SCORES = 10;
-	const std::string HIGHSCORE_FILENAME = "highscore.json";
 		
 	SceneHighScoreEntry::SceneHighScoreEntry()
 	{
@@ -37,14 +36,11 @@ namespace game
 	}
 
 	bool SceneHighScoreEntry::IsNewHighScore(float gameTime, int score, int level)
-	{
-		std::filesystem::path  filePath = std::filesystem::path(jam::Configuration::GetDataPath());
-		filePath /= HIGHSCORE_FILENAME;
-
+	{		
 		this->gameTime = gameTime;
 		this->score = score;
 		this->level = level;
-		nlohmann::json ret = LoadHighScore(filePath.string());
+		nlohmann::json ret = jam::Configuration::LoadJsonFile(HIGHSCORE_FILENAME);
 		if (ret == nullptr)
 		{
 			return true; // No file then yes, new high score.
@@ -329,43 +325,10 @@ namespace game
 
 	}
 
-	nlohmann::json SceneHighScoreEntry::LoadHighScore(std::string fileName)
-	{
-		std::ostringstream buffer;
-		try
-		{
-			std::ifstream file(fileName);
-			if (file.is_open())
-			{
-				std::string line;
-				while (std::getline(file, line))
-				{
-					buffer << line << std::endl;
-				}
-				file.close();
-			}
-		}
-		catch (std::exception ex)
-		{
-			std::cerr << "Unable to read high score table " << fileName << std::endl << ex.what() << std::endl;
-		}
-		try
-		{
-			return nlohmann::json::parse(buffer.str());
-		}
-		catch (std::exception ex)
-		{
-			std::cerr << "Unable to parse high score table " << fileName << std::endl << ex.what() << std::endl;
-			return nullptr;
-		}
-	}
-
 	void SceneHighScoreEntry::SaveInitials()
 	{
-		// Save the data to high score table.
-		std::filesystem::path  filePath = std::filesystem::path(jam::Configuration::GetDataPath());
-		filePath /= HIGHSCORE_FILENAME;
-		nlohmann::json saveData = this->LoadHighScore(filePath.string());
+		// Save the data to high score table.		
+		nlohmann::json saveData = jam::Configuration::LoadJsonFile(HIGHSCORE_FILENAME);
 		bool inserted = false;
 		int index = 0;
 		if (!saveData["scores"].is_array())
@@ -392,18 +355,10 @@ namespace game
 			saveData["scores"].erase(saveData["scores"].size() - 1);
 		}
 
-		try
+
+		if (!jam::Configuration::SaveJsonFile(HIGHSCORE_FILENAME, saveData))
 		{
-			std::ofstream file(filePath.string());
-			if (file.is_open())
-			{
-				file << std::setw(4) << saveData << std::endl;
-				file.close();
-			}
-		}
-		catch (std::exception ex)
-		{
-			std::cerr << "Unable to read high score table " << filePath.string() << std::endl << ex.what() << std::endl;
+			std::cerr << "Unable to Save High Score" << std::endl;
 		}
 
 		// Change to next screen.

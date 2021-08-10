@@ -4,6 +4,7 @@
 
 #include <filesystem>
 #include <string>
+#include "3rdParty/json/json.hpp"
 #include "Shared.h"
 #include "Version.h"
 
@@ -15,6 +16,8 @@ namespace jam
 		static void CreatePathIfNotExist(std::filesystem::path& p);
 		static std::string GetAppPath();
 		static std::string GetDataPath();
+		static nlohmann::json LoadJsonFile(std::string fileName);
+		static bool SaveJsonFile(std::string fileName, nlohmann::json data);
 	};
 }
 #endif

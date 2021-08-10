@@ -1,3 +1,5 @@
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include "Configuration.h"
@@ -101,5 +103,65 @@ namespace jam
 		ss << appPath.c_str() << game::COMPANY << "/" << game::PRODUCT << "/" << game::VERSION << "/";
 		return std::string(ss.str());
 #endif
+	}
+
+	nlohmann::json Configuration::LoadJsonFile(std::string fileName)
+	{
+		std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
+		filePath /= fileName;		
+		std::ostringstream buffer;
+		try
+		{
+			std::ifstream file(filePath.string());
+			if (file.is_open())
+			{
+				std::string line;
+				while (std::getline(file, line))
+				{
+					buffer << line << std::endl;
+				}
+				file.close();
+			}
+		}
+		catch (std::exception ex)
+		{
+			std::cerr << "Unable to read file " << filePath.string() << std::endl << ex.what() << std::endl;
+		}
+		try
+		{
+			return nlohmann::json::parse(buffer.str());
+		}
+		catch (std::exception ex)
+		{
+			std::cerr << "Unable to parse file " << filePath.string() << std::endl << ex.what() << std::endl;
+			return nullptr;
+		}
+	}
+
+	bool Configuration::SaveJsonFile(std::string fileName, nlohmann::json data)
+	{
+		std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
+		filePath /= fileName;
+
+		try
+		{
+			std::ofstream file(filePath.string());
+			if (file.is_open())
+			{
+				file << std::setw(4) << data << std::endl;
+				file.close();
+			}
+			else
+			{
+				std::cerr << "File not open: " << filePath.string() << std::endl;
+				return false;
+			}
+		}
+		catch (std::exception ex)
+		{
+			std::cerr << "Unable to write file " << filePath.string() << std::endl << ex.what() << std::endl;
+			return false;
+		}
+		return true;
 	}
 }

@@ -48,6 +48,9 @@ namespace game
 		this->characters->insert(std::pair<char, std::vector<std::vector<jam::Point2Df>>>('Y', { {{0, -16}, {4, -8}, {8, -16}}, {{4, -8}, {4, 0}} }));
 		this->characters->insert(std::pair<char, std::vector<std::vector<jam::Point2Df>>>('Z', { {{0, -16}, {8, -16}, {0, 0}, {8, 0}} }));
 		this->characters->insert(std::pair<char, std::vector<std::vector<jam::Point2Df>>>(' ', { {} }));
+		this->characters->insert(std::pair<char, std::vector<std::vector<jam::Point2Df>>>(',', { {{4, -3}, {5, -3}, {5, -2}, {4, -1}, {4.5, -2}, {4, -2}, {4, -3}} }));
+		this->characters->insert(std::pair<char, std::vector<std::vector<jam::Point2Df>>>(':', { {{4, -3}, {5, -3}, {5, -2}, {4, -2}, {4, -3}}, {{4, -14}, {5, -14}, {5, -13}, {4, -13}, {4, -14}} }));
+		this->characters->insert(std::pair<char, std::vector<std::vector<jam::Point2Df>>>(';', { {{4, -3}, {5, -3}, {5, -2}, {4, -1}, {4.5, -2}, {4, -2}, {4, -3}}, {{4, -14}, {5, -14}, {5, -13}, {4, -13}, {4, -14}} }));
 	}
 
 	VectorFont::~VectorFont()

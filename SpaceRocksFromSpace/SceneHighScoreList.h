@@ -1,21 +1,21 @@
 #pragma once
-#ifndef __SCENE_HIGH_SCORE_ENTRY_H__
-#define __SCENE_HIGH_SCORE_ENTRY_H__
-#include <string>
+
+#ifndef __SCENE_HIGH_SCORE_LIST_H__
+#define __SCENE_HIGH_SCORE_LIST_H__
+
+#include "3rdParty/json/json.hpp"
 #include "IScene.h"
 #include "VectorFont.h"
-#include "3rdParty/json/json.hpp"
 
 namespace game
 {
-    class SceneHighScoreEntry :
+    class SceneHighScoreList :
         public jam::IScene
     {
     public:
-        SceneHighScoreEntry();
-        ~SceneHighScoreEntry();
+        SceneHighScoreList();
+        ~SceneHighScoreList();
         void Construct(int screenWidth, int screenHeight);
-        bool IsNewHighScore(float gameTime, int score, int level);
         void Draw(jam::IRenderer*);
         void GetScreenSize(int* screenWidth, int* screenHeight);
         void Update(float dt);
@@ -26,25 +26,13 @@ namespace game
         void KeyUp(uint8_t key);
         void MouseMove(int x, int y);
         void MouseClick(jam::MouseButton button, int x, int y);
-        jam::IScene* NextScene();
+        IScene* NextScene();
     private:
-        void NextChar();
-        void PrevChar();
-        void SetChar(char ch);
-        void MoveNext();
-        void MovePrev();
-        void SaveInitials();
-        game::VectorFont* vFont;
+        IScene* nextScene;
         int screenWidth, screenHeight;
-        jam::IScene* nextScene;
-        std::string entryCharacters;
-        std::string initials;
-        int charIndex, joyDX, joyDY;
-        float gameTime;
-        int level;
-        int score;
+        nlohmann::json highScores;
+        game::VectorFont* vFont;
     };
-
 }
 
 #endif

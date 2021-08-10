@@ -297,6 +297,10 @@ namespace game
 		}
 		else if (menuItem == "HIGH SCORES")
 		{
+			this->nextScene = jam::SceneManager::Instance()->GetScene("highScoreList");
+			if (this->nextScene != nullptr)
+				this->nextScene->Construct(this->screenWidth, this->screenHeight);
+			this->bgMusic->Stop();
 		}
 		else if (menuItem == "EXIT")
 		{
