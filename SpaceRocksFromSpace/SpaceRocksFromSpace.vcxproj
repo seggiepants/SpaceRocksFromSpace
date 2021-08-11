@@ -180,6 +180,7 @@
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Shot.h" />
     <ClInclude Include="Star.h" />
+    <ClInclude Include="UFO.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="VectorFont.h" />
     <ClInclude Include="IBackend.h" />
@@ -217,6 +218,7 @@
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Shot.cpp" />
     <ClCompile Include="Star.cpp" />
+    <ClCompile Include="UFO.cpp" />
     <ClCompile Include="VectorFont.cpp" />
     <ClCompile Include="IBackend.cpp" />
     <ClCompile Include="IRenderer.cpp" />

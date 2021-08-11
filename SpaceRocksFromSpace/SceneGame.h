@@ -9,7 +9,9 @@
 #include "Ship.h"
 #include "Shot.h"
 #include "Rock.h"
+#include "UFO.h"
 #include "VectorFont.h"
+
 namespace game
 {
 
@@ -55,6 +57,7 @@ namespace game
         std::vector<game::Shot*> shots;
         std::vector<jam::Point2Df> lifeIcon;
         std::vector<game::Particle*> particles;
+        game::UFO* ufo;
         game::Ship* ship;
         float shotWait;
         int score;

@@ -14,10 +14,12 @@
 namespace game
 {
 	#define SHOT_DELAY  0.2
+	const int UFO_POINTS = 50;
 
 	SceneGame::SceneGame()
 	{
 		this->ship = nullptr;
+		this->ufo = nullptr;
 		this->nextScene = nullptr;
 		this->screenWidth = this->screenHeight = 0;
 		this->shotWait = 0;
@@ -73,6 +75,14 @@ namespace game
 		}
 		this->ship = new Ship();
 		this->ship->Construct(this->screenWidth, this->screenHeight);
+
+		if (this->ufo != nullptr)
+		{
+			delete this->ufo;
+			this->ufo = nullptr;
+		}
+		this->ufo = new UFO();
+
 		this->nextScene = (IScene*)this;
 		
 		this->NextLevel();
@@ -87,6 +97,7 @@ namespace game
 		int width, height;
 		jam::rgb bg(0, 0, 0, 255);
 		jam::rgb fg(255, 255, 255, 255);
+
 		render->Clear(bg);
 		render->GetScreenSize(&width, &height);
 		this->screenWidth = width;
@@ -137,6 +148,8 @@ namespace game
 		{
 			(*iter)->Draw(render);
 		}
+
+		this->ufo->Draw(render);
 
 		this->ship->Draw(render);
 
@@ -521,19 +534,31 @@ namespace game
 			(*iter)->Update(this, dt);
 		}
 
-		// Shots break rocks
+		this->ufo->Update(this, dt);
+
+		// Shots break rocks or ufo
 		for (std::vector<game::Shot*>::iterator shotIter = this->shots.begin(); shotIter != this->shots.end(); shotIter++)
 		{
 			game::Shot* shot = *shotIter;
 			if (shot->IsDeleted())
 				continue;
+
+			float x1, y1, x2, y2;
+			shot->GetCollisionLine(&x1, &y1, &x2, &y2);
+			if (this->ufo->Collide_Line(x1, y1, x2, y2))
+			{
+				shot->SetDeleted();
+				this->ufo->Hit();
+				this->score += UFO_POINTS;
+				jam::backEnd->ResourceManager()->GetAudio(game::SOUND_EXPLOSION)->Play();
+				continue;
+			}
+			
 			for (std::vector<game::Rock*>::iterator iter = this->rocks.begin(); iter != this->rocks.end(); iter++)
 			{
 				game::Rock* rock = *iter;
 				if (rock->IsDeleted())
 					continue;
-				float x1, y1, x2, y2;
-				shot->GetCollisionLine(&x1, &y1, &x2, &y2);
 				if (rock->Collide_Line(x1, y1, x2, y2))
 				{
 					shot->SetDeleted();
@@ -616,6 +641,24 @@ namespace game
 			if (hit)
 				break;
 		}
+
+		// Did the ship and ufo collide?
+		if (!hit && !this->ufo->IsDeleted())
+		{
+			float x1, y1, x2, y2;
+			for (int i = 0; i < ship->GetScreenPoints(); i++)
+			{
+				this->ship->GetScreenLine(i, &x1, &y1, &x2, &y2);
+				if (ufo->Collide_Line(x1, y1, x2, y2))
+				{
+					this->ufo->Hit();
+					hit = true;
+					break;
+				}
+			}
+		}
+
+
 		if (hit)
 		{
 			if (this->ship->Hit())
