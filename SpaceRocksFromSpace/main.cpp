@@ -20,6 +20,7 @@
 #include "SceneHighScoreEntry.h"
 #include "SceneHighScoreList.h"
 #include "SceneMenu.h"
+#include "VectorFont.h"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -34,8 +35,18 @@
 #endif
         jam::backEnd = &game;
         std::srand((unsigned int)time(nullptr));
+        game::VectorFont* font = nullptr;
+        game::VectorFont* font2 = nullptr;
+
         if (game.Construct("Space Rocks From Space", SCREEN_WIDTH, SCREEN_HEIGHT))
         {
+            font = new game::VectorFont();
+            font->Construct(1.0, 1.0);
+            font2 = new game::VectorFont();
+            font2->Construct(2.0, 2.0);
+            jam::backEnd->ResourceManager()->PreloadFont("vfont1", font);
+            jam::backEnd->ResourceManager()->PreloadFont("vfont2", font2);
+
             game::SceneGame* sceneGame = new game::SceneGame();
             game::SceneHighScoreEntry* sceneHighScoreEntry = new game::SceneHighScoreEntry();
             game::SceneHighScoreList* sceneHighScoreList = new game::SceneHighScoreList();

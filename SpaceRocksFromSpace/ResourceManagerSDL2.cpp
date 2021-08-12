@@ -1,3 +1,4 @@
+#include <iostream>
 #include "ResourceManagerSDL2.h"
 
 namespace jam
@@ -39,7 +40,11 @@ namespace jam
 		return this->audio[filePath];
 	}
 
-	void ResourceManagerSDL2::GetFont(std::string, int size) {}
+	IFont* ResourceManagerSDL2::GetFont(std::string key) 
+	{
+		return instance->font[key];
+	}
+
 	void ResourceManagerSDL2::GetImage(std::string) {}
 
 	bool ResourceManagerSDL2::HasAudio(std::string filePath) 
@@ -49,7 +54,13 @@ namespace jam
 		return (search != instance->audio.end());
 	}
 
-	bool ResourceManagerSDL2::HasFont(std::string, int size) { return false; }
+	bool ResourceManagerSDL2::HasFont(std::string key) 
+	{ 
+		std::unordered_map<std::string, jam::IFont*>::const_iterator search = instance->font.find(key);
+
+		return (search != instance->font.end());
+	}
+
 	bool ResourceManagerSDL2::HasImage(std::string) { return false; }
 	
 	void ResourceManagerSDL2::PreloadAudio(std::string filePath) 
@@ -66,7 +77,21 @@ namespace jam
 		}
 	}
 
-	void ResourceManagerSDL2::PreloadFont(std::string, int size) {}
+	void ResourceManagerSDL2::PreloadFont(std::string key, IFont* font) 
+	{
+		if (!instance->HasFont(key))
+		{
+			if (font == nullptr)
+			{
+				std::cerr << "Invalid font for key \"" << key << "." << std::endl;
+			}
+			else
+			{
+				instance->font[key] = font;
+			}
+		}
+	}
+
 	void ResourceManagerSDL2::PreloadImage(std::string) {}
 
 }

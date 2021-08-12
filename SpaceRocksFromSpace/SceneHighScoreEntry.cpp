@@ -1,18 +1,18 @@
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include "Configuration.h"
 #include "GameAssets.h"
 #include "SceneHighScoreEntry.h"
 #include "SceneManager.h"
 #include "Shared.h"
-#include <fstream>
-#include <iostream>
-#include <sstream>
+#include "VectorFont.h"
 
 namespace game
 {
 		
 	SceneHighScoreEntry::SceneHighScoreEntry()
 	{
-		this->vFont = new VectorFont();
 		this->entryCharacters = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 		//std::cout << "App Path: " << jam::Configuration::GetAppPath() << std::endl;
@@ -21,8 +21,6 @@ namespace game
 
 	SceneHighScoreEntry::~SceneHighScoreEntry()
 	{
-		delete this->vFont;
-		this->vFont = nullptr;
 	}
 
 	void SceneHighScoreEntry::Construct(int screenWidth, int screenHeight)
@@ -64,8 +62,8 @@ namespace game
 	void SceneHighScoreEntry::Draw(jam::IRenderer* render)
 	{
 		const float BORDER = 8.0;
-		const float SCALE = 2.0;
 		int x, y, w, h, charW, charH;
+		game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
 		std::vector<jam::Point2Df> triangleUp;
 		std::vector<jam::Point2Df> triangleDown;
 
@@ -75,21 +73,21 @@ namespace game
 		render->Clear(black);
 		std::string message;
 		message = "NEW HIGH SCORE";
-		this->vFont->MeasureText(message, &w, &h, SCALE, SCALE);
+		vFont2->MeasureText(message, &w, &h);
 		y = BORDER + h;
 		x = (this->screenWidth - w) / 2;
 		if (x < 0) x = 0;
-		this->vFont->DrawText(render, message, x, y, white, SCALE, SCALE);
+		vFont2->DrawText(render, message, x, y, white);
 
 		message = "ENTER YOUR INITIALS";
-		this->vFont->MeasureText(message, &w, &h, SCALE, SCALE);
+		vFont2->MeasureText(message, &w, &h);
 		y += BORDER + h;
 		x = (this->screenWidth - w) / 2;
 		if (x < 0) x = 0;
-		this->vFont->DrawText(render, message, x, y, white, SCALE, SCALE);
+		vFont2->DrawText(render, message, x, y, white);
 
 		message = "W";
-		this->vFont->MeasureText(message, &charW, &charH, SCALE, SCALE);
+		vFont2->MeasureText(message, &charW, &charH);
 
 		triangleUp.push_back({ 0.0, 0.0 });
 		triangleUp.push_back({ (float)charW, 0.0 });
@@ -108,7 +106,7 @@ namespace game
 		{
 			int x1 = offset + (1.5 * i * charW);
 			temp = initials[i];
-			this->vFont->DrawText(render, temp, x1, y + charH, white, SCALE, SCALE);
+			vFont2->DrawText(render, temp, x1, y + charH, white);
 			render->DrawLine(x1, y + charH + BORDER, x1 + charW, y + charH + BORDER, white);
 		}
 		y += charH + (BORDER * 2);

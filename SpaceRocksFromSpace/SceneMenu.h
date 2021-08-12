@@ -33,7 +33,6 @@ namespace game
         void Update(float dt);
     protected:
         void MenuSelect(std::string menuItem);
-        VectorFont* vFont;
         std::vector<std::pair<std::string, jam::Rect>>* menuText;
         std::vector<game::Star>* stars;
         int screenWidth;

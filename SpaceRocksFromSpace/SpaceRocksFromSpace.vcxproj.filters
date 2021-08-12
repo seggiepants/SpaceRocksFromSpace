@@ -135,6 +135,9 @@
     <ClInclude Include="UFO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IFont.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IScene.cpp">

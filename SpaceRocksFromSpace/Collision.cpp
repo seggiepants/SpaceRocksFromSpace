@@ -32,8 +32,8 @@ namespace jam
 
 		// Bounding Box check.
 		jam::Rect a, b;
-		a.x1 = x1; a.x2 = x2; a.y1 = y1; a.y2 = y2;
-		b.x1 = x3; b.x2 = x4; b.y1 = y3; b.y2 = y4;
+		a.x = x1 <= x2 ? x1 : x2; a.w = std::abs(x2 - x1); a.y = y1 <= y2 ? y1 : y2; a.h = std::abs(y2 - y1);
+		b.x = x3 <= x4 ? x3 : x4; b.w = std::abs(x4 - x3); b.y = y3 <= y4 ? y3 : y4; b.h = std::abs(y4 - y3);
 		if (Collision::Rect_Rect(&a, &b))
 		{
 			s10_x = x2 - x1;
@@ -78,10 +78,10 @@ namespace jam
 	bool Collision::Point_Rect(Point2Df* point, Rect* rect)
 	{
 		float x1, x2, y1, y2;
-		x1 = rect->x1 <= rect->x2 ? rect->x1 : rect->x2;
-		x2 = rect->x1 <= rect->x2 ? rect->x2 : rect->x1;
-		y1 = rect->y1 <= rect->y2 ? rect->y1 : rect->y2;
-		y2 = rect->y1 <= rect->y2 ? rect->y2 : rect->y1;
+		x1 = rect->x;
+		x2 = rect->x + rect->w;
+		y1 = rect->y;
+		y2 = rect->y + rect->h;
 		return (point->x >= x1 && point->x <= x2 && point->y >= y1 && point->y <= y2);
 	}
 
@@ -89,15 +89,15 @@ namespace jam
 	{
 		float x1, x2, y1, y2;
 		float x3, x4, y3, y4;
-		x1 = a->x1 <= a->x2 ? a->x1 : a->x2;
-		x2 = a->x1 <= a->x2 ? a->x2 : a->x1;
-		y1 = a->y1 <= a->y2 ? a->y1 : a->y2;
-		y2 = a->y1 <= a->y2 ? a->y2 : a->y1;
+		x1 = a->x;
+		x2 = a->x + a->w;
+		y1 = a->y;
+		y2 = a->y + a->h;
 		
-		x3 = b->x1 <= b->x2 ? b->x1 : b->x2;
-		x4 = b->x1 <= b->x2 ? b->x2 : b->x1;
-		y3 = b->y1 <= b->y2 ? b->y1 : b->y2;
-		y4 = b->y1 <= b->y2 ? b->y2 : b->y1;
+		x3 = b->x;
+		x4 = b->x + b->w;
+		y3 = b->y;
+		y4 = b->y + b->h;
 
 		if (x2 < x3)
 		{

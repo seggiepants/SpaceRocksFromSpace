@@ -175,7 +175,7 @@ namespace game
 				this->SetHeading(angle + M_PI);
 				break;
 		}
-		// std::cout << "x: " << this->x << ", y: " << this->y << ", angle: " << this->heading * (180.0 / M_PI_2) << std::endl;
+		
 		this->alive = true;
 		jam::backEnd->ResourceManager()->GetAudio(game::SOUND_UFO)->Play();
 	}

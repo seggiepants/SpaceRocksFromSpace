@@ -3,7 +3,6 @@
 #define __SCENE_HIGH_SCORE_ENTRY_H__
 #include <string>
 #include "IScene.h"
-#include "VectorFont.h"
 #include "3rdParty/json/json.hpp"
 
 namespace game
@@ -34,7 +33,6 @@ namespace game
         void MoveNext();
         void MovePrev();
         void SaveInitials();
-        game::VectorFont* vFont;
         int screenWidth, screenHeight;
         jam::IScene* nextScene;
         std::string entryCharacters;

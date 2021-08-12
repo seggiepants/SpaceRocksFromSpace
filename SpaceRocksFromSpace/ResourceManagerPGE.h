@@ -5,6 +5,7 @@
 #include <olcPixelGameEngine.h>
 #include <olcPGEX_Sound.h>
 #include <olcPGEX_TTF.h>
+#include "IFont.h"
 #include "IResourceManager.h"
 #include "AudioPGE.h"
 
@@ -22,13 +23,13 @@ namespace jam
 		*/
 		void Clear();
 		IAudio* GetAudio(std::string);
-		void GetFont(std::string, int size);
+		IFont* GetFont(std::string);
 		void GetImage(std::string);
 		bool HasAudio(std::string);
-		bool HasFont(std::string, int size);
+		bool HasFont(std::string);
 		bool HasImage(std::string);
 		void PreloadAudio(std::string);
-		void PreloadFont(std::string, int size);
+		void PreloadFont(std::string key, IFont* font);
 		void PreloadImage(std::string);
 		static IResourceManager* Instance() {
 			if (!instance) {
@@ -41,7 +42,7 @@ namespace jam
 		static ResourceManagerPGE* instance;
 		std::unordered_map<std::string, jam::AudioPGE*> audio;
 		std::unordered_map<std::string, olc::Sprite*> image;
-		std::unordered_map<std::string, olc::Font*> font;
+		std::unordered_map<std::string, jam::IFont*> font;
 
     };
 }

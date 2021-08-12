@@ -5,7 +5,7 @@
 
 #include "3rdParty/json/json.hpp"
 #include "IScene.h"
-#include "VectorFont.h"
+#include "Rect.h"
 
 namespace game
 {
@@ -28,10 +28,11 @@ namespace game
         void MouseClick(jam::MouseButton button, int x, int y);
         IScene* NextScene();
     private:
+        void ReturnToMenu();
         IScene* nextScene;
         int screenWidth, screenHeight;
         nlohmann::json highScores;
-        game::VectorFont* vFont;
+        jam::Rect button;
     };
 }
 

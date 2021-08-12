@@ -23,7 +23,6 @@ namespace game
 		this->nextScene = nullptr;
 		this->screenWidth = this->screenHeight = 0;
 		this->shotWait = 0;
-		this->vFont = new VectorFont();
 		this->lifeIcon.push_back({ -6, 6 });
 		this->lifeIcon.push_back({ 0, 3 });
 		this->lifeIcon.push_back({ 6, 6 });
@@ -92,11 +91,13 @@ namespace game
 	{
 		const int SCORE_RESERVE = 50;
 		const int BORDER = 8.0;
-		const float SCALE = 2.0;
 
 		int width, height;
 		jam::rgb bg(0, 0, 0, 255);
 		jam::rgb fg(255, 255, 255, 255);
+
+		game::VectorFont* vFont1 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont1"));
+		game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
 
 		render->Clear(bg);
 		render->GetScreenSize(&width, &height);
@@ -106,13 +107,13 @@ namespace game
 		s << "SCORE " << std::to_string(this->score);
 		std::string scoreDisplay = s.str();
 		int tw, th;
-		this->vFont->MeasureText(scoreDisplay, &tw, &th);
-		this->vFont->DrawText(render, scoreDisplay, BORDER, BORDER + th, fg);
+		vFont1->MeasureText(scoreDisplay, &tw, &th);
+		vFont1->DrawText(render, scoreDisplay, BORDER, BORDER + th, fg);
 		std::ostringstream lvl;
 		lvl << "LEVEL " << std::to_string(this->level);
 		std::string levelDisplay = lvl.str();
-		this->vFont->MeasureText(levelDisplay, &tw, &th);
-		this->vFont->DrawText(render, levelDisplay,this->screenWidth - tw - BORDER, BORDER + th, fg);
+		vFont1->MeasureText(levelDisplay, &tw, &th);
+		vFont1->DrawText(render, levelDisplay,this->screenWidth - tw - BORDER, BORDER + th, fg);
 
 		for (std::vector<game::Particle*>::iterator iter = this->particles.begin(); iter != this->particles.end(); iter++)
 		{
@@ -158,7 +159,7 @@ namespace game
 			int w, h;
 			jam::Rect r;
 			std::string pauseMessage = "PAUSE";
-			this->vFont->MeasureText(pauseMessage, &w, &h, SCALE, SCALE);
+			vFont2->MeasureText(pauseMessage, &w, &h);
 			int x, y;
 			x = (this->screenWidth - w - (BORDER * 2)) / 2;
 			if (x < 0)
@@ -167,26 +168,28 @@ namespace game
 			if (y < 0)
 				y = 0;
 			render->FillRect(x, y, x + w + (2 * BORDER), y + h + (2 * BORDER), fg);
-			this->vFont->DrawText(render, pauseMessage, x + BORDER, y + h + BORDER, bg, SCALE, SCALE);
+			vFont2->DrawText(render, pauseMessage, x + BORDER, y + h + BORDER, bg);
 		}
 		else if (this->gameState == GameState::GAME_OVER || this->gameState == GameState::NEXT_LEVEL)
 		{
 			int w, h;
-			this->vFont->MeasureText(this->message, &w, &h, SCALE, SCALE);
+			vFont2->MeasureText(this->message, &w, &h);
 			int x = (this->screenWidth - w) / 2;
 			render->FillRect(0, this->messageY - h - BORDER, this->screenWidth, this->messageY + BORDER, fg);
-			this->vFont->DrawText(render, this->message, x, this->messageY, bg, SCALE, SCALE);
+			vFont2->DrawText(render, this->message, x, this->messageY, bg);
 		}
 	}
 
 	void SceneGame::GameOver()
 	{
+		game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
 		this->message = "GAME OVER";
 		int w, h;
-		this->vFont->MeasureText(this->message, &w, &h, 2.0, 2.0);
+		vFont2->MeasureText(this->message, &w, &h);
 		this->messageTargetY = this->screenHeight / 2;
 		this->messageY = this->screenHeight + h;
 		this->gameState = game::GameState::GAME_OVER;
+		jam::backEnd->ResourceManager()->GetAudio(SOUND_GAMEOVER)->Play();
 	}
 
 	void SceneGame::GetScreenSize(int* screenWidth, int* screenHeight)
@@ -379,12 +382,13 @@ namespace game
 	{
 		const int MIN_ROCKS = 2;
 		const float MIN_DIST_SQUARED = 1600;
+		game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
 		this->level++;
 		std::ostringstream s;
 		s << "LEVEL " << std::to_string(this->level);
 		this->message = s.str();
 		int w, h;
-		this->vFont->MeasureText(this->message, &w, &h, 2.0, 2.0);
+		vFont2->MeasureText(this->message, &w, &h);
 		this->messageTargetY = this->screenHeight / 2;
 		this->messageY = this->screenHeight + h;		
 
@@ -410,6 +414,7 @@ namespace game
 		this->ship->SetHeading(0.00);
 		
 		this->gameState = game::GameState::NEXT_LEVEL;
+		jam::backEnd->ResourceManager()->GetAudio(SOUND_NEXTLEVEL)->Play();
 	}
 
 	jam::IScene* SceneGame::NextScene()

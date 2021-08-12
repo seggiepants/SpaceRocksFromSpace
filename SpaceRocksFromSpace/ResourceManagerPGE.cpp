@@ -115,7 +115,11 @@ namespace jam
 		this->PreloadAudio(filePath);
 		return this->audio[filePath];
 	}
-	void ResourceManagerPGE::GetFont(std::string, int size) {}
+	IFont* ResourceManagerPGE::GetFont(std::string key) 
+	{
+		return this->font[key];
+	}
+
 	void ResourceManagerPGE::GetImage(std::string) {}
 
 	bool ResourceManagerPGE::HasAudio(std::string path)
@@ -127,9 +131,9 @@ namespace jam
 	}
 
 
-	bool ResourceManagerPGE::HasFont(std::string path, int size)
+	bool ResourceManagerPGE::HasFont(std::string key)
 	{
-		std::unordered_map<std::string, olc::Font*>::const_iterator search = instance->font.find(path + "_" + std::to_string(size));
+		std::unordered_map<std::string, jam::IFont*>::const_iterator search = instance->font.find(key);
 
 		return (search != instance->font.end());
 	}
@@ -156,21 +160,20 @@ namespace jam
 	}
 
 
-	void ResourceManagerPGE::PreloadFont(std::string path, int size)
+	void ResourceManagerPGE::PreloadFont(std::string key, IFont* font)
 	{
-		if (!instance->HasFont(path, size))
+		if (!instance->HasFont(key))
 		{
-			std::string key = path + "_" + std::to_string(size);
-			olc::Font* font = new olc::Font(path, size);
-			if (font == NULL)
+			if (font == nullptr)
 			{
-				std::cout << "Failed to load font \"" << path << "\" Size " << size << "." << std::endl;
+				std::cerr << "Invalid font for key \"" << key << "." << std::endl;
 			}
 			else
 			{
 				instance->font[key] = font;
 			}
 		}
+
 	}
 
 	void ResourceManagerPGE::PreloadImage(std::string path)

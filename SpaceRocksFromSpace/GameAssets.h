@@ -5,6 +5,9 @@
 namespace game
 {
 	const std::string SOUND_EXPLOSION = "assets/sound/explosion.wav";
+	const std::string SOUND_GAMEOVER = "assets/sound/game_over.wav";
+	const std::string SOUND_MAINMENU = "assets/sound/main_menu.wav";
+	const std::string SOUND_NEXTLEVEL = "assets/sound/next_level.wav";
 	const std::string SOUND_PAUSE = "assets/sound/pause.wav";
 	const std::string SOUND_SELECT = "assets/sound/select.wav";
 	const std::string SOUND_TELEPORT =  "assets/sound/teleport.wav";

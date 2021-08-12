@@ -48,7 +48,6 @@ namespace game
     protected:
         void ClearObjects();
         void Shoot();
-        VectorFont* vFont;
         int screenWidth;
         int screenHeight;
         float gameTime;

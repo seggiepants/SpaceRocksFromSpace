@@ -51,6 +51,8 @@ namespace game
 		this->characters->insert(std::pair<char, std::vector<std::vector<jam::Point2Df>>>(',', { {{4, -3}, {5, -3}, {5, -2}, {4, -1}, {4.5, -2}, {4, -2}, {4, -3}} }));
 		this->characters->insert(std::pair<char, std::vector<std::vector<jam::Point2Df>>>(':', { {{4, -3}, {5, -3}, {5, -2}, {4, -2}, {4, -3}}, {{4, -14}, {5, -14}, {5, -13}, {4, -13}, {4, -14}} }));
 		this->characters->insert(std::pair<char, std::vector<std::vector<jam::Point2Df>>>(';', { {{4, -3}, {5, -3}, {5, -2}, {4, -1}, {4.5, -2}, {4, -2}, {4, -3}}, {{4, -14}, {5, -14}, {5, -13}, {4, -13}, {4, -14}} }));
+
+		this->scaleX = this->scaleY = 1.0;
 	}
 
 	VectorFont::~VectorFont()
@@ -69,10 +71,16 @@ namespace game
 		}
 		this->characters->clear();
 		delete this->characters;
-		this->characters = nullptr;
+		this->characters = nullptr;		
 	}
 
-	void VectorFont::DrawText(jam::IRenderer* render, std::string message, int x, int y, jam::rgb color, float scaleX, float scaleY)
+	void VectorFont::Construct(float scaleX, float scaleY)
+	{
+		this->scaleX = scaleX;
+		this->scaleY = scaleY;
+	}
+
+	void VectorFont::DrawText(jam::IRenderer* render, std::string message, int x, int y, jam::rgb color)
 	{
 		int px = x, py = y;
 		int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
@@ -90,8 +98,8 @@ namespace game
 					{
 						x1 = x2;
 						y1 = y2;
-						x2 = (int) (point.x * scaleX);
-						y2 = (int) (point.y * scaleY);
+						x2 = (int) (point.x * this->scaleX);
+						y2 = (int) (point.y * this->scaleY);
 						if (firstPoint)
 						{
 							firstPoint = false;
@@ -102,19 +110,19 @@ namespace game
 						}
 					}
 				}
-				px += (int)(stepX * scaleX);
+				px += (int)(stepX * this->scaleX);
 				if ((px + stepX) >= screenWidth)
 				{
 					px = x;
-					py += (int)(stepY * scaleY);
+					py += (int)(stepY * this->scaleY);
 				}
 			}
 		}
 	}
 
-	void VectorFont::MeasureText(std::string message, int* width, int* height, float scaleX, float scaleY)
+	void VectorFont::MeasureText(std::string message, int* width, int* height)
 	{
-		*height = stepY * scaleY;
-		*width = message.length() * stepX * scaleX;
+		*height = stepY * this->scaleY;
+		*width = message.length() * stepX * this->scaleX;
 	}
 }

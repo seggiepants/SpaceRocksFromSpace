@@ -8,6 +8,7 @@
 #include <string>
 #include <unordered_map>
 #include "AudioSDL2.h"
+#include "IFont.h"
 #include "IResourceManager.h"
 namespace jam
 {
@@ -23,13 +24,13 @@ namespace jam
 		*/
 		void Clear();
 		IAudio* GetAudio(std::string);
-		void GetFont(std::string, int size);
+		IFont* GetFont(std::string);
 		void GetImage(std::string);
 		bool HasAudio(std::string);
-		bool HasFont(std::string, int size);
+		bool HasFont(std::string);
 		bool HasImage(std::string);
 		void PreloadAudio(std::string);
-		void PreloadFont(std::string, int size);
+		void PreloadFont(std::string key, IFont* font);
 		void PreloadImage(std::string);
 		static IResourceManager* Instance() {
 			if (!instance) {
@@ -42,7 +43,7 @@ namespace jam
 		static ResourceManagerSDL2* instance;
 		std::unordered_map<std::string, AudioSDL2*> audio;
 		std::unordered_map<std::string, SDL_Texture*> image;
-		std::unordered_map<std::string, TTF_Font*> font;
+		std::unordered_map<std::string, jam::IFont*> font;
     };
 }
 

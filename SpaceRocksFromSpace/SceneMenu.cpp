@@ -17,7 +17,6 @@ namespace game
 	{		
 		this->screenWidth = this->screenHeight = 0;
 		this->maxStarDepth = 0.0;
-		this->vFont = new VectorFont();
 		this->menuText = new std::vector<std::pair<std::string, jam::Rect>>();
 		this->stars = new std::vector<game::Star>();
 		this->nextScene = nullptr;
@@ -38,9 +37,6 @@ namespace game
 		this->stars->clear();
 		delete this->stars;
 		this->stars = nullptr;
-
-		delete this->vFont;
-		this->vFont = nullptr;
 	}
 
 	void SceneMenu::Construct(int screenWidth, int screenHeight)
@@ -64,7 +60,7 @@ namespace game
 		this->nextScene = (IScene*)this;
 
 		this->click = jam::backEnd->ResourceManager()->GetAudio(SOUND_SELECT);
-		this->bgMusic = jam::backEnd->ResourceManager()->GetAudio("assets/sound/main_menu.wav");
+		this->bgMusic = jam::backEnd->ResourceManager()->GetAudio(SOUND_MAINMENU);
 		this->bgMusic->Play();
 	}
 
@@ -96,6 +92,8 @@ namespace game
 
 		float sx, sy, px, py;
 		float halfW, halfH;
+		game::VectorFont* vFont1 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont1"));
+		game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
 		render->GetScreenSize(&this->screenWidth, &this->screenHeight);
 		halfW = this->screenWidth / 2.0;
 		halfH = this->screenHeight / 2.0;
@@ -113,21 +111,21 @@ namespace game
 
 		color.r = color.g = color.b = 255;
 		std::string msg = "SPACE ROCKS";
-		this->vFont->MeasureText(msg, &width, &height, 2.0, 2.0);
+		vFont2->MeasureText(msg, &width, &height);
 		sx = (float)((this->screenWidth - width) / 2);
 		sy = 32 + height;
-		this->vFont->DrawText(render, msg, (int)sx, (int)sy, color, 2.0, 2.0);
+		vFont2->DrawText(render, msg, (int)sx, (int)sy, color);
 		msg = "FROM SPACE";
-		this->vFont->MeasureText(msg, &width, &height, 2.0, 2.0);
+		vFont2->MeasureText(msg, &width, &height);
 		sx = (float)((this->screenWidth - width) / 2);
 		sy += height;
-		this->vFont->DrawText(render, msg, (int)sx, (int)sy, color, 2.0, 2.0);
+		vFont2->DrawText(render, msg, (int)sx, (int)sy, color);
 		// Find the biggest.
 		sy += height * 2;
 		int maxWidth = 0 , maxHeight = 0;
 		for (std::pair<std::string, jam::Rect> menu : *this->menuText)
 		{
-			this->vFont->MeasureText(menu.first, &width, &height);
+			vFont1->MeasureText(menu.first, &width, &height);
 			maxWidth = width > maxWidth ? width : maxWidth;
 			maxHeight = height > maxHeight ? height: maxHeight;
 		}
@@ -141,28 +139,23 @@ namespace game
 		white.r = white.g = white.b = white.a = 255;
 		for (std::vector<std::pair<std::string, jam::Rect>>::iterator menu = this->menuText->begin(); menu != this->menuText->end(); menu++)
 		{
-			menu->second.x1 = sx - border;
-			menu->second.y1 = sy - border;
-			menu->second.x2 = sx + maxWidth + (2 * border);
-			menu->second.y2 = sy + maxHeight + (2 * border);
+			menu->second.x = sx - border;
+			menu->second.y = sy - border;
+			menu->second.w = maxWidth + (2 * border);
+			menu->second.h = maxHeight + (2 * border);
 			if (idx == this->menuIndex)
 			{
-				render->FillRect(menu->second.x1, menu->second.y1, menu->second.x2, menu->second.y2, white);
-				this->vFont->DrawText(render, menu->first, sx, sy + maxHeight, black);
+				render->FillRect(menu->second.x, menu->second.y, menu->second.x + menu->second.w, menu->second.y + menu->second.h, white);
+				vFont1->DrawText(render, menu->first, sx, sy + maxHeight, black);
 			}
 			else
 			{
-				render->FillRect(menu->second.x1, menu->second.y1, menu->second.x2, menu->second.y2, black);
-				this->vFont->DrawText(render, menu->first, sx, sy + maxHeight, white);
+				render->FillRect(menu->second.x, menu->second.y, menu->second.x + menu->second.w, menu->second.y + menu->second.h, black);
+				vFont1->DrawText(render, menu->first, sx, sy + maxHeight, white);
 			}
 			sy += maxHeight + border * 3; // two for this item + one for the top of the next.
 			idx++;
 		}
-		/*
-		this->vFont->DrawText(render, "0123456789", 10, 32, color);
-		this->vFont->DrawText(render, "ABCDEFGHIJKLMNOPQRSTUVWXYZ ", 10, 52, color);
-		this->vFont->DrawText(render, "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG", 10, 92, color, 1.0, 2.0);
-		*/
 	}
 
 	void SceneMenu::GetScreenSize(int* screenWidth, int* screenHeight) 
@@ -323,7 +316,7 @@ namespace game
 			for(std::vector<std::pair<std::string, jam::Rect>>::iterator item = this->menuText->begin(); item != this->menuText->end(); item++)
 			{
 				jam::Rect r = (*item).second;
-				if (x > r.x1 && x <= r.x2 && y >= r.y1 && y <= r.y2)
+				if (x > r.x && x <= (r.x + r.w) && y >= r.y && y <= (r.y + r.h))
 				{
 					this->menuIndex = index;
 					this->MenuSelect((*item).first);
