@@ -38,7 +38,9 @@ namespace game
 		this->gameTime = gameTime;
 		this->score = score;
 		this->level = level;
-		nlohmann::json ret = jam::Configuration::LoadJsonFile(HIGHSCORE_FILENAME);
+		std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
+		filePath /= HIGHSCORE_FILENAME;
+		nlohmann::json ret = jam::Configuration::LoadJsonFile(filePath.string());
 		if (ret == nullptr)
 		{
 			return true; // No file then yes, new high score.
@@ -325,8 +327,11 @@ namespace game
 
 	void SceneHighScoreEntry::SaveInitials()
 	{
+
+		std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
+		filePath /= HIGHSCORE_FILENAME;
 		// Save the data to high score table.		
-		nlohmann::json saveData = jam::Configuration::LoadJsonFile(HIGHSCORE_FILENAME);
+		nlohmann::json saveData = jam::Configuration::LoadJsonFile(filePath.string());
 		bool inserted = false;
 		int index = 0;
 		if (!saveData["scores"].is_array())
@@ -354,7 +359,7 @@ namespace game
 		}
 
 
-		if (!jam::Configuration::SaveJsonFile(HIGHSCORE_FILENAME, saveData))
+		if (!jam::Configuration::SaveJsonFile(filePath.string(), saveData))
 		{
 			std::cerr << "Unable to Save High Score" << std::endl;
 		}

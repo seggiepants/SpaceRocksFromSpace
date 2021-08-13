@@ -20,7 +20,9 @@ namespace game
         this->screenWidth = screenWidth;
         this->screenHeight = screenHeight;
         this->nextScene = this;
-        this->highScores = jam::Configuration::LoadJsonFile(game::HIGHSCORE_FILENAME);
+        std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
+        filePath /= game::HIGHSCORE_FILENAME;
+        this->highScores = jam::Configuration::LoadJsonFile(filePath.string());
 
     }
 

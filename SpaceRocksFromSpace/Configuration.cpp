@@ -106,13 +106,11 @@ namespace jam
 	}
 
 	nlohmann::json Configuration::LoadJsonFile(std::string fileName)
-	{
-		std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
-		filePath /= fileName;		
+	{				
 		std::ostringstream buffer;
 		try
 		{
-			std::ifstream file(filePath.string());
+			std::ifstream file(fileName);
 			if (file.is_open())
 			{
 				std::string line;
@@ -125,7 +123,7 @@ namespace jam
 		}
 		catch (std::exception ex)
 		{
-			std::cerr << "Unable to read file " << filePath.string() << std::endl << ex.what() << std::endl;
+			std::cerr << "Unable to read file " << fileName << std::endl << ex.what() << std::endl;
 		}
 		try
 		{
@@ -133,19 +131,16 @@ namespace jam
 		}
 		catch (std::exception ex)
 		{
-			std::cerr << "Unable to parse file " << filePath.string() << std::endl << ex.what() << std::endl;
+			std::cerr << "Unable to parse file " << fileName << std::endl << ex.what() << std::endl;
 			return nullptr;
 		}
 	}
 
 	bool Configuration::SaveJsonFile(std::string fileName, nlohmann::json data)
 	{
-		std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
-		filePath /= fileName;
-
 		try
 		{
-			std::ofstream file(filePath.string());
+			std::ofstream file(fileName);
 			if (file.is_open())
 			{
 				file << std::setw(4) << data << std::endl;
@@ -153,13 +148,13 @@ namespace jam
 			}
 			else
 			{
-				std::cerr << "File not open: " << filePath.string() << std::endl;
+				std::cerr << "File not open: " << fileName << std::endl;
 				return false;
 			}
 		}
 		catch (std::exception ex)
 		{
-			std::cerr << "Unable to write file " << filePath.string() << std::endl << ex.what() << std::endl;
+			std::cerr << "Unable to write file " << fileName << std::endl << ex.what() << std::endl;
 			return false;
 		}
 		return true;
