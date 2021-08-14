@@ -1,0 +1,15 @@
+#pragma once
+#ifndef __IIMAGE_H__
+#define __IIMAGE_H__
+
+namespace jam
+{
+	class IImage
+	{
+	public:
+		virtual int GetWidth() = 0;
+		virtual int GetHeight() = 0;
+	};
+}
+#endif
+

@@ -1,4 +1,5 @@
 #include "RendererPGE.h"
+#include "ImagePGE.h"
 
 namespace jam
 {
@@ -11,6 +12,24 @@ namespace jam
 	{
 		olc::Pixel p((uint8_t) bg.r, (uint8_t) bg.g, (uint8_t) bg.b, (uint8_t) bg.a);
 		app->Clear(p);
+	}
+
+	void RendererPGE::DrawImage(IImage* img, int x, int y)
+	{
+		olc::Decal* decal = dynamic_cast<ImagePGE*>(img)->GetHandle();
+		if (decal != nullptr)
+		{
+			app->DrawDecal(olc::vf2d((float)x, (float)y), decal);
+		}
+	}
+
+	void RendererPGE::DrawSubImage(IImage* img, int screenX, int screenY, int x, int y, int w, int h)
+	{
+		olc::Decal* decal = dynamic_cast<ImagePGE*>(img)->GetHandle();
+		if (decal != nullptr)
+		{
+			app->DrawPartialDecal(olc::vf2d((float)screenX, (float)screenY),olc::vf2d((float) w, (float) h),  decal, olc::vf2d((float)x, (float)y), olc::vf2d((float)w, (float)h), olc::WHITE);
+		}
 	}
 
 	void RendererPGE::DrawLine(int x1, int y1, int x2, int y2, rgb color)

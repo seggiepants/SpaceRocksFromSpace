@@ -15,6 +15,12 @@ namespace jam
         SDL_RenderClear(this->renderer);
         SDL_SetRenderDrawColor(this->renderer, r, g, b, a);
     }
+
+    void RendererSDL2::DrawImage(IImage* img, int x, int y)
+    {
+
+    }
+
     void RendererSDL2::DrawLine(int x1, int y1, int x2, int y2, rgb color)
     {
         Uint8 r, g, b, a;

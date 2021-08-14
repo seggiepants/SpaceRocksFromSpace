@@ -165,6 +165,9 @@
     <ClInclude Include="IAudio.h" />
     <ClInclude Include="IEntity.h" />
     <ClInclude Include="IFont.h" />
+    <ClInclude Include="IImage.h" />
+    <ClInclude Include="ImagePGE.h" />
+    <ClInclude Include="ImageSDL2.h" />
     <ClInclude Include="JoystickButton.h" />
     <ClInclude Include="KeyCodes.h" />
     <ClInclude Include="KeyCodesPGE.h" />
@@ -206,6 +209,9 @@
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="IAudio.cpp" />
     <ClCompile Include="IEntity.cpp" />
+    <ClCompile Include="IImage.cpp" />
+    <ClCompile Include="ImagePGE.cpp" />
+    <ClCompile Include="ImageSDL2.cpp" />
     <ClCompile Include="KeyCodes.cpp" />
     <ClCompile Include="KeyCodesPGE.cpp" />
     <ClCompile Include="KeyCodesSDL2.cpp" />

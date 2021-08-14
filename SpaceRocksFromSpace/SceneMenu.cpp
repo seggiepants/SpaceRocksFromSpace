@@ -68,7 +68,6 @@ namespace game
 	{
 		jam::rgb bg(0, 0, 0, 255);
 		render->Clear(bg);
-		int x1, y1, x2, y2;
 		int width, height;
 		jam::rgb color;
 
