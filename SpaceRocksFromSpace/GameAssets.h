@@ -4,6 +4,7 @@
 #include <string>
 namespace game
 {
+	const std::string IMG_PLASMA_BG = "assets/image/plasma_bg.png";
 	const std::string SOUND_EXPLOSION = "assets/sound/explosion.wav";
 	const std::string SOUND_GAMEOVER = "assets/sound/game_over.wav";
 	const std::string SOUND_MAINMENU = "assets/sound/main_menu.wav";

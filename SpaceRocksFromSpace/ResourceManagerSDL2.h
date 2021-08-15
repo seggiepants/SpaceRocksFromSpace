@@ -8,6 +8,7 @@
 #include <string>
 #include <unordered_map>
 #include "AudioSDL2.h"
+#include "ImageSDL2.h""
 #include "IFont.h"
 #include "IResourceManager.h"
 namespace jam
@@ -42,7 +43,7 @@ namespace jam
 		ResourceManagerSDL2();
 		static ResourceManagerSDL2* instance;
 		std::unordered_map<std::string, AudioSDL2*> audio;
-		std::unordered_map<std::string, SDL_Texture*> image;
+		std::unordered_map<std::string, jam::ImageSDL2*> image;
 		std::unordered_map<std::string, jam::IFont*> font;
     };
 }

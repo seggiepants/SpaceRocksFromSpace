@@ -1,3 +1,5 @@
+#include <iostream>
+#include <SDL2/SDL_image.h>
 #include "RendererSDL2.h"
 
 namespace jam
@@ -78,5 +80,19 @@ namespace jam
     void RendererSDL2::GetScreenSize(int* width, int* height)
     {
         SDL_GetWindowSize(this->window, width, height);
+    }
+
+    SDL_Texture* RendererSDL2::LoadTexture(std::string fileName)
+    {
+        SDL_Texture* texture = nullptr;
+
+        // Load image at specified path
+        texture = IMG_LoadTexture(this->renderer, fileName.c_str());
+        if (texture == nullptr)
+        {
+            std::cerr << "Unable to load image \"" << fileName << "\" SDL Error: " << SDL_GetError() << std::endl;
+        }
+
+        return texture;
     }
 }

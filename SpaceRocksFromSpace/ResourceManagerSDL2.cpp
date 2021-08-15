@@ -1,5 +1,7 @@
 #include <iostream>
+#include "BackendSDL2.h"
 #include "ResourceManagerSDL2.h"
+#include "Shared.h"
 
 namespace jam
 {
@@ -92,6 +94,20 @@ namespace jam
 		}
 	}
 
-	void ResourceManagerSDL2::PreloadImage(std::string) {}
+	void ResourceManagerSDL2::PreloadImage(std::string filePath) 
+	{
+		if (!instance->HasImage(filePath))
+		{
+			/*
+			ImageSDL2* image = new ImageSDL2();
+			bool success = image->Construct(filePath);
+
+			if (success)
+			{
+				instance->image[filePath] = image;
+			}
+			*/
+		}
+	}
 
 }

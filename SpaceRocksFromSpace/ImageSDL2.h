@@ -12,6 +12,7 @@ namespace jam
     class ImageSDL2 :
         public IImage
     {
+    public:
         ImageSDL2();
         ~ImageSDL2();
         bool Construct(jam::IRenderer* render, std::string fileName);
@@ -19,11 +20,9 @@ namespace jam
         SDL_Texture* GetHandle();
         int GetHeight();
     protected:
-        SDL_Texture* LoadSprite(SDL_Renderer* render, std::string fileName);
         int width;
         int height;
-        int bpp;
-        SDL_Texture* sprite;
+        SDL_Texture* texture;
     };
 
 }

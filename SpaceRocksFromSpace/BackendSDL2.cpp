@@ -19,6 +19,9 @@ namespace jam
 
     BackendSDL2::~BackendSDL2()
     {
+
+        IMG_Quit();
+
         Mix_CloseAudio();
         Mix_Quit();
 
@@ -91,19 +94,25 @@ namespace jam
 				SDL_RenderClear(this->renderer);
 			}
 
+            if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) != (IMG_INIT_JPG | IMG_INIT_PNG))
+            {
+                std::cerr << "Image loading coult not be initialized: \"" << SDL_GetError() << "\"" << std::endl;
+                success = false;
+            }
+
 			if (Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG) < 0) {
-				std::cout << "Sound mixer could not be initialized: \"" << SDL_GetError() << "\"" << std::endl;
+				std::cerr << "Sound mixer could not be initialized: \"" << SDL_GetError() << "\"" << std::endl;
 				success = false;
 			}
 
 			if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 512) < 0) {
-				std::cout << "Sound mixer could not be opened: \"" << SDL_GetError() << "\"" << std::endl;
+				std::cerr << "Sound mixer could not be opened: \"" << SDL_GetError() << "\"" << std::endl;
 				success = false;
 			}
 
 
 			if (TTF_Init() < 0) {
-				std::cout << "Font system could not be initialized : \"" << TTF_GetError() << "\"" << std::endl;
+				std::cerr << "Font system could not be initialized : \"" << TTF_GetError() << "\"" << std::endl;
 				success = false;
 			}
 

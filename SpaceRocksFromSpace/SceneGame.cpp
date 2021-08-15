@@ -67,6 +67,16 @@ namespace game
 		this->score = 0;
 		this->gameTime = 0.0;
 
+		if (!jam::backEnd->ResourceManager()->HasAudio(SOUND_NEXTLEVEL))
+		{
+			jam::backEnd->ResourceManager()->PreloadAudio(SOUND_NEXTLEVEL);
+		}
+
+		if (!jam::backEnd->ResourceManager()->HasAudio(SOUND_GAMEOVER))
+		{
+			jam::backEnd->ResourceManager()->PreloadAudio(SOUND_GAMEOVER);
+		}
+
 		if (this->ship != nullptr)
 		{
 			delete this->ship;
