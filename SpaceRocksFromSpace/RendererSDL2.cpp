@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL2/SDL_image.h>
 #include "RendererSDL2.h"
+#include "ImageSDL2.h"
 
 namespace jam
 {
@@ -20,7 +21,12 @@ namespace jam
 
     void RendererSDL2::DrawImage(IImage* img, int x, int y)
     {
-
+        SDL_Rect dest;
+        SDL_Texture* texture = ((ImageSDL2*)img)->GetHandle();
+        SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+        dest.x = x;
+        dest.y = y;
+        SDL_RenderCopy(this->renderer, texture, NULL, &dest);
     }
 
     void RendererSDL2::DrawLine(int x1, int y1, int x2, int y2, rgb color)
@@ -63,6 +69,20 @@ namespace jam
         delete polygonPoints;
     }
 
+    void RendererSDL2::DrawSubImage(IImage* img, int screenX, int screenY, int x, int y, int w, int h)
+    {
+        SDL_Rect src, dest;
+        SDL_Texture* texture = ((ImageSDL2*)img)->GetHandle();
+        SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
+        dest.x = screenX;
+        dest.y = screenY;
+        src.x = x;
+        src.y = y;
+        src.w = w;
+        src.h = h;
+        SDL_RenderCopy(this->renderer, texture, &src, &dest);
+    }
+
     void RendererSDL2::FillRect(int x1, int y1, int x2, int y2, rgb color)
     {
         Uint8 r, g, b, a;
@@ -80,19 +100,5 @@ namespace jam
     void RendererSDL2::GetScreenSize(int* width, int* height)
     {
         SDL_GetWindowSize(this->window, width, height);
-    }
-
-    SDL_Texture* RendererSDL2::LoadTexture(std::string fileName)
-    {
-        SDL_Texture* texture = nullptr;
-
-        // Load image at specified path
-        texture = IMG_LoadTexture(this->renderer, fileName.c_str());
-        if (texture == nullptr)
-        {
-            std::cerr << "Unable to load image \"" << fileName << "\" SDL Error: " << SDL_GetError() << std::endl;
-        }
-
-        return texture;
     }
 }

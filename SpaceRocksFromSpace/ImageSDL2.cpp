@@ -1,7 +1,9 @@
 #include <iostream>
 #include <SDL2\SDL_image.h>>
+#include "BackendSDL2.h"
 #include "ImageSDL2.h"
-#include "RendererSDL2.h"
+#include "Shared.h"
+
 
 namespace jam
 {
@@ -19,10 +21,11 @@ namespace jam
 		}
 	}
 
-	bool ImageSDL2::Construct(jam::IRenderer* render, std::string fileName)
+	bool ImageSDL2::Construct(std::string fileName)
 	{
-		this->texture = ((jam::RendererSDL2*)render)->LoadTexture(fileName);
-		return false;
+		this->texture = nullptr;
+		this->texture = this->LoadTexture(fileName);
+		return this->texture != nullptr;
 	}
 
 	int ImageSDL2::GetWidth()
@@ -55,4 +58,19 @@ namespace jam
 		else
 			return 0;
 	}
+
+	SDL_Texture* ImageSDL2::LoadTexture(std::string fileName)
+	{
+		SDL_Texture* texture = nullptr;
+
+		// Load image at specified path
+		texture = IMG_LoadTexture(((BackendSDL2*) jam::backEnd)->GetRenderer(), fileName.c_str());
+		if (texture == nullptr)
+		{
+			std::cerr << "Unable to load image \"" << fileName << "\" SDL Error: " << SDL_GetError() << std::endl;
+		}
+
+		return texture;
+	}
+
 }

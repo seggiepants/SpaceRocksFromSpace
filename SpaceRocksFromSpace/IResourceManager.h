@@ -12,13 +12,11 @@ namespace jam
 	public:
 		IResourceManager() {};
 		~IResourceManager() {};
-		//int GetAudio(std::string path);
-		//olc::Font* GetFont(std::string path, int size);
-		//olc::Sprite* GetImage(std::string path);
+		
 		virtual void Clear() = 0;
 		virtual IAudio* GetAudio(std::string) = 0;
 		virtual IFont* GetFont(std::string) = 0;
-		virtual void GetImage(std::string) = 0;
+		virtual IImage* GetImage(std::string) = 0;
 		virtual bool HasAudio(std::string) = 0;
 		virtual bool HasFont(std::string) = 0;
 		virtual bool HasImage(std::string) = 0;

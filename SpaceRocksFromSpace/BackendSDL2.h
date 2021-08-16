@@ -31,6 +31,8 @@ namespace jam
         bool OnUserCreate();
         bool OnUserUpdate(float dt);
         IResourceManager* ResourceManager() { return ResourceManagerSDL2::Instance(); };
+        SDL_Window* GetWindow();
+        SDL_Renderer* GetRenderer();
     protected:
         void CloseJoysticks();
         void OpenJoysticks();

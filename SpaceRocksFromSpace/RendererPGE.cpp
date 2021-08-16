@@ -16,19 +16,21 @@ namespace jam
 
 	void RendererPGE::DrawImage(IImage* img, int x, int y)
 	{
-		olc::Decal* decal = dynamic_cast<ImagePGE*>(img)->GetHandle();
-		if (decal != nullptr)
+		olc::Sprite* sprite = ((ImagePGE*)img)->GetHandle();
+		if (sprite != nullptr)
 		{
-			app->DrawDecal(olc::vf2d((float)x, (float)y), decal);
+			app->DrawSprite(olc::vi2d(x, y), sprite);
+			//app->DrawDecal(olc::vf2d((float)x, (float)y), decal);
 		}
 	}
 
 	void RendererPGE::DrawSubImage(IImage* img, int screenX, int screenY, int x, int y, int w, int h)
 	{
-		olc::Decal* decal = dynamic_cast<ImagePGE*>(img)->GetHandle();
-		if (decal != nullptr)
+		olc::Sprite* sprite = ((ImagePGE*)img)->GetHandle();
+		if (sprite!= nullptr)
 		{
-			app->DrawPartialDecal(olc::vf2d((float)screenX, (float)screenY),olc::vf2d((float) w, (float) h),  decal, olc::vf2d((float)x, (float)y), olc::vf2d((float)w, (float)h), olc::WHITE);
+			app->DrawPartialSprite(olc::vi2d(screenX, screenY), sprite, olc::vi2d(x, y), olc::vi2d(w, h));
+			//app->DrawPartialDecal(olc::vf2d((float)screenX, (float)screenY),olc::vf2d((float) w, (float) h),  decal, olc::vf2d((float)x, (float)y), olc::vf2d((float)w, (float)h), olc::WHITE);
 		}
 	}
 

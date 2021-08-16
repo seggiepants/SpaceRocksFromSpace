@@ -8,7 +8,8 @@
 #include <string>
 #include <unordered_map>
 #include "AudioSDL2.h"
-#include "ImageSDL2.h""
+#include "IImage.h"
+#include "ImageSDL2.h"
 #include "IFont.h"
 #include "IResourceManager.h"
 namespace jam
@@ -26,7 +27,7 @@ namespace jam
 		void Clear();
 		IAudio* GetAudio(std::string);
 		IFont* GetFont(std::string);
-		void GetImage(std::string);
+		IImage* GetImage(std::string);
 		bool HasAudio(std::string);
 		bool HasFont(std::string);
 		bool HasImage(std::string);

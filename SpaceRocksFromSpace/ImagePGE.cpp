@@ -8,16 +8,18 @@ namespace jam
     {
         this->width = this->height = this->bpp = 0;
         this->sprite = nullptr;
-        this->decal = nullptr;
+        //this->decal = nullptr;
     }
 
     ImagePGE::~ImagePGE()
     {
+        /*
         if (this->decal != nullptr)
         {
             delete this->decal;
             this->decal = nullptr;
         }
+        */
 
         if (this->sprite != nullptr)
         {
@@ -26,14 +28,17 @@ namespace jam
         }
     }
 
-    bool ImagePGE::Construct(jam::IRenderer* render, std::string fileName)
+    bool ImagePGE::Construct(std::string fileName)
     {
+        //this->decal = nullptr;
         this->sprite = this->LoadSprite(fileName);
+        /*
         if (this->sprite != nullptr)
         {
             this->decal = new olc::Decal(this->sprite);
         }
-        return false;
+        */
+        return this->sprite != nullptr;
     }
 
     int ImagePGE::GetWidth()
@@ -61,9 +66,9 @@ namespace jam
 
     }
 
-    olc::Decal* ImagePGE::GetHandle()
+    olc::Sprite* ImagePGE::GetHandle()
     {
-        return this->decal;
+        return this->sprite;
     }
 
     olc::Sprite* ImagePGE::LoadSprite(std::string fileName)

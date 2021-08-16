@@ -3,6 +3,7 @@
 #include <sstream>
 #include "GameAssets.h"
 #include "IAudio.h"
+#include "IImage.h"
 #include "IResourceManager.h"
 #include "Rect.h"
 #include "SceneGame.h"
@@ -77,6 +78,11 @@ namespace game
 			jam::backEnd->ResourceManager()->PreloadAudio(SOUND_GAMEOVER);
 		}
 
+		if (!jam::backEnd->ResourceManager()->HasImage(IMG_PLASMA_BG))
+		{
+			jam::backEnd->ResourceManager()->PreloadImage(IMG_PLASMA_BG);
+		}
+
 		if (this->ship != nullptr)
 		{
 			delete this->ship;
@@ -110,6 +116,7 @@ namespace game
 		game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
 
 		render->Clear(bg);
+		render->DrawImage(jam::backEnd->ResourceManager()->GetImage(IMG_PLASMA_BG), 0, 0);
 		render->GetScreenSize(&width, &height);
 		this->screenWidth = width;
 		this->screenHeight = height;

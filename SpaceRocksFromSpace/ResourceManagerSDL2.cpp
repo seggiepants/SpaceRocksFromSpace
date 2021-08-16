@@ -47,7 +47,10 @@ namespace jam
 		return instance->font[key];
 	}
 
-	void ResourceManagerSDL2::GetImage(std::string) {}
+	IImage* ResourceManagerSDL2::GetImage(std::string key) 
+	{
+		return  instance->image[key];
+	}
 
 	bool ResourceManagerSDL2::HasAudio(std::string filePath) 
 	{ 
@@ -63,7 +66,12 @@ namespace jam
 		return (search != instance->font.end());
 	}
 
-	bool ResourceManagerSDL2::HasImage(std::string) { return false; }
+	bool ResourceManagerSDL2::HasImage(std::string key) 
+	{ 
+		std::unordered_map<std::string, jam::ImageSDL2*>::const_iterator search = instance->image.find(key);
+
+		return (search != instance->image.end());
+	}
 	
 	void ResourceManagerSDL2::PreloadAudio(std::string filePath) 
 	{
@@ -98,7 +106,6 @@ namespace jam
 	{
 		if (!instance->HasImage(filePath))
 		{
-			/*
 			ImageSDL2* image = new ImageSDL2();
 			bool success = image->Construct(filePath);
 
@@ -106,7 +113,10 @@ namespace jam
 			{
 				instance->image[filePath] = image;
 			}
-			*/
+			else
+			{
+				std::cerr << "Error loading image \"" << filePath << "\"" << std::endl << SDL_GetError() << std::endl;
+			}
 		}
 	}
 

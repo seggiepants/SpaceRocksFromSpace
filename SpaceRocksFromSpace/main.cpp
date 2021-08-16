@@ -5,7 +5,7 @@
 #define BACKEND_PGE 0
 #define BACKEND_SDL2 1
 
-#define BACKEND BACKEND_PGE2
+#define BACKEND BACKEND_PGE
 
 #if BACKEND == BACKEND_PGE
 #include "BackendPGE.h"

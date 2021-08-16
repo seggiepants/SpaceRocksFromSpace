@@ -16,6 +16,7 @@ namespace jam
 		virtual void DrawLine(int x1, int y1, int x2, int y2, jam::rgb color) = 0;
 		virtual void DrawPoint(int x, int y, jam::rgb color) = 0;
 		virtual void DrawPolygon(float x, float y, std::vector<jam::Point2Df>* points, jam::rgb color) = 0;
+		virtual void DrawSubImage(IImage* img, int screenX, int screenY, int x, int y, int w, int h) = 0;
 		virtual void FillRect(int x1, int y1, int x2, int y2, jam::rgb color) = 0;
 		virtual void GetScreenSize(int* width, int* height) = 0;
 	};

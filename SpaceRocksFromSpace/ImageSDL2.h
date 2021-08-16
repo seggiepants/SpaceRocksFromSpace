@@ -15,11 +15,12 @@ namespace jam
     public:
         ImageSDL2();
         ~ImageSDL2();
-        bool Construct(jam::IRenderer* render, std::string fileName);
+        bool Construct(std::string fileName);
         int GetWidth();
         SDL_Texture* GetHandle();
         int GetHeight();
     protected:
+        SDL_Texture* LoadTexture(std::string fileName);
         int width;
         int height;
         SDL_Texture* texture;

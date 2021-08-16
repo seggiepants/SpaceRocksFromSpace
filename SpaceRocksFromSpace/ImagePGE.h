@@ -15,9 +15,9 @@ namespace jam
     public:
         ImagePGE();
         ~ImagePGE();
-        bool Construct(jam::IRenderer* render, std::string fileName);
+        bool Construct(std::string fileName);
         int GetWidth();
-        olc::Decal* GetHandle();
+        olc::Sprite* GetHandle();
         int GetHeight();
     protected:
         olc::Sprite* LoadSprite(std::string fileName); 
@@ -25,7 +25,7 @@ namespace jam
         int height;
         int bpp;
         olc::Sprite* sprite;
-        olc::Decal* decal;
+        //olc::Decal* decal;
     };
 }
 

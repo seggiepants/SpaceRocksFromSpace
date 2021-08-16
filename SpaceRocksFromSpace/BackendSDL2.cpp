@@ -457,4 +457,14 @@ namespace jam
         return true;
     }
 
+    SDL_Window* BackendSDL2::GetWindow()
+    {
+        return this->window;
+    }
+
+    SDL_Renderer* BackendSDL2::GetRenderer()
+    {
+        return this->renderer;
+    }
+
 }

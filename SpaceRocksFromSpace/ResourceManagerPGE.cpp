@@ -1,6 +1,7 @@
 #define OLC_PGEX_SOUND
 #define OLC_PGEX_TTF
 #include <iostream>
+#include "ImagePGE.h"
 #include "ResourceManagerPGE.h"
 
 namespace jam
@@ -120,7 +121,10 @@ namespace jam
 		return this->font[key];
 	}
 
-	void ResourceManagerPGE::GetImage(std::string) {}
+	IImage* ResourceManagerPGE::GetImage(std::string key) 
+	{
+		return this->image[key];
+	}
 
 	bool ResourceManagerPGE::HasAudio(std::string path)
 	{
@@ -140,7 +144,7 @@ namespace jam
 
 	bool ResourceManagerPGE::HasImage(std::string path)
 	{
-		std::unordered_map<std::string, olc::Sprite*>::const_iterator search = instance->image.find(path);
+		std::unordered_map<std::string, jam::ImagePGE*>::const_iterator search = instance->image.find(path);
 
 		return (search != instance->image.end());
 	}
@@ -176,19 +180,20 @@ namespace jam
 
 	}
 
-	void ResourceManagerPGE::PreloadImage(std::string path)
+	void ResourceManagerPGE::PreloadImage(std::string filePath)
 	{
-		if (!instance->HasImage(path))
+		if (!instance->HasImage(filePath))
 		{
-			// Load image at specified path
-			olc::Sprite* sprite = new olc::Sprite();
-			olc::rcode ret = sprite->LoadFromFile(path);
-			if (ret != olc::rcode::OK)
+			ImagePGE* image = new ImagePGE();
+			bool success = image->Construct(filePath);
+
+			if (success)
 			{
-				std::cout << "Unable to load image \"" << path << "\"" << std::endl;
+				instance->image[filePath] = image;
 			}
-			else {
-				instance->image[path] = sprite;
+			else
+			{
+				std::cerr << "Error loading image \"" << filePath << "\"" << std::endl;
 			}
 		}
 	}
