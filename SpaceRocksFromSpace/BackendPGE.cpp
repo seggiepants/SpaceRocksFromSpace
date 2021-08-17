@@ -257,7 +257,9 @@ namespace jam
             this->currentScene->Update(dt);
             if (this->render != nullptr)
             {
+                this->SetPixelMode(olc::Pixel::ALPHA);
                 this->currentScene->Draw((jam::IRenderer*)this->render);
+                this->SetPixelMode(olc::Pixel::NORMAL);
             }
         }
         this->currentScene = this->currentScene->NextScene();

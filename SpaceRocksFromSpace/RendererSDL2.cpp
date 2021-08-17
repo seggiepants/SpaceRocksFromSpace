@@ -73,9 +73,10 @@ namespace jam
     {
         SDL_Rect src, dest;
         SDL_Texture* texture = ((ImageSDL2*)img)->GetHandle();
-        SDL_QueryTexture(texture, NULL, NULL, &dest.w, &dest.h);
         dest.x = screenX;
         dest.y = screenY;
+        dest.w = w;
+        dest.h = h;
         src.x = x;
         src.y = y;
         src.w = w;

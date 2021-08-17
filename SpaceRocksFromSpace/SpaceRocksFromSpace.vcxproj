@@ -159,6 +159,7 @@
     <ClInclude Include="AudioSDL2.h" />
     <ClInclude Include="BackendPGE.h" />
     <ClInclude Include="BackendSDL2.h" />
+    <ClInclude Include="BitmapFont.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="GameAssets.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="AudioSDL2.cpp" />
     <ClCompile Include="BackendPGE.cpp" />
     <ClCompile Include="BackendSDL2.cpp" />
+    <ClCompile Include="BitmapFont.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="IAudio.cpp" />

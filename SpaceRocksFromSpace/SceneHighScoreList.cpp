@@ -1,5 +1,6 @@
 #include <sstream>
 #include "SceneHighScoreList.h"
+#include "BitmapFont.h"
 #include "Configuration.h"
 #include "GameAssets.h"
 #include "SceneManager.h";
@@ -32,7 +33,8 @@ namespace game
         const std::string BUTTON_MSG = "BACK";
         int x, y, w, h, charW, charH;
 
-        game::VectorFont* vFont1 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont1"));
+        //game::VectorFont* vFont1 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont1"));
+        jam::BitmapFont* vFont1 = static_cast<jam::BitmapFont*>(jam::backEnd->ResourceManager()->GetFont("nova16pt"));
         game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
 
         render->GetScreenSize(&this->screenWidth, &this->screenHeight);

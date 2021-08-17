@@ -5,7 +5,7 @@
 #define BACKEND_PGE 0
 #define BACKEND_SDL2 1
 
-#define BACKEND BACKEND_PGE
+#define BACKEND BACKEND_SDL2
 
 #if BACKEND == BACKEND_PGE
 #include "BackendPGE.h"
@@ -20,6 +20,7 @@
 #include "SceneHighScoreEntry.h"
 #include "SceneHighScoreList.h"
 #include "SceneMenu.h"
+#include "BitmapFont.h"
 #include "VectorFont.h"
 
 #define SCREEN_WIDTH 640
@@ -46,6 +47,9 @@
             font2->Construct(2.0, 2.0);
             jam::backEnd->ResourceManager()->PreloadFont("vfont1", font);
             jam::backEnd->ResourceManager()->PreloadFont("vfont2", font2);
+            jam::BitmapFont* bmpFont = new jam::BitmapFont();
+            bmpFont->Construct("assets/font/NovaSquareBoldOblique16pt.json");
+            jam::backEnd->ResourceManager()->PreloadFont("nova16pt", bmpFont);
 
             game::SceneGame* sceneGame = new game::SceneGame();
             game::SceneHighScoreEntry* sceneHighScoreEntry = new game::SceneHighScoreEntry();
