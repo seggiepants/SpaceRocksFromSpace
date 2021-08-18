@@ -1,6 +1,6 @@
+#pragma once
 #ifndef __RESOURCE_MANAGER_PGE_H__
 #define __RESOURCE_MANAGER_PGE_H__
-#pragma once
 #include <unordered_map>
 #include <olcPixelGameEngine.h>
 #include <olcPGEX_Sound.h>
@@ -32,6 +32,7 @@ namespace jam
 		void PreloadAudio(std::string);
 		void PreloadFont(std::string key, IFont* font);
 		void PreloadImage(std::string);
+		IFont* LoadTTFFont(std::string fileName, int pointSize);
 		static IResourceManager* Instance() {
 			if (!instance) {
 				instance = new ResourceManagerPGE();

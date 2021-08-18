@@ -25,6 +25,8 @@ namespace jam
         Mix_CloseAudio();
         Mix_Quit();
 
+        TTF_Quit();
+
         if (this->render != nullptr)
         {
             delete this->render;

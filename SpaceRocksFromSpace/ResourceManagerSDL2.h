@@ -34,6 +34,7 @@ namespace jam
 		void PreloadAudio(std::string);
 		void PreloadFont(std::string key, IFont* font);
 		void PreloadImage(std::string);
+		IFont* LoadTTFFont(std::string fileName, int pointSize);
 		static IResourceManager* Instance() {
 			if (!instance) {
 				instance = new ResourceManagerSDL2();

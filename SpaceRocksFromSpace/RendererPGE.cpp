@@ -82,4 +82,9 @@ namespace jam
 		*height = size.y;
 	}
 
+	olc::PixelGameEngine* RendererPGE::GetApp()
+	{
+		return this->app;
+	}
+
 }

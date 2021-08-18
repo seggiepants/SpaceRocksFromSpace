@@ -2,6 +2,7 @@
 #include "BackendSDL2.h"
 #include "ResourceManagerSDL2.h"
 #include "Shared.h"
+#include "TTFFontSDL2.h"
 
 namespace jam
 {
@@ -118,6 +119,13 @@ namespace jam
 				std::cerr << "Error loading image \"" << filePath << "\"" << std::endl << SDL_GetError() << std::endl;
 			}
 		}
+	}
+
+	IFont* ResourceManagerSDL2::LoadTTFFont(std::string fileName, int pointSize)
+	{
+		TTFFontSDL2* font = new TTFFontSDL2();
+		font->Construct(fileName, pointSize);
+		return (IFont*)font;
 	}
 
 }

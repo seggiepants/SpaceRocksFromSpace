@@ -1,5 +1,6 @@
 #define OLC_PGE_APPLICATION
 #define OLC_PGE_GAMEPAD
+#define OLC_PGEX_TTF
 #include "BackendPGE.h"
 #include "RendererPGE.h"
 #include "KeyCodesPGE.h"
@@ -33,6 +34,7 @@ namespace jam
             this->sAppName = title;
         }
         olc::SOUND::InitialiseAudio();
+        olc::Font::init();
         return ret == olc::rcode::OK;
     }
 

@@ -185,6 +185,8 @@
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Shot.h" />
     <ClInclude Include="Star.h" />
+    <ClInclude Include="TTFFontPGE.h" />
+    <ClInclude Include="TTFFontSDL2.h" />
     <ClInclude Include="UFO.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="VectorFont.h" />
@@ -227,6 +229,8 @@
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Shot.cpp" />
     <ClCompile Include="Star.cpp" />
+    <ClCompile Include="TTFFontPGE.cpp" />
+    <ClCompile Include="TTFFontSDL2.cpp" />
     <ClCompile Include="UFO.cpp" />
     <ClCompile Include="VectorFont.cpp" />
     <ClCompile Include="IBackend.cpp" />

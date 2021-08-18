@@ -1,8 +1,8 @@
-#define OLC_PGEX_SOUND
-#define OLC_PGEX_TTF
 #include <iostream>
-#include "ImagePGE.h"
+#define OLC_PGEX_SOUND
 #include "ResourceManagerPGE.h"
+#include "ImagePGE.h"
+#include "TTFFontPGE.h"
 
 namespace jam
 {
@@ -196,5 +196,12 @@ namespace jam
 				std::cerr << "Error loading image \"" << filePath << "\"" << std::endl;
 			}
 		}
+	}
+
+	IFont* ResourceManagerPGE::LoadTTFFont(std::string fileName, int pointSize)
+	{
+		TTFFontPGE* font = new TTFFontPGE();
+		font->Construct(fileName, pointSize);
+		return (IFont*)font;
 	}
 }

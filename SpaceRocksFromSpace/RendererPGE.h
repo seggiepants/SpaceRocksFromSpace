@@ -18,6 +18,7 @@ namespace jam
         void DrawSubImage(IImage* img, int screenX, int screenY, int x, int y, int w, int h);
         void FillRect(int x1, int y1, int x2, int y2, rgb color);
         void GetScreenSize(int* width, int* height);
+        olc::PixelGameEngine* GetApp();
     protected:        
         olc::PixelGameEngine* app;
     };

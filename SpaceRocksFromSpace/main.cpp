@@ -51,6 +51,9 @@
             bmpFont->Construct("assets/font/NovaSquareBoldOblique16pt.json");
             jam::backEnd->ResourceManager()->PreloadFont("nova16pt", bmpFont);
 
+            jam::IFont* ttfFont = jam::backEnd->ResourceManager()->LoadTTFFont("assets/font/Kenney Future Narrow.ttf", 32);
+            jam::backEnd->ResourceManager()->PreloadFont("Kenney32pt", ttfFont);
+
             game::SceneGame* sceneGame = new game::SceneGame();
             game::SceneHighScoreEntry* sceneHighScoreEntry = new game::SceneHighScoreEntry();
             game::SceneHighScoreList* sceneHighScoreList = new game::SceneHighScoreList();

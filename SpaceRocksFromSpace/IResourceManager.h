@@ -23,6 +23,7 @@ namespace jam
 		virtual void PreloadAudio(std::string) = 0;
 		virtual void PreloadFont(std::string key, IFont* font) = 0;
 		virtual void PreloadImage(std::string) = 0;
+		virtual IFont* LoadTTFFont(std::string fileName, int pointSize) = 0;
 		//static IResourceManager* Instance() = 0;
     };
 }
