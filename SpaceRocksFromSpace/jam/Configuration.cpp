@@ -103,6 +103,7 @@ namespace jam
 		ss << appPath.c_str() << game::COMPANY << "/" << game::PRODUCT << "/" << game::VERSION << "/";
 		return std::string(ss.str());
 #endif
+		return "";
 	}
 
 	nlohmann::json Configuration::LoadJsonFile(std::string fileName)

@@ -3,7 +3,7 @@
 #include "../../jam/BitmapFont.h"
 #include "../../jam/Configuration.h"
 #include "../GameAssets.h"
-#include "../../jam/SceneManager.h";
+#include "../../jam/SceneManager.h"
 #include "../VectorFont.h"
 
 namespace game

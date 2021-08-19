@@ -1,5 +1,5 @@
 #include <iostream>
-#include <SDL2\SDL_image.h>>
+#include <SDL2/SDL_image.h>
 #include "BackendSDL2.h"
 #include "ImageSDL2.h"
 #include "../../Shared.h"

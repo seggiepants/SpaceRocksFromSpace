@@ -160,8 +160,8 @@ namespace game
 	{
 		float x, y, x1, y1, xScreen, yScreen;
 		float sinAngle, cosAngle;
-		sinAngle = std::sinf(this->angle);
-		cosAngle = std::cosf(this->angle);
+		sinAngle = sinf(this->angle);
+		cosAngle = cosf(this->angle);
 		for (int i = 0; i < this->model->size(); i++)
 		{
 			x = this->model->at(i).x * this->scale;

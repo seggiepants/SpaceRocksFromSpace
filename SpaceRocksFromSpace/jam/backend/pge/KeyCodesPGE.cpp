@@ -1,4 +1,3 @@
-#pragma once
 #ifndef __KEY_CODES_PGE_H__
 #define __KEY_CODES_PGE_H__
 

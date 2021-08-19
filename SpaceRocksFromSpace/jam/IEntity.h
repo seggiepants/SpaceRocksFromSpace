@@ -12,9 +12,9 @@ namespace jam
 		virtual void Draw(IRenderer* render) = 0;
 		virtual void Update(IScene* scene, float dt) = 0;
 		float GetX() { return this->x; };
-		float SetX(float x) { this->x = x; };
+		void SetX(float x) { this->x = x; };
 		float GetY() { return this->y; };
-		float SetY(float y) { this->y = y; };
+		void SetY(float y) { this->y = y; };
 		virtual bool IsDeleted() = 0;
 		virtual void SetPosition(float x, float y) = 0;
 	protected:

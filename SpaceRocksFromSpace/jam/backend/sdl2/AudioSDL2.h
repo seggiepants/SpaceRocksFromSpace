@@ -2,7 +2,7 @@
 #ifndef __AUDIOSDL2_H__
 #define __AUDIOSDL2_H__
 #include <string>
-#include <SDL2\SDL_mixer.h>
+#include <SDL2/SDL_mixer.h>
 #include "../../IAudio.h"
 
 namespace jam

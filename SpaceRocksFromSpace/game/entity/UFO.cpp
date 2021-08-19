@@ -187,8 +187,8 @@ namespace game
 		// Update the model.
 		float x, y, x1, y1, xScreen, yScreen;
 		float sinAngle, cosAngle;
-		sinAngle = std::sinf(M_PI); // this->heading + M_PI);
-		cosAngle = std::cosf(M_PI); // this->heading + M_PI_2);
+		sinAngle = sinf(M_PI); // this->heading + M_PI);
+		cosAngle = cosf(M_PI); // this->heading + M_PI_2);
 		for (int i = 0; i < this->model.size(); i++)
 		{
 			x = this->model[i].x;

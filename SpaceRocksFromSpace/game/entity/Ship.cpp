@@ -159,7 +159,7 @@ namespace game
 		this->moveSpeed = shipMoveSpeed;
 		this->vx += cos(this->heading - headingAdjust);
 		this->vy += sin(this->heading - headingAdjust);
-		float magnitude = std::sqrtf(this->vx * this->vx + this->vy * this->vy);
+		float magnitude = std::sqrt(this->vx * this->vx + this->vy * this->vy);
 		this->vx /= magnitude;
 		this->vy /= magnitude;
 		return true;

@@ -3,7 +3,7 @@
 #define __IMAGE_SDL2_H__
 
 #include <string>
-#include <SDL2\SDL.h>
+#include <SDL2/SDL.h>
 #include "../../IImage.h"
 #include "../../IRenderer.h"
 

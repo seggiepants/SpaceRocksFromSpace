@@ -1,27 +1,27 @@
 #include <cstdlib>
 #include <time.h>
-#include "Shared.h"
+#include "jam/Shared.h"
 
 #define BACKEND_PGE 0
 #define BACKEND_SDL2 1
 
-#define BACKEND BACKEND_SDL2
+#define BACKEND BACKEND_PGE
 
 #if BACKEND == BACKEND_PGE
-#include "BackendPGE.h"
+#include "jam/backend/pge/BackendPGE.h"
 #endif
 
 #if BACKEND == BACKEND_SDL2
-#include "BackendSDL2.h"
+#include "jam/backend/sdl2/BackendSDL2.h"
 #endif
 
-#include "SceneManager.h"
-#include "SceneGame.h"
-#include "SceneHighScoreEntry.h"
-#include "SceneHighScoreList.h"
-#include "SceneMenu.h"
-#include "BitmapFont.h"
-#include "VectorFont.h"
+#include "jam/SceneManager.h"
+#include "game/scene/SceneGame.h"
+#include "game/scene/SceneHighScoreEntry.h"
+#include "game/scene/SceneHighScoreList.h"
+#include "game/scene/SceneMenu.h"
+#include "jam/BitmapFont.h"
+#include "game/VectorFont.h"
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480

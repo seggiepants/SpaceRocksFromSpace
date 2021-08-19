@@ -1,4 +1,3 @@
-#pragma once
 #ifndef __KEY_CODES_SDL2_H__
 #define __KEY_CODES_SDL2_H__
 #include <SDL2/SDL.h>

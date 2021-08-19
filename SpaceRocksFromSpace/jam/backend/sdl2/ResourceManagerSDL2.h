@@ -1,10 +1,10 @@
 #pragma once
 #ifndef __RESOURCE_MANAGER_SDL2_H__
 #define __RESOURCE_MANAGER_SDL2_H__
-#include <SDL2\SDL.h>
-#include <SDL2\SDL_image.h>
-#include <SDL2\SDL_mixer.h>
-#include <SDL2\SDL_ttf.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include <string>
 #include <unordered_map>
 #include "AudioSDL2.h"
