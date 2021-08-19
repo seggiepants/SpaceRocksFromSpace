@@ -13,273 +13,315 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\jam">
+      <UniqueIdentifier>{65b84b65-181b-4478-a31b-6c55dab57e6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game">
+      <UniqueIdentifier>{0e9cd92c-5102-4bd8-a2d2-5d68e7fa84f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\entity">
+      <UniqueIdentifier>{efac66f8-9e5c-40da-8360-b19659ad855c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game\scene">
+      <UniqueIdentifier>{2f87faf6-81db-46e7-8c95-983a9f1b3d29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\jam\backend">
+      <UniqueIdentifier>{609b1fc5-9510-47ea-a0a2-84a2ff0c94ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\jam\backend\pge">
+      <UniqueIdentifier>{e5672acf-57e0-49d6-a47c-b00e8a00ffb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\jam\backend\sdl2">
+      <UniqueIdentifier>{bdf96bad-c68f-43d8-a205-881c82017e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\jam">
+      <UniqueIdentifier>{34059970-29e5-4e31-b85f-3a752d6a00eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\jam\backend">
+      <UniqueIdentifier>{51a66027-df1e-45f6-87d2-61bf0ae0d9ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\jam\backend\pge">
+      <UniqueIdentifier>{ff74a748-1bf5-48f5-b2f7-e6fc5c0f61c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\jam\backend\sdl2">
+      <UniqueIdentifier>{9c35593e-4312-43bc-a142-6ca8726d49de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game">
+      <UniqueIdentifier>{a055cd6a-dc24-4d73-aa2b-9dba3ce71559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game\entity">
+      <UniqueIdentifier>{26f95114-cad0-4744-b6db-3ba6f4ffc2d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game\scene">
+      <UniqueIdentifier>{7d2dd4f0-6e46-4678-bb9c-6715dc28f44d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IBackend.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BackendPGE.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BackendSDL2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManagerPGE.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManagerSDL2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RendererPGE.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RendererSDL2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RGB.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VectorFont.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Point2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Star.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyCodes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyCodesSDL2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyCodesPGE.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Shot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="JoystickButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MouseButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ship.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\scene\SceneGame.h">
+      <Filter>Header Files\game\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\scene\SceneHighScoreEntry.h">
+      <Filter>Header Files\game\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Shared.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\scene\SceneHighScoreList.h">
+      <Filter>Header Files\game\scene</Filter>
     </ClInclude>
-    <ClInclude Include="IAudio.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\entity\UFO.h">
+      <Filter>Header Files\game\entity</Filter>
     </ClInclude>
-    <ClInclude Include="AudioPGE.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\entity\Star.h">
+      <Filter>Header Files\game\entity</Filter>
     </ClInclude>
-    <ClInclude Include="AudioSDL2.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\entity\Shot.h">
+      <Filter>Header Files\game\entity</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\entity\Ship.h">
+      <Filter>Header Files\game\entity</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\entity\Rock.h">
+      <Filter>Header Files\game\entity</Filter>
     </ClInclude>
-    <ClInclude Include="GameAssets.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\entity\Particle.h">
+      <Filter>Header Files\game\entity</Filter>
     </ClInclude>
-    <ClInclude Include="SceneHighScoreEntry.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="game\scene\SceneMenu.h">
+      <Filter>Header Files\game\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Configuration.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="jam/backend/pge/AudioPGE.h">
+      <Filter>Header Files\jam\backend\pge</Filter>
     </ClInclude>
-    <ClInclude Include="Version.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="jam/backend/pge/BackendPGE.h">
+      <Filter>Header Files\jam\backend\pge</Filter>
     </ClInclude>
-    <ClInclude Include="SceneHighScoreList.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="jam\backend\pge\ImagePGE.h">
+      <Filter>Header Files\jam\backend\pge</Filter>
     </ClInclude>
-    <ClInclude Include="UFO.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="jam\backend\pge\KeyCodesPGE.h">
+      <Filter>Header Files\jam\backend\pge</Filter>
     </ClInclude>
-    <ClInclude Include="IFont.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="jam\backend\pge\RendererPGE.h">
+      <Filter>Header Files\jam\backend\pge</Filter>
     </ClInclude>
-    <ClInclude Include="IImage.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="jam\backend\pge\ResourceManagerPGE.h">
+      <Filter>Header Files\jam\backend\pge</Filter>
     </ClInclude>
-    <ClInclude Include="ImagePGE.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="jam\backend\pge\TTFFontPGE.h">
+      <Filter>Header Files\jam\backend\pge</Filter>
     </ClInclude>
-    <ClInclude Include="ImageSDL2.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="jam/backend/sdl2/AudioSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2</Filter>
     </ClInclude>
-    <ClInclude Include="BitmapFont.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="jam/backend/sdl2/BackendSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2</Filter>
     </ClInclude>
-    <ClInclude Include="TTFFontSDL2.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="jam\backend\sdl2\ImageSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2</Filter>
     </ClInclude>
-    <ClInclude Include="TTFFontPGE.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="jam\backend\sdl2\KeyCodesSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\sdl2\RendererSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\sdl2\ResourceManagerSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\sdl2\TTFFontSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\IBackend.h">
+      <Filter>Header Files\jam\backend</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\BitmapFont.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\Collision.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\Configuration.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\IAudio.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\IEntity.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\IFont.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\IImage.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\IRenderer.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\IResourceManager.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\IScene.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\JoystickButton.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\KeyCodes.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\MouseButton.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\Point2D.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\Rect.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\RGB.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\SceneManager.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\Shared.h">
+      <Filter>Header Files\jam</Filter>
+    </ClInclude>
+    <ClInclude Include="game\GameAssets.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\VectorFont.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Version.h">
+      <Filter>Header Files\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IBackend.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BackendPGE.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BackendSDL2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IResourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManagerPGE.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\sdl2\AudioSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManagerSDL2.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\sdl2\BackendSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2</Filter>
     </ClCompile>
-    <ClCompile Include="SceneMenu.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\sdl2\ImageSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2</Filter>
     </ClCompile>
-    <ClCompile Include="IRenderer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\sdl2\KeyCodesSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2</Filter>
     </ClCompile>
-    <ClCompile Include="RendererPGE.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\sdl2\RendererSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2</Filter>
     </ClCompile>
-    <ClCompile Include="RendererSDL2.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\sdl2\ResourceManagerSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2</Filter>
     </ClCompile>
-    <ClCompile Include="RGB.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\sdl2\TTFFontSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2</Filter>
     </ClCompile>
-    <ClCompile Include="VectorFont.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\pge\AudioPGE.cpp">
+      <Filter>Source Files\jam\backend\pge</Filter>
     </ClCompile>
-    <ClCompile Include="Point2D.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\pge\BackendPGE.cpp">
+      <Filter>Source Files\jam\backend\pge</Filter>
     </ClCompile>
-    <ClCompile Include="Star.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\pge\ImagePGE.cpp">
+      <Filter>Source Files\jam\backend\pge</Filter>
     </ClCompile>
-    <ClCompile Include="KeyCodes.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\pge\KeyCodesPGE.cpp">
+      <Filter>Source Files\jam\backend\pge</Filter>
     </ClCompile>
-    <ClCompile Include="KeyCodesPGE.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\pge\RendererPGE.cpp">
+      <Filter>Source Files\jam\backend\pge</Filter>
     </ClCompile>
-    <ClCompile Include="KeyCodesSDL2.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\pge\ResourceManagerPGE.cpp">
+      <Filter>Source Files\jam\backend\pge</Filter>
     </ClCompile>
-    <ClCompile Include="IEntity.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\pge\TTFFontPGE.cpp">
+      <Filter>Source Files\jam\backend\pge</Filter>
     </ClCompile>
-    <ClCompile Include="Rock.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\backend\IBackend.cpp">
+      <Filter>Source Files\jam\backend</Filter>
     </ClCompile>
-    <ClCompile Include="Shot.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\scene\SceneMenu.cpp">
+      <Filter>Source Files\game\scene</Filter>
     </ClCompile>
-    <ClCompile Include="SceneGame.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\scene\SceneGame.cpp">
+      <Filter>Source Files\game\scene</Filter>
     </ClCompile>
-    <ClCompile Include="Ship.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\scene\SceneHighScoreEntry.cpp">
+      <Filter>Source Files\game\scene</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\scene\SceneHighScoreList.cpp">
+      <Filter>Source Files\game\scene</Filter>
     </ClCompile>
-    <ClCompile Include="Shared.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\entity\UFO.cpp">
+      <Filter>Source Files\game\entity</Filter>
     </ClCompile>
-    <ClCompile Include="IAudio.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\entity\Star.cpp">
+      <Filter>Source Files\game\entity</Filter>
     </ClCompile>
-    <ClCompile Include="AudioPGE.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\entity\Shot.cpp">
+      <Filter>Source Files\game\entity</Filter>
     </ClCompile>
-    <ClCompile Include="AudioSDL2.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\entity\Ship.cpp">
+      <Filter>Source Files\game\entity</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\entity\Rock.cpp">
+      <Filter>Source Files\game\entity</Filter>
     </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\entity\Particle.cpp">
+      <Filter>Source Files\game\entity</Filter>
     </ClCompile>
-    <ClCompile Include="SceneHighScoreEntry.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="game\VectorFont.cpp">
+      <Filter>Source Files\game</Filter>
     </ClCompile>
-    <ClCompile Include="Configuration.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\BitmapFont.cpp">
+      <Filter>Source Files\jam</Filter>
     </ClCompile>
-    <ClCompile Include="SceneHighScoreList.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\Collision.cpp">
+      <Filter>Source Files\jam</Filter>
     </ClCompile>
-    <ClCompile Include="UFO.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\Configuration.cpp">
+      <Filter>Source Files\jam</Filter>
     </ClCompile>
-    <ClCompile Include="IImage.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\IAudio.cpp">
+      <Filter>Source Files\jam</Filter>
     </ClCompile>
-    <ClCompile Include="ImagePGE.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\IEntity.cpp">
+      <Filter>Source Files\jam</Filter>
     </ClCompile>
-    <ClCompile Include="ImageSDL2.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\IImage.cpp">
+      <Filter>Source Files\jam</Filter>
     </ClCompile>
-    <ClCompile Include="BitmapFont.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\IRenderer.cpp">
+      <Filter>Source Files\jam</Filter>
     </ClCompile>
-    <ClCompile Include="TTFFontSDL2.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\IResourceManager.cpp">
+      <Filter>Source Files\jam</Filter>
     </ClCompile>
-    <ClCompile Include="TTFFontPGE.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="jam\IScene.cpp">
+      <Filter>Source Files\jam</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\KeyCodes.cpp">
+      <Filter>Source Files\jam</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\Point2D.cpp">
+      <Filter>Source Files\jam</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\RGB.cpp">
+      <Filter>Source Files\jam</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\SceneManager.cpp">
+      <Filter>Source Files\jam</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\Shared.cpp">
+      <Filter>Source Files\jam</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
