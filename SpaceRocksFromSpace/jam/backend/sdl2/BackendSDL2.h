@@ -37,6 +37,10 @@ namespace jam
         void CloseJoysticks();
         void OpenJoysticks();
         int JoystickButtonToSDL(JoystickButton btn);
+        void Step();
+#ifdef __EMSCRIPTEN__
+        static void emscripten_update(void* param);
+#endif
         JoystickButton SDLToJoystickButton(int btn);
         SDL_Window* window;
         SDL_Renderer* renderer;
@@ -44,6 +48,7 @@ namespace jam
         bool mouseBtnLeft, mouseBtnRight, oldMouseBtnLeft, oldMouseBtnRight;        
         int numJoysticks;
         std::vector<JoystickInfoSDL*> joysticks;
+        Uint64 previous, current;
     };
 }
 #endif

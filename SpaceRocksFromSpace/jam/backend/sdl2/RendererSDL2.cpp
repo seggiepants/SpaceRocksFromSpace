@@ -66,7 +66,7 @@ namespace jam
 
         SDL_SetRenderDrawColor(this->renderer, r, g, b, a);
 
-        delete polygonPoints;
+        delete[] polygonPoints;
     }
 
     void RendererSDL2::DrawSubImage(IImage* img, int screenX, int screenY, int x, int y, int w, int h)

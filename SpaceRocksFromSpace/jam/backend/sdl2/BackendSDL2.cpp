@@ -4,7 +4,9 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 #include "KeyCodesSDL2.h"
-
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 namespace jam
 {
     BackendSDL2::BackendSDL2()
@@ -96,7 +98,7 @@ namespace jam
 				SDL_RenderClear(this->renderer);
 			}
 
-            if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) != (IMG_INIT_JPG | IMG_INIT_PNG))
+            if (IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG)
             {
                 std::cerr << "Image loading coult not be initialized: \"" << SDL_GetError() << "\"" << std::endl;
                 success = false;
@@ -232,9 +234,210 @@ namespace jam
         }
     }
 
-    void BackendSDL2::Start(IScene* scene)
+#ifdef __EMSCRIPTEN__
+    void BackendSDL2::emscripten_update(void* param) 
     {
-        Uint64 previous, current;
+        BackendSDL2* obj = (BackendSDL2*)param;
+        if (obj->currentScene != nullptr)
+        {
+            obj->Step();
+        }
+        else
+        {
+            emscripten_cancel_main_loop();
+        }
+    }
+#endif
+
+    void BackendSDL2::Step()
+    {
+        previous = current;
+        current = SDL_GetPerformanceCounter();
+        Uint64 ticks = current - previous;
+        float dt = (float)ticks / (float)SDL_GetPerformanceFrequency();
+        SDL_Event e;
+        for (int i = 0; i < MAX_KEYS; i++)
+        {
+            this->oldKey[i] = this->Key[i];
+        }
+        //this->currentScene->JoystickMove(0, 0, 0);
+        while (SDL_PollEvent(&e))
+        {
+            //User requests quit
+            if (e.type == SDL_QUIT)
+            {
+                this->currentScene = nullptr;
+            }
+            else if (e.type == SDL_KEYDOWN)
+            {
+                this->Key[e.key.keysym.scancode] = true;
+                if (this->Key[e.key.keysym.scancode] != this->oldKey[e.key.keysym.scancode])
+                {
+                    if (this->currentScene != nullptr)
+                    {
+                        this->currentScene->KeyDown(e.key.keysym.scancode);
+                    }
+                }
+
+            }
+            else if (e.type == SDL_KEYUP)
+            {
+                this->Key[e.key.keysym.scancode] = false;
+                if (this->Key[e.key.keysym.scancode] != this->oldKey[e.key.keysym.scancode])
+                {
+                    if (this->currentScene != nullptr)
+                    {
+                        this->currentScene->KeyUp(e.key.keysym.scancode);
+                    }
+                }
+            }
+            else if (e.type == SDL_MOUSEBUTTONDOWN)
+            {
+                switch (e.button.button)
+                {
+                case SDL_BUTTON_LEFT:
+                    this->oldMouseBtnLeft = this->mouseBtnLeft;
+                    this->mouseBtnLeft = true;
+                    break;
+                case SDL_BUTTON_RIGHT:
+                    this->oldMouseBtnRight = this->mouseBtnRight;
+                    this->mouseBtnRight = true;
+                    break;
+                }
+            }
+            else if (e.type == SDL_MOUSEBUTTONUP)
+            {
+                switch (e.button.button)
+                {
+                case SDL_BUTTON_LEFT:
+                    this->oldMouseBtnLeft = this->mouseBtnLeft;
+                    this->mouseBtnLeft = false;
+                    if (this->oldMouseBtnLeft)
+                    {
+                        if (this->currentScene != nullptr)
+                        {
+                            this->currentScene->MouseClick(jam::MouseButton::LEFT, this->mouseX, this->mouseY);
+                        }
+                    }
+                    break;
+                case SDL_BUTTON_RIGHT:
+                    this->oldMouseBtnRight = this->mouseBtnRight;
+                    this->mouseBtnRight = false;
+                    if (this->oldMouseBtnRight)
+                    {
+                        if (this->currentScene != nullptr)
+                        {
+                            this->currentScene->MouseClick(jam::MouseButton::RIGHT, this->mouseX, this->mouseY);
+                        }
+                    }
+                    break;
+                }
+            }
+            else if (e.type == SDL_MOUSEMOTION)
+            {
+                this->mouseX = e.motion.x;
+                this->mouseY = e.motion.y;
+            }
+            else if (e.type == SDL_JOYHATMOTION)
+            {
+                // Dpad
+                int id = e.jhat.which;
+                if (e.jhat.hat == 0)
+                {
+                    const int BIT_UP = 1;
+                    const int BIT_RIGHT = 2;
+                    const int BIT_DOWN = 4;
+                    const int BIT_LEFT = 8;
+                    int dx, dy;
+                    dx = dy = 0;
+                    if (e.jhat.value & BIT_LEFT)
+                        dx = -1;
+                    else if (e.jhat.value & BIT_RIGHT)
+                        dx = 1;
+
+                    if (e.jhat.value & BIT_UP)
+                        dy = -1;
+                    else if (e.jhat.value & BIT_DOWN)
+                        dy = 1;
+
+                    if (this->currentScene != nullptr)
+                    {
+                        this->currentScene->JoystickMove(id, dx, dy);
+                    }
+
+                }
+            }
+            else if (e.type == SDL_JOYAXISMOTION)
+            {
+                const int JOYSTICK_DEAD_ZONE = 8000;
+                int id = e.jaxis.which;
+                int dx, dy;
+                dx = dy = 0;
+                if (e.jaxis.axis == 0) // Left/Right
+                {
+                    if (e.jaxis.value < -1 * JOYSTICK_DEAD_ZONE)
+                    {
+                        dx = -1;
+                    }
+                    else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
+                    {
+                        dx = 1;
+                    }
+                }
+                if (e.jaxis.axis == 1) // Up/Down
+                {
+                    if (e.jaxis.value < -1 * JOYSTICK_DEAD_ZONE)
+                    {
+                        dy = -1;
+                    }
+                    else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
+                    {
+                        dy = 1;
+                    }
+                }
+                if (this->currentScene != nullptr)
+                {
+                    this->currentScene->JoystickMove(id, dx, dy);
+                }
+
+            }
+            else if (e.type == SDL_JOYBUTTONDOWN)
+            {
+                int id = e.cbutton.which;
+                jam::JoystickButton btn = this->SDLToJoystickButton(e.jbutton.button);
+                if (this->currentScene != nullptr)
+                {
+                    this->currentScene->JoystickButtonDown(id, btn);
+                }
+            }
+            else if (e.type == SDL_JOYBUTTONUP)
+            {
+                int id = e.cbutton.which;
+                jam::JoystickButton btn = this->SDLToJoystickButton(e.jbutton.button);
+                if (this->currentScene != nullptr)
+                {
+                    this->currentScene->JoystickButtonUp(id, btn);
+                }
+            }
+        }
+
+        if (this->currentScene != nullptr)
+        {
+            this->currentScene->Update(dt);
+            this->currentScene->Draw(this->render);
+            /*
+            if (!globals.currentScene->running()) {
+                globals.state = globals.currentScene->getNextState();
+                NextScene();
+            }
+            */
+            SDL_RenderPresent(this->renderer);
+            this->currentScene = this->currentScene->NextScene();
+        }
+    }
+
+    void BackendSDL2::Start(IScene* scene)
+    {       
         bool joyMotion, oldJoyMotion;
         int joyID;
         if (this->render != nullptr)
@@ -254,191 +457,15 @@ namespace jam
         current = SDL_GetPerformanceCounter();
         joyMotion = false;
         joyID = false;
+
+#ifdef __EMSCRIPTEN__
+        emscripten_set_main_loop_arg(emscripten_update, (void*)this, -1, 1);
+#else
+
         while (this->currentScene != nullptr) {
-            previous = current;
-            current = SDL_GetPerformanceCounter();
-            Uint64 ticks = current - previous;
-            float dt = (float)ticks / (float)SDL_GetPerformanceFrequency();
-            SDL_Event e;
-            for (int i = 0; i < MAX_KEYS; i++)
-            {
-                this->oldKey[i] = this->Key[i];
-            }
-            //this->currentScene->JoystickMove(0, 0, 0);
-            while (SDL_PollEvent(&e))
-            {
-                //User requests quit
-                if (e.type == SDL_QUIT)
-                {
-                    this->currentScene = nullptr;
-                }
-                else if (e.type == SDL_KEYDOWN)
-                {
-                    this->Key[e.key.keysym.scancode] = true;
-                    if (this->Key[e.key.keysym.scancode] != this->oldKey[e.key.keysym.scancode])
-                    {
-                        if (this->currentScene != nullptr)
-                        {
-                            this->currentScene->KeyDown(e.key.keysym.scancode);
-                        }
-                    }
-
-                }
-                else if (e.type == SDL_KEYUP)
-                {
-                    this->Key[e.key.keysym.scancode] = false;
-                    if (this->Key[e.key.keysym.scancode] != this->oldKey[e.key.keysym.scancode])
-                    {
-                        if (this->currentScene != nullptr)
-                        {
-                            this->currentScene->KeyUp(e.key.keysym.scancode);
-                        }
-                    }
-                }
-                else if (e.type == SDL_MOUSEBUTTONDOWN)
-                {
-                    switch (e.button.button)
-                    {
-                    case SDL_BUTTON_LEFT:
-                        this->oldMouseBtnLeft = this->mouseBtnLeft;
-                        this->mouseBtnLeft = true;
-                        break;
-                    case SDL_BUTTON_RIGHT:
-                        this->oldMouseBtnRight = this->mouseBtnRight;
-                        this->mouseBtnRight = true;
-                        break;
-                    }
-                }
-                else if (e.type == SDL_MOUSEBUTTONUP)
-                {
-                    switch (e.button.button)
-                    {
-                    case SDL_BUTTON_LEFT:
-                        this->oldMouseBtnLeft = this->mouseBtnLeft;
-                        this->mouseBtnLeft = false;
-                        if (this->oldMouseBtnLeft)
-                        {
-                            if (this->currentScene != nullptr)
-                            {
-                                this->currentScene->MouseClick(jam::MouseButton::LEFT, this->mouseX, this->mouseY);
-                            }
-                        }
-                        break;
-                    case SDL_BUTTON_RIGHT:
-                        this->oldMouseBtnRight = this->mouseBtnRight;
-                        this->mouseBtnRight = false;
-                        if (this->oldMouseBtnRight)
-                        {
-                            if (this->currentScene != nullptr)
-                            {
-                                this->currentScene->MouseClick(jam::MouseButton::RIGHT, this->mouseX, this->mouseY);
-                            }
-                        }
-                        break;
-                    }
-                }
-                else if (e.type == SDL_MOUSEMOTION)
-                {
-                    this->mouseX = e.motion.x;
-                    this->mouseY = e.motion.y;
-                }
-                else if (e.type == SDL_JOYHATMOTION)
-                {
-                    // Dpad
-                    int id = e.jhat.which;
-                    if (e.jhat.hat == 0)
-                    {
-                        const int BIT_UP = 1;
-                        const int BIT_RIGHT = 2;
-                        const int BIT_DOWN = 4;
-                        const int BIT_LEFT = 8;
-                        int dx, dy;
-                        dx = dy = 0;
-                        if (e.jhat.value & BIT_LEFT)
-                            dx = -1;
-                        else if (e.jhat.value & BIT_RIGHT)
-                            dx = 1;
-
-                        if (e.jhat.value & BIT_UP)
-                            dy = -1;
-                        else if (e.jhat.value & BIT_DOWN)
-                            dy = 1;
-
-                        if (this->currentScene != nullptr)
-                        {
-                            this->currentScene->JoystickMove(id, dx, dy);
-                        }
-
-                    }
-                }
-                else if (e.type == SDL_JOYAXISMOTION)
-                {
-                    const int JOYSTICK_DEAD_ZONE = 8000;
-                    int id = e.jaxis.which;
-                    int dx, dy;
-                    dx = dy = 0;                    
-                    if (e.jaxis.axis == 0) // Left/Right
-                    {
-                        if (e.jaxis.value < -1 * JOYSTICK_DEAD_ZONE)
-                        {
-                            dx = -1;
-                        }
-                        else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
-                        {
-                            dx = 1;
-                        }
-                    }
-                    if (e.jaxis.axis == 1) // Up/Down
-                    {
-                        if (e.jaxis.value < -1 * JOYSTICK_DEAD_ZONE)
-                        {
-                            dy = -1;
-                        }
-                        else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
-                        {
-                            dy = 1;
-                        }
-                    }
-                    if (this->currentScene != nullptr)
-                    {
-                        this->currentScene->JoystickMove(id, dx, dy);
-                    }
-
-                }
-                else if(e.type == SDL_JOYBUTTONDOWN)
-                {
-                    int id = e.cbutton.which;
-                    jam::JoystickButton btn = this->SDLToJoystickButton(e.jbutton.button);
-                    if (this->currentScene != nullptr)
-                    {
-                        this->currentScene->JoystickButtonDown(id, btn);
-                    }
-                }
-                else if (e.type == SDL_JOYBUTTONUP)
-                {
-                    int id = e.cbutton.which;
-                    jam::JoystickButton btn = this->SDLToJoystickButton(e.jbutton.button);
-                    if (this->currentScene != nullptr)
-                    {
-                        this->currentScene->JoystickButtonUp(id, btn);
-                    }
-                }
-            }
-
-            if (this->currentScene != nullptr)
-            {
-                this->currentScene->Update(dt);
-                this->currentScene->Draw(this->render);
-                /*
-                if (!globals.currentScene->running()) {
-                    globals.state = globals.currentScene->getNextState();
-                    NextScene();
-                }
-                */
-                SDL_RenderPresent(this->renderer);
-                this->currentScene = this->currentScene->NextScene();
-            }
+            this->Step();
         }
+#endif
     }
 
     bool BackendSDL2::OnUserCreate()

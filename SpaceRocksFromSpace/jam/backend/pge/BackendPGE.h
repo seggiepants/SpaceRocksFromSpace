@@ -25,6 +25,7 @@ namespace jam
         bool OnUserUpdate(float dt) override;
         IResourceManager* ResourceManager() { return ResourceManagerPGE::Instance(); };
     protected:
+        void Step();
         olc::GPButtons JoystickButtonToPGE(JoystickButton btn);
         JoystickButton PGEToJoystickButton(olc::GPButtons btn);
         olc::vi2d oldMousePos;
