@@ -2,16 +2,16 @@
 #include <time.h>
 #include "jam/Shared.h"
 
-#define BACKEND_PGE 0
-#define BACKEND_SDL2 1
+//#define BACKEND_PGE 0
+//#define BACKEND_SDL2 1
 
-#define BACKEND BACKEND_SDL2
+//#define BACKEND BACKEND_SDL2
 
-#if BACKEND == BACKEND_PGE
+#ifdef BACKEND_PGE
 #include "jam/backend/pge/BackendPGE.h"
 #endif
 
-#if BACKEND == BACKEND_SDL2
+#ifdef BACKEND_SDL2
 #include "jam/backend/sdl2/BackendSDL2.h"
 #endif
 
@@ -28,10 +28,10 @@
 
     int main(int argc, char** argv)
     {
-#if BACKEND == BACKEND_PGE
+#ifdef BACKEND_PGE
         jam::BackendPGE game;
 #endif
-#if BACKEND == BACKEND_SDL2
+#ifdef BACKEND_SDL2
         jam::BackendSDL2 game;
 #endif
         jam::backEnd = &game;

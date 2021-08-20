@@ -1,0 +1,39 @@
+CC = g++ -O2
+CFLAGS = -std=c++17 -lstdc++fs -DBACKEND_PGE=1
+TARGET = SpaceRocksFromSpacePGE
+OBJDIR = obj
+INCLUDES = -I../../olc/pge -I../../freetype/include
+LIBS = -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17 -lfreetype -lasound
+
+SDL_SRC = $(wildcard jam/backend/pge/*.cpp)
+BACKEND_SRC = $(wildcard jam/backend/*.cpp)
+JAM_SRC = $(wildcard jam/*.cpp)
+SCENE_SRC = $(wildcard game/scene/*.cpp)
+ENTITY_SRC = $(wildcard game/entity/*.cpp)
+GAME_SRC = $(wildcard game/*.cpp)
+ROOT_SRC = $(wildcard *.cpp)
+SRC = $(SDL_SRC) $(BACKEND_SRC) $(JAM_SRC) $(SCENE_SRC) $(ENTITY_SRC) $(GAME_SRC) $(ROOT_SRC)
+
+OBJS = $(subst .cpp,.o,$(SDL_SRC)) \
+$(subst .cpp,.o,$(BACKEND_SRC)) \
+$(subst .cpp,.o,$(JAM_SRC)) \
+$(subst .cpp,.o,$(SCENE_SRC)) \
+$(subst .cpp,.o,$(ENTITY_SRC)) \
+$(subst .cpp,.o,$(GAME_SRC)) \
+$(subst .cpp,.o,$(ROOT_SRC)) 
+
+.cpp.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(TARGET): $(OBJS)
+	$(CC) -o $@ $(OBJS) $(LIBS)
+
+clean:
+	-rm -f *.o core *.core
+	-rm -f game/*.o
+	-rm -f game/entity/*.o
+	-rm -f game/scene/*.o
+	-rm -f jam/*.o
+	-rm -f jam/backend/*.o
+	-rm -f jam/backend/pge/*.o
+	-rm -f jam/backend/sdl2/*.o

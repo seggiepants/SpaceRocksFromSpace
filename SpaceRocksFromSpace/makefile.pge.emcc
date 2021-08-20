@@ -1,0 +1,44 @@
+CC = em++ -O2 -s USE_LIBPNG=1 -s USE_FREETYPE=2
+CFLAGS = -std=c++17 -lstdc++fs -DBACKEND_PGE=1
+NAME = SpaceRocksFromSpacePGE
+TARGET = $(NAME).html
+OBJDIR = obj
+INCLUDES = -I../../olc/pge -I../../freetype/include
+LIBS = -s USE_LIBPNG=1 -s USE_FREETYPE=2 -std=c++17
+
+SDL_SRC = $(wildcard jam/backend/pge/*.cpp)
+BACKEND_SRC = $(wildcard jam/backend/*.cpp)
+JAM_SRC = $(wildcard jam/*.cpp)
+SCENE_SRC = $(wildcard game/scene/*.cpp)
+ENTITY_SRC = $(wildcard game/entity/*.cpp)
+GAME_SRC = $(wildcard game/*.cpp)
+ROOT_SRC = $(wildcard *.cpp)
+SRC = $(SDL_SRC) $(BACKEND_SRC) $(JAM_SRC) $(SCENE_SRC) $(ENTITY_SRC) $(GAME_SRC) $(ROOT_SRC)
+
+OBJS = $(subst .cpp,.o,$(SDL_SRC)) \
+$(subst .cpp,.o,$(BACKEND_SRC)) \
+$(subst .cpp,.o,$(JAM_SRC)) \
+$(subst .cpp,.o,$(SCENE_SRC)) \
+$(subst .cpp,.o,$(ENTITY_SRC)) \
+$(subst .cpp,.o,$(GAME_SRC)) \
+$(subst .cpp,.o,$(ROOT_SRC)) 
+
+.cpp.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(TARGET): $(OBJS)
+	$(CC) -o $@ $(OBJS) $(LIBS) --preload-file assets
+
+clean:
+	-rm -f *.o core *.core
+	-rm -f game/*.o
+	-rm -f game/entity/*.o
+	-rm -f game/scene/*.o
+	-rm -f jam/*.o
+	-rm -f jam/backend/*.o
+	-rm -f jam/backend/pge/*.o
+	-rm -f jam/backend/sdl2/*.o
+	-rm -f $(NAME).html
+	-rm -f $(NAME).js
+	-rm -f $(NAME).dat
+	-rm -f $(NAME).wasm
