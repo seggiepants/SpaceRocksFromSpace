@@ -7,6 +7,7 @@ namespace jam
 	class IImage
 	{
 	public:
+		virtual ~IImage() {};
 		virtual int GetWidth() = 0;
 		virtual int GetHeight() = 0;
 	};

@@ -11,7 +11,7 @@ namespace jam
     {
 	public:
 		IResourceManager() {};
-		~IResourceManager() {};
+		virtual ~IResourceManager() {};
 		
 		virtual void Clear() = 0;
 		virtual IAudio* GetAudio(std::string) = 0;

@@ -13,6 +13,7 @@ namespace jam
     class IScene
     {
     public:
+        virtual ~IScene() {};
         virtual void Construct(int screenWidth, int screenHeight) = 0;
         virtual void Draw(jam::IRenderer*) = 0;
         virtual void GetScreenSize(int* screenWidth, int* screenHeight) = 0;

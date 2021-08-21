@@ -7,6 +7,10 @@
 #include "../../jam/SceneManager.h"
 #include "../../jam/Shared.h"
 #include "../VectorFont.h"
+#ifdef KIOSK_MODE
+#include <sstream>
+#include "../KioskHelper.h"
+#endif
 
 namespace game
 {
@@ -38,9 +42,14 @@ namespace game
 		this->gameTime = gameTime;
 		this->score = score;
 		this->level = level;
+#ifdef KIOSK_MODE
+		std::string highScores = KioskHelper::Instance()->GetHighScores();
+		nlohmann::json ret = nlohmann::json::parse(highScores);
+#else
 		std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
 		filePath /= HIGHSCORE_FILENAME;
 		nlohmann::json ret = jam::Configuration::LoadJsonFile(filePath.string());
+#endif
 		if (ret == nullptr)
 		{
 			return true; // No file then yes, new high score.
@@ -327,11 +336,15 @@ namespace game
 
 	void SceneHighScoreEntry::SaveInitials()
 	{
-
+#ifdef KIOSK_MODE
+		std::string highScores = KioskHelper::Instance()->GetHighScores();
+		nlohmann::json saveData = nlohmann::json::parse(highScores);
+#else
 		std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
 		filePath /= HIGHSCORE_FILENAME;
 		// Save the data to high score table.		
 		nlohmann::json saveData = jam::Configuration::LoadJsonFile(filePath.string());
+#endif
 		bool inserted = false;
 		int index = 0;
 		if (!saveData["scores"].is_array())
@@ -358,12 +371,16 @@ namespace game
 			saveData["scores"].erase(saveData["scores"].size() - 1);
 		}
 
-
+#ifdef KIOSK_MODE
+		std::ostringstream ss;
+		ss << std::setw(4) << saveData << std::endl;
+		KioskHelper::Instance()->SetHighScores(ss.str());
+#else
 		if (!jam::Configuration::SaveJsonFile(filePath.string(), saveData))
 		{
 			std::cerr << "Unable to Save High Score" << std::endl;
 		}
-
+#endif
 		// Change to next screen.
 		this->nextScene = jam::SceneManager::Instance()->GetScene("menu");
 		this->nextScene->Construct(this->screenWidth, this->screenHeight);

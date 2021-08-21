@@ -198,6 +198,9 @@
     <ClInclude Include="game\Version.h">
       <Filter>Header Files\game</Filter>
     </ClInclude>
+    <ClInclude Include="game\KioskHelper.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -322,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="jam\Shared.cpp">
       <Filter>Source Files\jam</Filter>
+    </ClCompile>
+    <ClCompile Include="game\KioskHelper.cpp">
+      <Filter>Source Files\game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

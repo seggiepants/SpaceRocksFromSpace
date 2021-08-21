@@ -17,6 +17,7 @@ namespace jam
     {
     public:
         IBackend();
+        virtual ~IBackend() {};
         virtual bool Construct(std::string title, int screenWidth, int screenHeight) = 0;                
         virtual void Start(IScene* scene) = 0;
         virtual bool OnUserCreate() = 0;

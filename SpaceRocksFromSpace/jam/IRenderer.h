@@ -11,6 +11,7 @@ namespace jam
 	class IRenderer
 	{
 	public:
+		virtual ~IRenderer() {};
 		virtual void Clear(jam::rgb bg) = 0;
 		virtual void DrawImage(jam::IImage* img, int x, int y) = 0;
 		virtual void DrawLine(int x1, int y1, int x2, int y2, jam::rgb color) = 0;

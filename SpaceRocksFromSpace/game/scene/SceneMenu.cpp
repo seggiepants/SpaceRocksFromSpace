@@ -45,7 +45,9 @@ namespace game
 		this->menuText->clear();
 		this->menuText->push_back(std::pair<std::string, jam::Rect>("PLAY", { 0, 0, 0, 0 }));
 		this->menuText->push_back(std::pair<std::string, jam::Rect>("HIGH SCORES", { 0, 0, 0, 0 }));
+#ifndef KIOSK_MODE
 		this->menuText->push_back(std::pair<std::string, jam::Rect>("EXIT", { 0, 0, 0, 0 }));
+#endif
 
 		this->stars->clear();
 		this->screenWidth = screenWidth;
@@ -294,12 +296,14 @@ namespace game
 				this->nextScene->Construct(this->screenWidth, this->screenHeight);
 			this->bgMusic->Stop();
 		}
+#ifndef KIOSK_MODE
 		else if (menuItem == "EXIT")
 		{
 			this->nextScene = jam::SceneManager::Instance()->GetScene("exit");
 			if (this->nextScene != nullptr)
 				this->nextScene->Construct(this->screenWidth, this->screenHeight);
 		}
+#endif
 	}
 
 	void SceneMenu::MouseMove(int x, int y)

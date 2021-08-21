@@ -23,7 +23,7 @@ namespace jam
         void Start(jam::IScene* scene);
         bool OnUserCreate() override;
         bool OnUserUpdate(float dt) override;
-        IResourceManager* ResourceManager() { return ResourceManagerPGE::Instance(); };
+        IResourceManager* ResourceManager() override { return ResourceManagerPGE::Instance(); };
     protected:
         void Step();
         olc::GPButtons JoystickButtonToPGE(JoystickButton btn);

@@ -9,6 +9,7 @@ namespace jam
 	class IEntity
 	{
 	public:
+		virtual ~IEntity() {};
 		virtual void Draw(IRenderer* render) = 0;
 		virtual void Update(IScene* scene, float dt) = 0;
 		float GetX() { return this->x; };

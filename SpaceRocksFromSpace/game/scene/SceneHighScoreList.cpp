@@ -5,6 +5,9 @@
 #include "../GameAssets.h"
 #include "../../jam/SceneManager.h"
 #include "../VectorFont.h"
+#ifdef KIOSK_MODE
+#include "../KioskHelper.h"
+#endif
 
 namespace game
 {
@@ -21,9 +24,13 @@ namespace game
         this->screenWidth = screenWidth;
         this->screenHeight = screenHeight;
         this->nextScene = this;
+#ifdef KIOSK_MODE
+        this->highScores = nlohmann::json::parse(KioskHelper::Instance()->GetHighScores());
+#else
         std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
         filePath /= game::HIGHSCORE_FILENAME;
         this->highScores = jam::Configuration::LoadJsonFile(filePath.string());
+#endif
 
     }
 

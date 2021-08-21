@@ -16,7 +16,7 @@ namespace jam
         public IResourceManager
     {
     public:
-		~ResourceManagerPGE();
+		~ResourceManagerPGE() override;
 		/*
 		int GetAudio(std::string path);
 		olc::Font* GetFont(std::string path, int size);

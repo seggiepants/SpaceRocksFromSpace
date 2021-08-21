@@ -30,7 +30,7 @@ namespace jam
         void Start(IScene* scene);
         bool OnUserCreate();
         bool OnUserUpdate(float dt);
-        IResourceManager* ResourceManager() { return ResourceManagerSDL2::Instance(); };
+        IResourceManager* ResourceManager() override { return ResourceManagerSDL2::Instance(); };
         SDL_Window* GetWindow();
         SDL_Renderer* GetRenderer();
     protected:
