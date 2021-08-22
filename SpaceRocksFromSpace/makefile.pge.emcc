@@ -1,10 +1,10 @@
-CC = em++ -O2 -s USE_LIBPNG=1 -s USE_FREETYPE=2 -s ASSERTIONS=1
-CFLAGS = -std=c++17 -lstdc++fs -DBACKEND_PGE=1 -DKIOSK_MODE=1 -s ALLOW_MEMORY_GROWTH=1
+CC = em++ -g -s USE_LIBPNG=1 -s USE_FREETYPE=2 -s ASSERTIONS=1
+CFLAGS = -std=c++17 -lstdc++fs -DBACKEND_PGE=1 -DKIOSK_MODE=1 -s ALLOW_MEMORY_GROWTH=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 --no-heap-copy
 NAME = SpaceRocksFromSpacePGE
 TARGET = $(NAME).html
 OBJDIR = obj
 INCLUDES = -I../../olcPixelGameEngine -I../../freetype-2.10.4/include
-LIBS = -s USE_LIBPNG=1 -s USE_FREETYPE=2 -std=c++17 -s ALLOW_MEMORY_GROWTH=1 -s ASSERTIONS=1
+LIBS = -s USE_LIBPNG=1 -s USE_FREETYPE=2 -std=c++17 -s ALLOW_MEMORY_GROWTH=1 -s ASSERTIONS=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 --no-heap-copy
 
 SDL_SRC = $(wildcard jam/backend/pge/*.cpp)
 BACKEND_SRC = $(wildcard jam/backend/*.cpp)
