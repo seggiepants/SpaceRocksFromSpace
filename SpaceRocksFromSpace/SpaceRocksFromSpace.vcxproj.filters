@@ -55,6 +55,12 @@
     <Filter Include="Header Files\game\scene">
       <UniqueIdentifier>{7d2dd4f0-6e46-4678-bb9c-6715dc28f44d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\jam\backend\dc">
+      <UniqueIdentifier>{bf0cf645-7c0e-4afa-8a7d-6bffd0f7096d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\jam\backend\dc">
+      <UniqueIdentifier>{52df6229-35f2-48ea-b7b3-2d9beff1b6f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -201,6 +207,18 @@
     <ClInclude Include="game\KioskHelper.h">
       <Filter>Header Files\game</Filter>
     </ClInclude>
+    <ClInclude Include="jam\backend\dc\BackendDC.h">
+      <Filter>Header Files\jam\backend\dc</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\dc\RendererDC.h">
+      <Filter>Header Files\jam\backend\dc</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\dc\ResourceManagerDC.h">
+      <Filter>Header Files\jam\backend\dc</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\dc\ImageDC.h">
+      <Filter>Header Files\jam\backend\dc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -328,6 +346,18 @@
     </ClCompile>
     <ClCompile Include="game\KioskHelper.cpp">
       <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\dc\BackendDC.cpp">
+      <Filter>Source Files\jam\backend\dc</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\dc\RendererDC.cpp">
+      <Filter>Source Files\jam\backend\dc</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\dc\ResourceManagerDC.cpp">
+      <Filter>Source Files\jam\backend\dc</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\dc\ImageDC.cpp">
+      <Filter>Source Files\jam\backend\dc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

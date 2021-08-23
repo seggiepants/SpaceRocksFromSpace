@@ -173,6 +173,10 @@
     <ClInclude Include="jam/backend/sdl2/AudioSDL2.h" />
     <ClInclude Include="jam/backend/pge/BackendPGE.h" />
     <ClInclude Include="jam/backend/sdl2/BackendSDL2.h" />
+    <ClInclude Include="jam\backend\dc\BackendDC.h" />
+    <ClInclude Include="jam\backend\dc\ImageDC.h" />
+    <ClInclude Include="jam\backend\dc\RendererDC.h" />
+    <ClInclude Include="jam\backend\dc\ResourceManagerDC.h" />
     <ClInclude Include="jam\backend\IBackend.h" />
     <ClInclude Include="jam\backend\pge\ImagePGE.h" />
     <ClInclude Include="jam\backend\pge\KeyCodesPGE.h" />
@@ -217,6 +221,10 @@
     <ClCompile Include="game\scene\SceneHighScoreList.cpp" />
     <ClCompile Include="game\scene\SceneMenu.cpp" />
     <ClCompile Include="game\VectorFont.cpp" />
+    <ClCompile Include="jam\backend\dc\BackendDC.cpp" />
+    <ClCompile Include="jam\backend\dc\ImageDC.cpp" />
+    <ClCompile Include="jam\backend\dc\RendererDC.cpp" />
+    <ClCompile Include="jam\backend\dc\ResourceManagerDC.cpp" />
     <ClCompile Include="jam\backend\IBackend.cpp" />
     <ClCompile Include="jam\backend\pge\AudioPGE.cpp" />
     <ClCompile Include="jam\backend\pge\BackendPGE.cpp" />

@@ -40,10 +40,10 @@ namespace game
         const std::string BUTTON_MSG = "BACK";
         int x, y, w, h, charW, charH;
 
-        //game::VectorFont* vFont1 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont1"));
-        jam::BitmapFont* vFont1 = static_cast<jam::BitmapFont*>(jam::backEnd->ResourceManager()->GetFont("nova16pt"));
-        //game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
-        jam::IFont* vFont2 = jam::backEnd->ResourceManager()->GetFont("Kenney32pt");
+        game::VectorFont* vFont1 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont1"));
+        //jam::BitmapFont* vFont1 = static_cast<jam::BitmapFont*>(jam::backEnd->ResourceManager()->GetFont("nova16pt"));
+        game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
+        //jam::IFont* vFont2 = jam::backEnd->ResourceManager()->GetFont("Kenney32pt");
 
         render->GetScreenSize(&this->screenWidth, &this->screenHeight);
         vFont1->MeasureText(BUTTON_MSG, &w, &h);

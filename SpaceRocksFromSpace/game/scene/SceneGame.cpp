@@ -78,10 +78,12 @@ namespace game
 			jam::backEnd->ResourceManager()->PreloadAudio(SOUND_GAMEOVER);
 		}
 
+		/*
 		if (!jam::backEnd->ResourceManager()->HasImage(IMG_PLASMA_BG))
 		{
 			jam::backEnd->ResourceManager()->PreloadImage(IMG_PLASMA_BG);
 		}
+		*/
 
 		if (this->ship != nullptr)
 		{
@@ -116,7 +118,7 @@ namespace game
 		game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
 
 		render->Clear(bg);
-		render->DrawImage(jam::backEnd->ResourceManager()->GetImage(IMG_PLASMA_BG), 0, 0);
+		//render->DrawImage(jam::backEnd->ResourceManager()->GetImage(IMG_PLASMA_BG), 0, 0);
 		render->GetScreenSize(&width, &height);
 		this->screenWidth = width;
 		this->screenHeight = height;
@@ -497,8 +499,8 @@ namespace game
 	void SceneGame::Update(float dt)
 	{
 		const int SPLIT_COUNT = 2;
-		const float SPLIT_SCALE_1 = 20.0;
-		const float SPLIT_SCALE_2 = 30.0;
+		const float SPLIT_SCALE_1 = 15.0;
+		const float SPLIT_SCALE_2 = 25.0;
 		const int POINTS_ROCKS_SPLIT_1 = 10;
 		const int POINTS_ROCKS_SPLIT_2 = 20;
 		const int POINTS_ROCKS_DESTROY = 50;
