@@ -3,6 +3,11 @@
 #define __RENDERER_DC_H__
 #include "../../IRenderer.h"
 #ifdef __DREAMCAST__
+
+#include <kos.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 namespace jam
 {
 	class RendererDC : public IRenderer

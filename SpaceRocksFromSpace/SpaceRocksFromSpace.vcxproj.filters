@@ -219,6 +219,9 @@
     <ClInclude Include="jam\backend\dc\ImageDC.h">
       <Filter>Header Files\jam\backend\dc</Filter>
     </ClInclude>
+    <ClInclude Include="jam\backend\dc\KeyCodesDC.h">
+      <Filter>Header Files\jam\backend\dc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -357,6 +360,9 @@
       <Filter>Source Files\jam\backend\dc</Filter>
     </ClCompile>
     <ClCompile Include="jam\backend\dc\ImageDC.cpp">
+      <Filter>Source Files\jam\backend\dc</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\dc\KeyCodesDC.cpp">
       <Filter>Source Files\jam\backend\dc</Filter>
     </ClCompile>
   </ItemGroup>

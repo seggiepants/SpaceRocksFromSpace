@@ -18,6 +18,10 @@ namespace jam
         bool OnUserCreate() = 0;
         bool OnUserUpdate(float dt) = 0;
         IResourceManager* ResourceManager() = 0;
+    protected:
+        maple_device_t* cont;
+        cont_state_t* state;
+        int screenWidth, screenHeight;
     };
 
 }

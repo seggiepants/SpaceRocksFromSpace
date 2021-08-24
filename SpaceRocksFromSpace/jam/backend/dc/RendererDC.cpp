@@ -1,10 +1,11 @@
-#include "RendererDC.h"
 #ifdef __DREAMCAST__
+#include "RendererDC.h"
 
 namespace jam
 {
 	RendererDC::RendererDC()
 	{
+		
 	}
 
 	RendererDC::~RendererDC()
