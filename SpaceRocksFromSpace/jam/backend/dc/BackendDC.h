@@ -13,8 +13,8 @@ namespace jam
     public:
         BackendDC();
         ~BackendDC() override;
-        bool Construct(std::string title, int screenWidth, int screenHeight);
-        void Start(IScene* scene) = 0;
+        bool Construct(std::string title, int screenWidth, int screenHeight) override;
+        void Start(IScene* scene) override = 0;
         bool OnUserCreate() = 0;
         bool OnUserUpdate(float dt) = 0;
         IResourceManager* ResourceManager() = 0;

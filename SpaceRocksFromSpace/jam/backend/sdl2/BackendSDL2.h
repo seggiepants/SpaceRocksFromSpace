@@ -23,11 +23,11 @@ namespace jam
     public:
         BackendSDL2();
         ~BackendSDL2();
-        bool Construct(std::string title, int screenWidth, int screenHeight);
+        bool Construct(std::string title, int screenWidth, int screenHeight) override;
         bool IsKeyDown(uint8_t code);
         bool IsKeyPressed(uint8_t code);
         bool IsKeyReleased(uint8_t code);
-        void Start(IScene* scene);
+        void Start(IScene* scene) override;
         bool OnUserCreate();
         bool OnUserUpdate(float dt);
         IResourceManager* ResourceManager() override { return ResourceManagerSDL2::Instance(); };

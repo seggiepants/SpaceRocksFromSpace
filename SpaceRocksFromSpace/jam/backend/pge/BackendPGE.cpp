@@ -1,5 +1,7 @@
+#include <iostream>
 #define OLC_PGE_APPLICATION
 #define OLC_PGE_GAMEPAD
+#define OLC_PGEX_SOUND
 #define OLC_PGEX_TTF
 #include "BackendPGE.h"
 #include "RendererPGE.h"
@@ -33,7 +35,11 @@ namespace jam
         {
             this->sAppName = title;
         }
-        olc::SOUND::InitialiseAudio();
+        
+    
+        if (!olc::SOUND::InitialiseAudio())
+            std::cerr << "Unable to Initialize Audio" << std::endl;
+        
         olc::Font::init();
         return ret == olc::rcode::OK;
     }

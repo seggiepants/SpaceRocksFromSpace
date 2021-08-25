@@ -16,11 +16,11 @@ namespace jam
     public:
         BackendPGE();
         ~BackendPGE();
-        bool Construct(std::string title, int screenWidth, int screenHeight);
+        bool Construct(std::string title, int screenWidth, int screenHeight) override;
         bool IsKeyDown(uint8_t code);
         bool IsKeyPressed(uint8_t code);
         bool IsKeyReleased(uint8_t code);
-        void Start(jam::IScene* scene);
+        void Start(jam::IScene* scene) override;
         bool OnUserCreate() override;
         bool OnUserUpdate(float dt) override;
         IResourceManager* ResourceManager() override { return ResourceManagerPGE::Instance(); };
