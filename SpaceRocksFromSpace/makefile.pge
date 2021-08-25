@@ -1,5 +1,5 @@
-CC = g++ -O2
-CFLAGS = -std=c++17 -lstdc++fs -DBACKEND_PGE=1
+CC = g++
+CFLAGS = -O2 -std=c++17 -lstdc++fs -DBACKEND_PGE=1
 TARGET = SpaceRocksFromSpacePGE
 OBJDIR = obj
 INCLUDES = -I../../olc/pge -I../../freetype/include

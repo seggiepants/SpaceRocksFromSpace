@@ -10,17 +10,17 @@ namespace jam
     {
 		ResourceManagerDC();
 		~ResourceManagerDC() override;
-		void Clear();
-		IAudio* GetAudio(std::string);
-		IFont* GetFont(std::string);
-		IImage* GetImage(std::string);
-		bool HasAudio(std::string);
-		bool HasFont(std::string);
-		bool HasImage(std::string);
-		void PreloadAudio(std::string);
-		void PreloadFont(std::string key, IFont* font);
-		void PreloadImage(std::string);
-		IFont* LoadTTFFont(std::string fileName, int pointSize);
+		void Clear() override;
+		IAudio* GetAudio(std::string) override;
+		IFont* GetFont(std::string) override;
+		IImage* GetImage(std::string) override;
+		bool HasAudio(std::string) override;
+		bool HasFont(std::string) override;
+		bool HasImage(std::string) override;
+		void PreloadAudio(std::string) override;
+		void PreloadFont(std::string key, IFont* font) override;
+		void PreloadImage(std::string) override;
+		IFont* LoadTTFFont(std::string fileName, int pointSize) override;
     };
 }
 #endif

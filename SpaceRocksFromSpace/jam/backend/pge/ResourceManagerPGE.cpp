@@ -1,5 +1,4 @@
 #include <iostream>
-#define OLC_PGEX_SOUND
 #include "ResourceManagerPGE.h"
 #include "ImagePGE.h"
 #include "TTFFontPGE.h"
