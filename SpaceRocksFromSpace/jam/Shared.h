@@ -4,7 +4,7 @@
 
 #include "backend/IBackend.h"
 
-#ifdef __UNIX__
+#if defined(__UNIX__)
 	#define OS_UNIX
 #elif defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BORLANDC__)
 	#define OS_WIN

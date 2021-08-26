@@ -46,9 +46,9 @@ namespace game
 		std::string highScores = KioskHelper::Instance()->GetHighScores();
 		nlohmann::json ret = nlohmann::json::parse(highScores);
 #else
-		std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
-		filePath /= HIGHSCORE_FILENAME;
-		nlohmann::json ret = jam::Configuration::LoadJsonFile(filePath.string());
+		std::string filePath = jam::Configuration::GetDataPath();
+		filePath = jam::Configuration::PathJoin(filePath, HIGHSCORE_FILENAME);
+		nlohmann::json ret = jam::Configuration::LoadJsonFile(filePath);
 #endif
 		if (ret == nullptr)
 		{
@@ -340,10 +340,10 @@ namespace game
 		std::string highScores = KioskHelper::Instance()->GetHighScores();
 		nlohmann::json saveData = nlohmann::json::parse(highScores);
 #else
-		std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
-		filePath /= HIGHSCORE_FILENAME;
+		std::string filePath = jam::Configuration::GetDataPath();
+		filePath = jam::Configuration::PathJoin(filePath, HIGHSCORE_FILENAME);
 		// Save the data to high score table.		
-		nlohmann::json saveData = jam::Configuration::LoadJsonFile(filePath.string());
+		nlohmann::json saveData = jam::Configuration::LoadJsonFile(filePath);
 #endif
 		bool inserted = false;
 		int index = 0;
@@ -376,7 +376,7 @@ namespace game
 		ss << std::setw(4) << saveData << std::endl;
 		KioskHelper::Instance()->SetHighScores(ss.str());
 #else
-		if (!jam::Configuration::SaveJsonFile(filePath.string(), saveData))
+		if (!jam::Configuration::SaveJsonFile(filePath, saveData))
 		{
 			std::cerr << "Unable to Save High Score" << std::endl;
 		}

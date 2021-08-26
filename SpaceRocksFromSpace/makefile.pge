@@ -2,8 +2,8 @@ CC = g++
 CFLAGS = -O2 -std=c++17 -lstdc++fs -DBACKEND_PGE=1
 TARGET = SpaceRocksFromSpacePGE
 OBJDIR = obj
-INCLUDES = -I../../olc/pge -I../../freetype/include
-LIBS = -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17 -lfreetype -lasound
+INCLUDES = -I../../olcPixelGameEngine -I../../freetype-2.10.4/include
+LIBS = -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17 -lfreetype
 
 SDL_SRC = $(wildcard jam/backend/pge/*.cpp)
 BACKEND_SRC = $(wildcard jam/backend/*.cpp)
@@ -29,7 +29,7 @@ $(TARGET): $(OBJS)
 	$(CC) -o $@ $(OBJS) $(LIBS)
 
 clean:
-	-rm -f *.o core *.core
+	-rm -f *.o
 	-rm -f game/*.o
 	-rm -f game/entity/*.o
 	-rm -f game/scene/*.o

@@ -1,3 +1,4 @@
+#include <iomanip>
 #include <sstream>
 #include "SceneHighScoreList.h"
 #include "../../jam/BitmapFont.h"
@@ -27,9 +28,9 @@ namespace game
 #ifdef KIOSK_MODE
         this->highScores = nlohmann::json::parse(KioskHelper::Instance()->GetHighScores());
 #else
-        std::filesystem::path filePath = std::filesystem::path(jam::Configuration::GetDataPath());
-        filePath /= game::HIGHSCORE_FILENAME;
-        this->highScores = jam::Configuration::LoadJsonFile(filePath.string());
+        std::string filePath = jam::Configuration::GetDataPath();
+        filePath = jam::Configuration::PathJoin(filePath, game::HIGHSCORE_FILENAME);
+        this->highScores = jam::Configuration::LoadJsonFile(filePath);
 #endif
 
     }
@@ -108,10 +109,9 @@ namespace game
             vFont1->DrawText(render, ss.str(), xTime, y + h, white); // Game Time
 
             y += h + BORDER;
-
-            render->FillRect(this->button.x, this->button.y, this->button.x + this->button.w, this->button.y + this->button.h, white);
-            vFont1->DrawText(render, BUTTON_MSG, this->button.x + BORDER, this->button.y + this->button.h - BORDER, black);
         }
+        render->FillRect(this->button.x, this->button.y, this->button.x + this->button.w, this->button.y + this->button.h, white);
+        vFont1->DrawText(render, BUTTON_MSG, this->button.x + BORDER, this->button.y + this->button.h - BORDER, black);
     }
 
     void SceneHighScoreList::GetScreenSize(int* screenWidth, int* screenHeight)

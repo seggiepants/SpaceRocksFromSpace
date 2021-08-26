@@ -1,9 +1,9 @@
 CC = em++ 
-CFLAGS = -O2 -std=c++17 -lstdc++fs -DBACKEND_PGE=1 -DKIOSK_MODE=1 --no-heap-copy -pthread
+CFLAGS = -g -std=c++17 -lstdc++fs -DBACKEND_PGE=1 -DKIOSK_MODE=1 --no-heap-copy -pthread
 NAME = SpaceRocksFromSpacePGE
 TARGET = $(NAME).html
 OBJDIR = obj
-INCLUDES = -I../../olc/pge -I../../freetype/include
+INCLUDES = -I../../olcPixelGameEngine -I../../freetype-2.10.4/include
 LIBS = -s USE_LIBPNG=1 -s USE_FREETYPE=2 -std=c++17 -s ALLOW_MEMORY_GROWTH=1 -s ASSERTIONS=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 --no-heap-copy -lopenal -pthread -s PTHREAD_POOL_SIZE=8
 
 SDL_SRC = $(wildcard jam/backend/pge/*.cpp)

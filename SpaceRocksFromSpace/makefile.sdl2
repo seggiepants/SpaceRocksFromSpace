@@ -1,9 +1,9 @@
 CC = g++
-CFLAGS = -std=c++17 -lstdc++fs -O2 -DBACKEND_SDL2=1
+CFLAGS = -std=c++17 -O2 -DBACKEND_SDL2=1
 TARGET = SpaceRocksFromSpaceSDL2
 OBJDIR = obj
 INCLUDES =
-LIBS = `pkg-config --libs sdl2 SDL2_mixer SDL2_image SDL2_ttf`
+LIBS = -std=c++17 `pkg-config --libs sdl2 SDL2_mixer SDL2_image SDL2_ttf`
 
 SDL_SRC = $(wildcard jam/backend/sdl2/*.cpp)
 BACKEND_SRC = $(wildcard jam/backend/*.cpp)

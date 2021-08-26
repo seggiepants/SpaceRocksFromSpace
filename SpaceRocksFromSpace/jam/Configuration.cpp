@@ -1,48 +1,89 @@
-#include <filesystem>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <string>
 #include "Configuration.h"
-#ifdef OS_WIN
+#if defined(OS_WIN) && !defined(__MINGW32__)
 #include <atlbase.h>
 #include <atlstr.h>
 #include <comutil.h>
+#include <direct.h>
 #include <shlwapi.h>
 #pragma comment(lib,"shlwapi.lib")
 #include "shlobj.h"
+#define PATH_SEP '\\'
+#else
+#define PATH_SEP '/'
 #endif
 
 namespace jam
 {
 
-	void Configuration::CreatePathIfNotExist(std::filesystem::path& p)
+	void Configuration::CreatePathIfNotExist(std::string path)
 	{
-		std::filesystem::path fldr("");
-		for (std::filesystem::path::iterator folder = p.begin(); folder != p.end(); folder++)
+
+		std::string pathBuffer;
+		size_t offset = 0;
+		// EACCES = 13
+		// EBADF = 9
+		// EFAULT = 14
+		// ELOOP = 114
+		// ENAMETOOLONG = 38
+		// ENOENT = 2
+		
+		while (offset != std::string::npos)
 		{
-			fldr /= *folder;
-			if (!std::filesystem::exists(fldr))
+			std::string folder = "";
+			offset = path.find(PATH_SEP, offset + 1);
+			if (offset == std::string::npos)
 			{
-				try
+				folder = path;
+			}
+			else
+			{
+				folder = path.substr(0, offset);
+			}
+			if (folder.length() == 0 || folder == "\\\\" || folder == "\\" || (folder.length() == 2 && folder[1] == ':'))
+			{
+				continue;
+			}
+			struct stat info;
+			int ret = stat(folder.c_str(), &info);
+			if ((ret == 0) || ((ret == -1) && (errno == ENOENT)))
+			{
+				//std::cerr << "Cannot access: " << folder << "(" << errno << ")" << std::endl;
+			//}
+			//else 
+				if (!(info.st_mode & S_IFDIR))
 				{
-					std::filesystem::create_directory(fldr);
-				}
-				catch (std::exception& ex)
-				{
-					std::cerr << "Unable to create folder " << fldr << std::endl << ex.what() << std::endl;
-					break;
+#ifdef OS_WIN
+#ifdef __MINGW32__
+					std::wstring wpath(path.begin(), path.begin() + offset);
+					_wmkdir(wpath.c_str());
+#else
+					_mkdir(path.substr(0, offset).c_str());
+#endif
+#endif
+#ifdef OS_UNIX
+					mkdir(path.substr(0, offset).c_str()), 0777);
+#endif
 				}
 			}
-		}
-		if (!std::filesystem::exists(p))
-		{
-			std::cerr << "Path Not Found: " << p << std::endl;
+			else
+			{
+				std::cerr << "Cannot access: " << folder << "(" << errno << ")" << std::endl;
+			}
 		}
 	}
 
 	std::string Configuration::GetAppPath()
 	{
-#ifdef OS_WIN
+#if defined(__MINGW32__)
+		return std::string(".");
+#elif defined(OS_WIN)
 		wchar_t path[MAX_PATH] = { 0 };
 		GetModuleFileNameW(NULL, path, MAX_PATH);
 		std::wstring ws(path);
@@ -58,7 +99,7 @@ namespace jam
 
 	std::string Configuration::GetDataPath()
 	{
-#ifdef OS_WIN		
+#if defined(OS_WIN) && !defined(__MINGW32__)
 		TCHAR szPath[MAX_PATH];
 		// Get path for each computer, non-user specific and non-roaming data.
 		if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, 0, szPath)))
@@ -73,12 +114,10 @@ namespace jam
 			TCHAR* buffer = new TCHAR[targetPath.size() + 1];
 			mbstowcs_s(&copiedChars, buffer, targetPath.size(), targetPath.c_str(), _TRUNCATE);
 			PathAppend(szPath, buffer);
-			delete buffer;
+			delete[] buffer;
 			std::wstring wPath(szPath);
 			std::string ret = std::string(wPath.begin(), wPath.end());
-			std::filesystem::path p;
-			p.assign(ret.c_str());
-			Configuration::CreatePathIfNotExist(p);
+			Configuration::CreatePathIfNotExist(ret);
 			return ret;
 		}
 		else
@@ -95,7 +134,7 @@ namespace jam
 		ss << "~/.config/" << game::COMPANY << "/" << game::PRODUCT << "/" << game::VERSION << "/";
 		return ss.str();
 
-#elif defined(OS_UNKOWN)
+#elif defined(OS_UNKOWN) || defined(__MINGW32__)
 		std::string appPath = Configuration::GetAppPath();
 		if (appPath[appPath.size() - 1] != '\\' && appPath[appPath.size() - 1] != '/')
 			appPath.push_back('/');
@@ -159,5 +198,12 @@ namespace jam
 			return false;
 		}
 		return true;
+	}
+
+	std::string Configuration::PathJoin(std::string path, std::string filename)
+	{
+		std::ostringstream ss;
+		ss << path << PATH_SEP << filename;
+		return ss.str();
 	}
 }

@@ -1,4 +1,3 @@
-#include <filesystem>
 #include "../3rdParty/json/json.hpp"
 #include "../jam/Configuration.h"
 #include "../jam/BitmapFont.h"
@@ -23,8 +22,7 @@ namespace jam
         std::string texturePath = "";
         this->runes.clear();
         nlohmann::json ret = jam::Configuration::LoadJsonFile(filePath);
-        std::filesystem::path p(filePath);
-        texturePath = p.replace_filename(ret["image"].get<std::string>()).string();
+        texturePath = "assets/image/" + ret["image"].get<std::string>(); // p.replace_filename(ret["image"].get<std::string>()).string();
         if (!jam::backEnd->ResourceManager()->HasImage(texturePath))
         {
             jam::backEnd->ResourceManager()->PreloadImage(texturePath);
