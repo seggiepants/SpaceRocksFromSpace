@@ -1,5 +1,6 @@
 #include <olcPixelGameEngine.h>
 #include <olcPGEX_Sound.h>
+#include <olcPGEX_AudioConverter.h>
 #include "AudioPGE.h"
 #include "../../Shared.h"
 
@@ -17,8 +18,7 @@ namespace jam
 
 	bool AudioPGE::Load(std::string fileName)
 	{
-		int sampleID = olc::SOUND::LoadAudioSample(fileName);
-
+		int sampleID = olc::AudioConvert::LoadAudioSample(fileName);
 		if (sampleID < 0) {
 			std::cout << "Failed to load sound \"" << fileName << "\"" << std::endl;
 			return false;

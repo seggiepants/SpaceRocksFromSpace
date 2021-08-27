@@ -1,5 +1,5 @@
 CC = em++
-CFLAGS = -std=c++17 -lstdc++fs -O2 -DBACKEND_SDL2=1 -DKIOSK_MODE=1 -s USE_SDL=2 -s USE_SDL_MIXER=2 -s USE_SDL_TTF=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s ALLOW_MEMORY_GROWTH=1
+CFLAGS = -std=c++17 -O2 -DBACKEND_SDL2=1 -DKIOSK_MODE=1 -s USE_SDL=2 -s USE_SDL_MIXER=2 -s USE_SDL_TTF=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s ALLOW_MEMORY_GROWTH=1
 NAME = SpaceRocksFromSpaceSDL2
 TARGET = $(NAME).html
 OBJDIR = obj
@@ -30,7 +30,7 @@ $(TARGET): $(OBJS)
 	$(CC) -o $@ $(OBJS) $(LIBS) --preload-file assets 
 
 clean:
-	-rm -f $(OBJDIR)/*.o core *.core
+	-rm -f *.o core *.core
 	-rm -f game/*.o
 	-rm -f game/entity/*.o
 	-rm -f game/scene/*.o

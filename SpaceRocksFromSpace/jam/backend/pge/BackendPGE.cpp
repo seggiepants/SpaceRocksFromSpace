@@ -2,6 +2,7 @@
 #define OLC_PGE_APPLICATION
 #define OLC_PGE_GAMEPAD
 #define OLC_PGEX_SOUND
+#define OLC_PGEX_AUDIOCONVERT
 #define OLC_PGEX_TTF
 #include "BackendPGE.h"
 #include "RendererPGE.h"

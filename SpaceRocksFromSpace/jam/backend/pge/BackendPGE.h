@@ -3,6 +3,7 @@
 #pragma once
 #include <olcPixelGameEngine.h>
 #include <olcPGEX_Sound.h>
+#include <olcPGEX_AudioConverter.h>
 #include <olcPGEX_Gamepad.h>
 #include <olcPGEX_TTF.h>
 #include "../IBackend.h"

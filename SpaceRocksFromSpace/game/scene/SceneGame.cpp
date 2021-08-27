@@ -92,6 +92,8 @@ namespace game
 		}
 		this->ship = new Ship();
 		this->ship->Construct(this->screenWidth, this->screenHeight);
+		this->ship->SetPosition(this->screenWidth / 2.0, this->screenHeight / 2.0);
+		this->ship->SetHeading(0.00);
 
 		if (this->ufo != nullptr)
 		{
@@ -429,8 +431,8 @@ namespace game
 			this->rocks.push_back(rock);
 		}
 
-		this->ship->SetPosition(this->screenWidth / 2.0, this->screenHeight / 2.0);
-		this->ship->SetHeading(0.00);
+		//this->ship->SetPosition(this->screenWidth / 2.0, this->screenHeight / 2.0);
+		//this->ship->SetHeading(0.00);
 		
 		this->gameState = game::GameState::NEXT_LEVEL;
 		jam::backEnd->ResourceManager()->GetAudio(SOUND_NEXTLEVEL)->Play();
