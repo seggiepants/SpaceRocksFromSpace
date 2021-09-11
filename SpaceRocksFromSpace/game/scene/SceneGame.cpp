@@ -127,6 +127,7 @@ namespace game
 		std::ostringstream s;
 		s << "SCORE " << std::to_string(this->score);
 		std::string scoreDisplay = s.str();
+		
 		int tw, th;
 		vFont1->MeasureText(scoreDisplay, &tw, &th);
 		vFont1->DrawText(render, scoreDisplay, BORDER, BORDER + th, fg);
@@ -405,7 +406,7 @@ namespace game
 		const float MIN_DIST_SQUARED = 1600;
 		game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
 		this->level++;
-		std::ostringstream s;
+		std::ostringstream s;	
 		s << "LEVEL " << std::to_string(this->level);
 		this->message = s.str();
 		int w, h;

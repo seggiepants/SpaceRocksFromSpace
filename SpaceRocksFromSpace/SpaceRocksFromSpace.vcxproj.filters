@@ -61,6 +61,12 @@
     <Filter Include="Header Files\jam\backend\dc">
       <UniqueIdentifier>{52df6229-35f2-48ea-b7b3-2d9beff1b6f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\jam\backend\sdl2gl">
+      <UniqueIdentifier>{fd63b07b-9834-4c1c-9639-3ab92ff423bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\jam\backend\sdl2gl">
+      <UniqueIdentifier>{c1ac8b67-9d0a-4988-aeff-805015530dd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -222,6 +228,27 @@
     <ClInclude Include="jam\backend\dc\KeyCodesDC.h">
       <Filter>Header Files\jam\backend\dc</Filter>
     </ClInclude>
+    <ClInclude Include="jam\backend\sdl2gl\AudioSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2gl</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\sdl2gl\BackendSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2gl</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\sdl2gl\ImageSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2gl</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\sdl2gl\KeyCodesSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2gl</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\sdl2gl\RendererSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2gl</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\sdl2gl\ResourceManagerSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2gl</Filter>
+    </ClInclude>
+    <ClInclude Include="jam\backend\sdl2gl\TTFFontSDL2.h">
+      <Filter>Header Files\jam\backend\sdl2gl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -364,6 +391,27 @@
     </ClCompile>
     <ClCompile Include="jam\backend\dc\KeyCodesDC.cpp">
       <Filter>Source Files\jam\backend\dc</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\sdl2gl\AudioSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2gl</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\sdl2gl\BackendSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2gl</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\sdl2gl\ImageSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2gl</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\sdl2gl\KeyCodesSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2gl</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\sdl2gl\RendererSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2gl</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\sdl2gl\ResourceManagerSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2gl</Filter>
+    </ClCompile>
+    <ClCompile Include="jam\backend\sdl2gl\TTFFontSDL2.cpp">
+      <Filter>Source Files\jam\backend\sdl2gl</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,17 +2,16 @@
 #include <time.h>
 #include "jam/Shared.h"
 
-//#define BACKEND_PGE 0
-//#define BACKEND_SDL2 1
-
-//#define BACKEND BACKEND_SDL2
-
 #ifdef BACKEND_PGE
 #include "jam/backend/pge/BackendPGE.h"
 #endif
 
 #ifdef BACKEND_SDL2
 #include "jam/backend/sdl2/BackendSDL2.h"
+#endif
+
+#ifdef BACKEND_SDL2_GL
+#include "jam/backend/sdl2gl/BackendSDL2.h"
 #endif
 
 #include "jam/SceneManager.h"
@@ -32,6 +31,9 @@
         jam::BackendPGE game;
 #endif
 #ifdef BACKEND_SDL2
+        jam::BackendSDL2 game;
+#endif
+#ifdef BACKEND_SDL2_GL
         jam::BackendSDL2 game;
 #endif
         jam::backEnd = &game;

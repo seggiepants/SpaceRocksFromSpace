@@ -141,7 +141,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);BACKEND_PGE=1</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);BACKEND_SDL2_GL=1</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -184,6 +184,13 @@
     <ClInclude Include="jam\backend\pge\RendererPGE.h" />
     <ClInclude Include="jam\backend\pge\ResourceManagerPGE.h" />
     <ClInclude Include="jam\backend\pge\TTFFontPGE.h" />
+    <ClInclude Include="jam\backend\sdl2gl\AudioSDL2.h" />
+    <ClInclude Include="jam\backend\sdl2gl\BackendSDL2.h" />
+    <ClInclude Include="jam\backend\sdl2gl\ImageSDL2.h" />
+    <ClInclude Include="jam\backend\sdl2gl\KeyCodesSDL2.h" />
+    <ClInclude Include="jam\backend\sdl2gl\RendererSDL2.h" />
+    <ClInclude Include="jam\backend\sdl2gl\ResourceManagerSDL2.h" />
+    <ClInclude Include="jam\backend\sdl2gl\TTFFontSDL2.h" />
     <ClInclude Include="jam\backend\sdl2\ImageSDL2.h" />
     <ClInclude Include="jam\backend\sdl2\KeyCodesSDL2.h" />
     <ClInclude Include="jam\backend\sdl2\RendererSDL2.h" />
@@ -235,6 +242,13 @@
     <ClCompile Include="jam\backend\pge\RendererPGE.cpp" />
     <ClCompile Include="jam\backend\pge\ResourceManagerPGE.cpp" />
     <ClCompile Include="jam\backend\pge\TTFFontPGE.cpp" />
+    <ClCompile Include="jam\backend\sdl2gl\AudioSDL2.cpp" />
+    <ClCompile Include="jam\backend\sdl2gl\BackendSDL2.cpp" />
+    <ClCompile Include="jam\backend\sdl2gl\ImageSDL2.cpp" />
+    <ClCompile Include="jam\backend\sdl2gl\KeyCodesSDL2.cpp" />
+    <ClCompile Include="jam\backend\sdl2gl\RendererSDL2.cpp" />
+    <ClCompile Include="jam\backend\sdl2gl\ResourceManagerSDL2.cpp" />
+    <ClCompile Include="jam\backend\sdl2gl\TTFFontSDL2.cpp" />
     <ClCompile Include="jam\backend\sdl2\AudioSDL2.cpp" />
     <ClCompile Include="jam\backend\sdl2\BackendSDL2.cpp" />
     <ClCompile Include="jam\backend\sdl2\ImageSDL2.cpp" />

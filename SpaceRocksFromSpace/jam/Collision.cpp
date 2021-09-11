@@ -5,8 +5,8 @@ namespace jam
 {
 	bool Collision::Circle_Circle(Point2Df* centerA, float radiusA, Point2Df* centerB, float radiusB)
 	{
-		float dx = abs(centerA->x - centerB->x);
-		float dy = abs(centerA->y - centerB->y);
+		float dx = std::abs(centerA->x - centerB->x);
+		float dy = std::abs(centerA->y - centerB->y);
 		float distA = (dx * dx) + (dy * dy);
 		float distB = (radiusA * radiusA) + (radiusB * radiusB);
 
@@ -15,8 +15,8 @@ namespace jam
 
 	bool Collision::Circle_Point(Point2Df* center, float radius, Point2Df* point)
 	{
-		float dx = abs(center->x - point->x);
-		float dy = abs(center->y - point->y);
+		float dx = std::abs(center->x - point->x);
+		float dy = std::abs(center->y - point->y);
 		float distA = (dx * dx) + (dy * dy);
 		float distB = (radius * radius);
 		return distA <= distB;

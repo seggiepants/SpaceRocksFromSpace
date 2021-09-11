@@ -6,6 +6,10 @@
 #include <sstream>
 #include <string>
 #include "Configuration.h"
+#if defined(OS_UNIX)
+#include <unistd.h>
+#include <limits.h>
+#endif
 #if defined(OS_WIN) && !defined(__MINGW32__)
 #include <atlbase.h>
 #include <atlstr.h>
@@ -68,7 +72,7 @@ namespace jam
 #endif
 #endif
 #ifdef OS_UNIX
-					mkdir(path.substr(0, offset).c_str()), 0777);
+					mkdir(path.substr(0, offset).c_str(), 0777);
 #endif
 				}
 			}
@@ -132,7 +136,9 @@ namespace jam
 #elif defined(OS_UNIX)
 		std::ostringstream ss;
 		ss << "~/.config/" << game::COMPANY << "/" << game::PRODUCT << "/" << game::VERSION << "/";
-		return ss.str();
+		std::string ret = ss.str();
+		Configuration::CreatePathIfNotExist(ret);
+		return ret;
 
 #elif defined(OS_UNKOWN) || defined(__MINGW32__)
 		std::string appPath = Configuration::GetAppPath();
