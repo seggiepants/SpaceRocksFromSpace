@@ -67,6 +67,18 @@
     <Filter Include="Header Files\jam\backend\sdl2gl">
       <UniqueIdentifier>{c1ac8b67-9d0a-4988-aeff-805015530dd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\3rdParty">
+      <UniqueIdentifier>{2c5fae2a-be88-48e2-bc02-6af4fd2a3563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\3rdParty\json-c">
+      <UniqueIdentifier>{74b0c266-5496-456a-b961-a4a07a3948e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rdParty">
+      <UniqueIdentifier>{c0a77d21-e19a-4870-96ec-84d541b07511}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rdParty\json-c">
+      <UniqueIdentifier>{42ed617d-e30e-497d-93e4-fccaf19b5f96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -249,6 +261,81 @@
     <ClInclude Include="jam\backend\sdl2gl\TTFFontSDL2.h">
       <Filter>Header Files\jam\backend\sdl2gl</Filter>
     </ClInclude>
+    <ClInclude Include="3rdParty\json-c\arraylist.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\debug.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json_c_version.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json_config.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json_inttypes.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json_object.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json_object_iterator.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json_object_private.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json_pointer.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json_tokener.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json_types.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json_util.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\json_visit.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\linkhash.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\math_compat.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\printbuf.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\random_seed.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\snprintf_compat.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\strdup_compat.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\strerror_override.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\strerror_override_private.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\vasprintf_compat.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\config.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdParty\json-c\dreamcast_patch.h">
+      <Filter>Header Files\3rdParty\json-c</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -412,6 +499,48 @@
     </ClCompile>
     <ClCompile Include="jam\backend\sdl2gl\TTFFontSDL2.cpp">
       <Filter>Source Files\jam\backend\sdl2gl</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\arraylist.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\debug.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\json_c_version.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\json_object.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\json_object_iterator.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\json_pointer.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\json_tokener.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\json_util.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\json_visit.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\linkhash.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\printbuf.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\random_seed.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\strerror_override.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\json-c\dreamcast_patch.cpp">
+      <Filter>Source Files\3rdParty\json-c</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

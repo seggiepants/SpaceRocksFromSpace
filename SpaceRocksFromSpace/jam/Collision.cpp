@@ -27,7 +27,7 @@ namespace jam
 	{
 		float s02_x, s02_y, s10_x, s10_y;
 		float s32_x, s32_y, s_numer, t_numer;
-		float denom, t;
+		float denom;
 		bool denom_positive;
 
 		// Bounding Box check.

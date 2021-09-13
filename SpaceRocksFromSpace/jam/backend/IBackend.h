@@ -4,7 +4,6 @@
 #define __IBACKEND_H__
 
 #include <string>
-#include "../../3rdParty/json/json.hpp"
 #include "../IRenderer.h"
 #include "../IScene.h"
 #include "../JoystickButton.h"

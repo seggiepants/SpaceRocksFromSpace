@@ -109,7 +109,6 @@ namespace game
 
 	void SceneGame::Draw(jam::IRenderer* render)
 	{
-		const int SCORE_RESERVE = 50;
 		const int BORDER = 8.0;
 
 		int width, height;
@@ -125,14 +124,14 @@ namespace game
 		this->screenWidth = width;
 		this->screenHeight = height;
 		std::ostringstream s;
-		s << "SCORE " << std::to_string(this->score);
+		s << "SCORE " << this->score; // std::to_string(this->score);
 		std::string scoreDisplay = s.str();
 		
 		int tw, th;
 		vFont1->MeasureText(scoreDisplay, &tw, &th);
 		vFont1->DrawText(render, scoreDisplay, BORDER, BORDER + th, fg);
 		std::ostringstream lvl;
-		lvl << "LEVEL " << std::to_string(this->level);
+		lvl << "LEVEL " << this->level; // std::to_string(this->level);
 		std::string levelDisplay = lvl.str();
 		vFont1->MeasureText(levelDisplay, &tw, &th);
 		vFont1->DrawText(render, levelDisplay,this->screenWidth - tw - BORDER, BORDER + th, fg);
@@ -155,7 +154,7 @@ namespace game
 		jam::rgb white{ 255, 255, 255, 255 };
 		for (int j = 0; j < this->ship->GetLives(); j++)
 		{
-			for (int i = 0; i < this->lifeIcon.size(); i++)
+			for (size_t i = 0; i < this->lifeIcon.size(); i++)
 			{
 				cx = this->lifeIcon[i].x;
 				cy = this->lifeIcon[i].y;
@@ -179,7 +178,6 @@ namespace game
 		if (this->gameState == GameState::PAUSE)
 		{
 			int w, h;
-			jam::Rect r;
 			std::string pauseMessage = "PAUSE";
 			vFont2->MeasureText(pauseMessage, &w, &h);
 			int x, y;
@@ -407,7 +405,7 @@ namespace game
 		game::VectorFont* vFont2 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont2"));
 		this->level++;
 		std::ostringstream s;	
-		s << "LEVEL " << std::to_string(this->level);
+		s << "LEVEL " << this->level; // std::to_string(this->level);
 		this->message = s.str();
 		int w, h;
 		vFont2->MeasureText(this->message, &w, &h);

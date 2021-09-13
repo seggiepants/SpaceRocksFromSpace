@@ -3,6 +3,7 @@
 #define __SHOT_H__
 #include "../../jam/IEntity.h"
 #include "../../jam/RGB.h"
+#include "../../jam/Shared.h"
 
 namespace game
 {

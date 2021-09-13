@@ -14,6 +14,35 @@
 
 namespace game
 {
+
+	int ScoreCompare(const void* a, const void* b)
+	{
+		int scoreA = json_object_get_int(json_object_object_get(*(json_object**)a, "score"));
+		int scoreB = json_object_get_int(json_object_object_get(*(json_object**)b, "score"));
+		int levelA = json_object_get_int(json_object_object_get(*(json_object**)a, "level"));
+		int levelB = json_object_get_int(json_object_object_get(*(json_object**)b, "level"));
+		double gameTimeA = json_object_get_double(json_object_object_get(*(json_object**)a, "gameTime"));
+		double gameTimeB = json_object_get_double(json_object_object_get(*(json_object**)b, "gameTime"));
+
+		if (scoreA == scoreB)
+		{
+			if (levelA == levelB)
+			{
+				if (gameTimeA == gameTimeB)
+					return 0;
+				else
+					return gameTimeA < gameTimeB;
+			}
+			else
+			{
+				return levelA < levelB;
+			}
+		}
+		else
+		{
+			return scoreA < scoreB;
+		}
+	}
 		
 	SceneHighScoreEntry::SceneHighScoreEntry()
 	{
@@ -44,24 +73,29 @@ namespace game
 		this->level = level;
 #ifdef KIOSK_MODE
 		std::string highScores = KioskHelper::Instance()->GetHighScores();
-		nlohmann::json ret = nlohmann::json::parse(highScores);
+		json_object* ret = json_tokener_parse(highScores.c_str());
 #else
 		std::string filePath = jam::Configuration::GetDataPath();
 		filePath = jam::Configuration::PathJoin(filePath, HIGHSCORE_FILENAME);
-		nlohmann::json ret = jam::Configuration::LoadJsonFile(filePath);
+		json_object* ret = jam::Configuration::LoadJsonFile(filePath);
 #endif
-		if (ret == nullptr)
+		if (ret == NULL)
 		{
 			return true; // No file then yes, new high score.
 		}
-		int scoreCount = ret["scores"].size();
+		// std::string(json_object_get_string(json_object_object_get(ret, "image"))); 
+		json_object* scores = json_object_object_get(ret, "scores");
+		int scoreCount = (int)json_object_array_length(scores);
 		if (scoreCount < MAX_SCORES)
 		{
 			return true; // Room for a new one.
 		}
-		for (auto& item : ret["scores"])
+		for (size_t i = 0; i < (size_t)scoreCount; i++)
 		{
-			if (item["score"].get<int>() < this->score)
+			json_object* item = json_object_array_get_idx(scores, i);
+
+			int currentScore = json_object_get_int(json_object_object_get(item, "score"));
+			if (currentScore < this->score)
 			{
 				// New high score.
 				return true;
@@ -113,7 +147,7 @@ namespace game
 		render->DrawPolygon(offset + (1.5 * this->charIndex * charW), y, &triangleUp, white);
 		y += (charW / 2) + BORDER;
 		std::string temp;
-		for (int i = 0; i < initials.size(); i++)
+		for (size_t i = 0; i < initials.size(); i++)
 		{
 			int x1 = offset + (1.5 * i * charW);
 			temp = initials[i];
@@ -144,7 +178,7 @@ namespace game
 		if (btn == jam::JoystickButton::A)
 		{
 			// Accept and next or done.
-			if (this->charIndex >= this->initials.size() - 1)
+			if (this->charIndex >= (int)(this->initials.size() - 1))
 			{
 				this->SaveInitials();
 			}
@@ -219,7 +253,7 @@ namespace game
 		if (key == jam::key::KEY_ENTER || key == jam::key::KEY_RETURN)
 		{
 			// Accept and next or done.
-			if (this->charIndex >= this->initials.size() - 1)
+			if (this->charIndex >= (int)(this->initials.size() - 1))
 			{
 				this->SaveInitials();
 			}
@@ -285,7 +319,7 @@ namespace game
 	void SceneHighScoreEntry::MoveNext()
 	{
 		this->charIndex++;
-		if (this->charIndex >= this->initials.size())
+		if (this->charIndex >= (int)this->initials.size())
 			this->charIndex = this->initials.size() - 1;
 	}
 
@@ -298,15 +332,15 @@ namespace game
 
 	void SceneHighScoreEntry::NextChar()
 	{
-		if (this->charIndex >= 0 && this->charIndex < this->initials.size())
+		if (this->charIndex >= 0 && this->charIndex < (int)this->initials.size())
 		{
 			char current = this->initials[this->charIndex];
 			int pos = this->entryCharacters.find(current, 0);
-			if (pos >= 0 && pos < this->entryCharacters.size())
+			if (pos >= 0 && pos < (int)this->entryCharacters.size())
 			{
 				pos++;
-				if (pos >= this->entryCharacters.size())
-					pos -= this->entryCharacters.size();
+				if (pos >= (int)this->entryCharacters.size())
+					pos -= (int)this->entryCharacters.size();
 				this->initials[this->charIndex] = this->entryCharacters[pos];
 			}
 		}
@@ -319,11 +353,11 @@ namespace game
 
 	void SceneHighScoreEntry::PrevChar()
 	{
-		if (this->charIndex >= 0 && this->charIndex < this->initials.size())
+		if (this->charIndex >= 0 && this->charIndex < (int)this->initials.size())
 		{
 			char current = this->initials[this->charIndex];
 			int pos = this->entryCharacters.find(current, 0);
-			if (pos >= 0 && pos < this->entryCharacters.size())
+			if (pos >= 0 && pos < (int)this->entryCharacters.size())
 			{
 				pos--;
 				if (pos < 0)
@@ -338,42 +372,50 @@ namespace game
 	{
 #ifdef KIOSK_MODE
 		std::string highScores = KioskHelper::Instance()->GetHighScores();
-		nlohmann::json saveData = nlohmann::json::parse(highScores);
+		json_object* saveData = json_tokener_parse(highScores.c_str());
 #else
 		std::string filePath = jam::Configuration::GetDataPath();
 		filePath = jam::Configuration::PathJoin(filePath, HIGHSCORE_FILENAME);
 		// Save the data to high score table.		
-		nlohmann::json saveData = jam::Configuration::LoadJsonFile(filePath);
-#endif
-		bool inserted = false;
-		int index = 0;
-		if (!saveData["scores"].is_array())
+		json_object* saveData = jam::Configuration::LoadJsonFile(filePath);
+		if (saveData == NULL)
 		{
-			saveData["scores"] = nlohmann::json::array();
+			saveData = json_object_new_object();
 		}
-		for (auto& score : saveData["scores"])
+#endif
+		int index = 0;
+		json_object* scores_obj = json_object_object_get(saveData, "scores");
+		if (scores_obj == NULL)
 		{
-			if (score["score"].get<int>() < this->score)
+			json_object_object_add(saveData, "scores", json_object_new_array());
+			scores_obj = json_object_object_get(saveData, "scores");
+		}
+		array_list* scores = json_object_get_array(scores_obj);
+		for (size_t i = 0; i < array_list_length(scores); i++)
+		{			
+			json_object* score = (json_object*)array_list_get_idx(scores, i);
+			int currentScore = json_object_get_int(json_object_object_get(score, "score"));
+			if (currentScore < this->score)
 			{
 				break;
 			}
 			index++;
 		}
-		nlohmann::json newRow = nlohmann::json::object();
-		newRow["initials"] = this->initials.c_str();
-		newRow["score"] = this->score;
-		newRow["level"] = this->level;
-		newRow["gameTime"] = this->gameTime;
-
-		saveData["scores"].insert(saveData["scores"].begin() + index, newRow);
-		if (saveData["scores"].size() > MAX_SCORES)
+		json_object* newRow = json_object_new_object();
+		json_object_object_add(newRow, "initials", json_object_new_string(this->initials.c_str()));
+		json_object_object_add(newRow, "score", json_object_new_int(this->score));
+		json_object_object_add(newRow, "level", json_object_new_int(this->level));
+		json_object_object_add(newRow, "gameTime", json_object_new_double(this->gameTime));
+		array_list_add(scores, newRow);
+		array_list_sort(scores, ScoreCompare);
+		if ((int)array_list_length(scores) > MAX_SCORES)
 		{
-			saveData["scores"].erase(saveData["scores"].size() - 1);
+			array_list_del_idx(scores, array_list_length(scores) - 1, 1);
 		}
 
 #ifdef KIOSK_MODE
 		std::ostringstream ss;
-		ss << std::setw(4) << saveData << std::endl;
+		ss << std::setw(4) << json_object_to_json_string(saveData) << std::endl;
 		KioskHelper::Instance()->SetHighScores(ss.str());
 #else
 		if (!jam::Configuration::SaveJsonFile(filePath, saveData))
@@ -389,16 +431,16 @@ namespace game
 	void SceneHighScoreEntry::SetChar(char ch)
 	{
 		char tmp = toupper((int)ch);
-		if (this->charIndex >= 0 && this->charIndex < this->initials.size())
+		if (this->charIndex >= 0 && this->charIndex < (int)this->initials.size())
 		{
 			int pos = this->entryCharacters.find(tmp, 0);
-			if (pos >= 0 && pos < this->entryCharacters.size())
+			if (pos >= 0 && pos < (int)this->entryCharacters.size())
 			{
 				this->initials[this->charIndex] = this->entryCharacters[pos];
 				this->charIndex++;
-				if (this->charIndex >= this->initials.size())
-					this->charIndex = this->initials.size() - 1;
+				if (this->charIndex >= (int)this->initials.size())
+					this->charIndex = (int)this->initials.size() - 1;
 			}
 		}
-	}
+	}	
 }

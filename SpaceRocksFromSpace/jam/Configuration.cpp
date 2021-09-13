@@ -28,7 +28,7 @@ namespace jam
 
 	void Configuration::CreatePathIfNotExist(std::string path)
 	{
-
+#if !defined(OS_DC)
 		std::string pathBuffer;
 		size_t offset = 0;
 		// EACCES = 13
@@ -81,6 +81,7 @@ namespace jam
 				std::cerr << "Cannot access: " << folder << "(" << errno << ")" << std::endl;
 			}
 		}
+#endif
 	}
 
 	std::string Configuration::GetAppPath()
@@ -96,6 +97,8 @@ namespace jam
 		char result[PATH_MAX];
 		ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
 		return std::string(result, (count > 0) ? count : 0);
+#elif defined(OS_DC)
+		return std::string("");
 #elif defined(OS_UNKNOWN)
 		return std::string(".");
 #endif
@@ -151,7 +154,7 @@ namespace jam
 		return "";
 	}
 
-	nlohmann::json Configuration::LoadJsonFile(std::string fileName)
+	json_object* Configuration::LoadJsonFile(std::string fileName)
 	{				
 		std::ostringstream buffer;
 		try
@@ -173,7 +176,7 @@ namespace jam
 		}
 		try
 		{
-			return nlohmann::json::parse(buffer.str());
+			return json_tokener_parse(buffer.str().c_str());
 		}
 		catch (std::exception ex)
 		{
@@ -182,14 +185,15 @@ namespace jam
 		}
 	}
 
-	bool Configuration::SaveJsonFile(std::string fileName, nlohmann::json data)
+	bool Configuration::SaveJsonFile(std::string fileName, json_object* data)
 	{
 		try
 		{
 			std::ofstream file(fileName);
+
 			if (file.is_open())
-			{
-				file << std::setw(4) << data << std::endl;
+			{				
+				file << std::setw(4) << json_object_to_json_string(data) << std::endl;
 				file.close();
 			}
 			else

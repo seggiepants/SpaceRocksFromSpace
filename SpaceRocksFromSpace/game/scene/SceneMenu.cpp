@@ -218,8 +218,8 @@ namespace game
 				if (this->oldJoyDown != this->joyDown)
 				{
 					this->menuIndex++;
-					if (this->menuIndex >= this->menuText->size())
-						this->menuIndex = this->menuText->size() - 1;
+					if (this->menuIndex >= (int)this->menuText->size())
+						this->menuIndex = (int)this->menuText->size() - 1;
 				}
 			}
 
@@ -242,8 +242,8 @@ namespace game
 				else if (dy > 0)
 				{
 					this->menuIndex++;
-					if (this->menuIndex >= this->menuText->size())
-						this->menuIndex = this->menuText->size() - 1;
+					if (this->menuIndex >= (int)this->menuText->size())
+						this->menuIndex = (int)this->menuText->size() - 1;
 				}
 				this->joyMoveTimeout = JOY_MOVE_DELAY;
 			}
@@ -267,9 +267,9 @@ namespace game
 		else if (key == jam::key::KEY_DOWN)
 		{
 			this->menuIndex++;
-			if (this->menuIndex >= this->menuText->size())
+			if (this->menuIndex >= (int)this->menuText->size())
 			{
-				this->menuIndex = this->menuText->size() - 1;
+				this->menuIndex = (int)this->menuText->size() - 1;
 			}
 		}
 		else if (key == jam::key::KEY_ENTER || key == jam::key::KEY_SPACE || key == jam::key::KEY_RETURN)

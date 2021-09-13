@@ -71,7 +71,7 @@ namespace game
 		{
 			xa = this->transformed[8].x + this->x;
 			ya = this->transformed[8].y + this->y;
-			for (int i = 9; i < this->transformed.size() - 1; i++)
+			for (int i = 9; i < (int)this->transformed.size() - 1; i++)
 			{
 				xb = xa;
 				yb = ya;
@@ -97,7 +97,7 @@ namespace game
 				jam::Point2Df pointFrom = this->transformed[(int)i - 1];
 				render->DrawLine(pointTo.x + this->x, pointTo.y + this->y, pointFrom.x + this->x, pointFrom.y + this->y, white);
 			}
-			for (int i = 9; i < this->transformed.size(); i++)
+			for (int i = 9; i < (int)this->transformed.size(); i++)
 			{
 				jam::Point2Df pointTo = this->transformed[i];
 				jam::Point2Df pointFrom = this->transformed[(int)i - 1];
@@ -149,7 +149,7 @@ namespace game
 		float angle;
 		// Pick an edge
 
-		edge = std::rand() % 4;
+		edge = rand() % 4;
 		edge = 3;
 		angle = rndf(M_PI_2) + M_PI_4;
 		switch (edge)
@@ -185,11 +185,11 @@ namespace game
 		this->heading = heading;
 
 		// Update the model.
-		float x, y, x1, y1, xScreen, yScreen;
+		float x, y, xScreen, yScreen;
 		float sinAngle, cosAngle;
 		sinAngle = sinf(M_PI); // this->heading + M_PI);
 		cosAngle = cosf(M_PI); // this->heading + M_PI_2);
-		for (int i = 0; i < this->model.size(); i++)
+		for (int i = 0; i < (int)this->model.size(); i++)
 		{
 			x = this->model[i].x;
 			y = this->model[i].y;

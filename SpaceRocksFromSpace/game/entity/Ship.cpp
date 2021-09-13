@@ -24,7 +24,7 @@ namespace game
         this->model.push_back({ 0, -8 });
 
         this->screenModel.clear();
-        for (int i = 0; i < this->model.size(); i++)
+        for (int i = 0; i < (int)this->model.size(); i++)
         {
             this->screenModel.push_back({ 0, 0 });
         }		
@@ -57,7 +57,7 @@ namespace game
 		{
 			white.r = white.g = white.b = white.a = 255;
 			int iPrevious = this->screenModel.size() - 1;
-			for (int i = 0; i < this->screenModel.size(); i++)
+			for (int i = 0; i < (int)this->screenModel.size(); i++)
 			{
 				jam::Point2Df pointTo = this->screenModel[i];
 				jam::Point2Df pointFrom = this->screenModel[iPrevious];
@@ -86,7 +86,7 @@ namespace game
 	void Ship::GetScreenLine(int index, float* x1, float* y1, float* x2, float* y2)
 	{
 		int cur = index;
-		if (index < 0 || index >= this->screenModel.size())
+		if (index < 0 || index >= (int)this->screenModel.size())
 			index = 0;
 		int prev = cur - 1;
 		if (prev < 0)
@@ -167,8 +167,6 @@ namespace game
 
     void Ship::Update(jam::IScene* scene, float dt)
     {
-		const float headingAdjust = M_PI / 2.0;
-
 		int screenWidth, screenHeight;
 		scene->GetScreenSize(&screenWidth, &screenHeight);
 
@@ -188,7 +186,7 @@ namespace game
 		this->y += this->moveSpeed* dt* vy;
 		float xMin, yMin, xMax, yMax, xScreen, yScreen;
 		xMin = yMin = xMax = yMax = 0.0;
-		for (int i = 0; i < this->model.size(); i++)
+		for (int i = 0; i < (int)this->model.size(); i++)
 		{
 			float x1 = (this->model[i].x);
 			float y1 = (this->model[i].y);

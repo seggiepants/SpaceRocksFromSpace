@@ -39,7 +39,7 @@ namespace game
     {
         const float BORDER = 8.0;
         const std::string BUTTON_MSG = "BACK";
-        int x, y, w, h, charW, charH;
+        int x, y, w, h;
 
         game::VectorFont* vFont1 = static_cast<game::VectorFont*>(jam::backEnd->ResourceManager()->GetFont("vfont1"));
         //jam::BitmapFont* vFont1 = static_cast<jam::BitmapFont*>(jam::backEnd->ResourceManager()->GetFont("nova16pt"));
@@ -82,26 +82,33 @@ namespace game
         render->DrawLine(x, y, this->screenWidth - (2 * BORDER), y, white);
         y += BORDER / 2;
         int index = 0;
-        for (auto& entry : this->highScores["scores"])
+
+        array_list* scores = json_object_get_array(json_object_object_get(this->highScores, "scores"));
+        for (size_t i = 0; i < array_list_length(scores); i++)
         {
+            json_object* entry = (json_object*)array_list_get_idx(scores, i);
             index++;
             std::ostringstream ss;
             ss << std::setfill('0') << std::setw(2) << index << ".";
             vFont1->DrawText(render, ss.str(), BORDER, y + h, white); // Index
 
             std::string temp;
-            temp = entry["initials"];
+            const char* initials = json_object_get_string(json_object_object_get(entry, "initials"));
+            temp = initials;
             vFont1->DrawText(render, temp, xInitials, y + h, white); // Initials
 
             ss.str("");
-            ss << entry["score"];
+            int score = json_object_get_int(json_object_object_get(entry, "score"));
+            ss << score;
             vFont1->DrawText(render, ss.str(), xScore, y + h, white); // Score
 
             ss.str("");
-            ss << entry["level"].get<int>();
+            int level = json_object_get_int(json_object_object_get(entry, "level"));
+            ss << level;
             vFont1->DrawText(render, ss.str(), xLevel, y + h, white); // Level
 
-            int seconds = (int)std::ceil(entry["gameTime"].get<float>());
+            double gameTime = json_object_get_double(json_object_object_get(entry, "gameTime"));
+            int seconds = (int)ceil(gameTime);
             int minutes = (seconds - (seconds % 60)) / 60;
             seconds = seconds % 60;
             ss.str("");

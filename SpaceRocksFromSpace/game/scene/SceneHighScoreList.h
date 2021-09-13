@@ -3,7 +3,7 @@
 #ifndef __SCENE_HIGH_SCORE_LIST_H__
 #define __SCENE_HIGH_SCORE_LIST_H__
 
-#include "../../3rdParty/json/json.hpp"
+#include "../../3rdParty/json-c/json.h"
 #include "../../jam/IScene.h"
 #include "../../jam/Rect.h"
 
@@ -31,7 +31,7 @@ namespace game
         void ReturnToMenu();
         IScene* nextScene;
         int screenWidth, screenHeight;
-        nlohmann::json highScores;
+        json_object* highScores;
         jam::Rect button;
     };
 }

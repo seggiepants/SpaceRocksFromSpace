@@ -60,7 +60,7 @@ namespace game
 		std::map<char, std::vector<std::vector<jam::Point2Df>>>::iterator iterChar = this->characters->begin();
 		while(iterChar != this->characters->end())
 		{
-			char rune = iterChar->first;
+			// char rune = iterChar->first;
 			std::vector<std::vector<jam::Point2Df>> lines = iterChar->second;
 			for (std::vector<jam::Point2Df> line : lines)
 			{

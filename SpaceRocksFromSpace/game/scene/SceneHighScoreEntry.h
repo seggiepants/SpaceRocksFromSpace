@@ -3,7 +3,7 @@
 #define __SCENE_HIGH_SCORE_ENTRY_H__
 #include <string>
 #include "../../jam/IScene.h"
-#include "../../3rdParty/json/json.hpp"
+#include "../../3rdParty/json-c/json.h"
 
 namespace game
 {

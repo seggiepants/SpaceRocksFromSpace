@@ -124,7 +124,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);BACKEND_PGE=1</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);BACKEND_PGE=1;_CRT_SECURE_NO_WARNINGS=1</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -141,7 +141,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);BACKEND_SDL2_GL=1</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);BACKEND_SDL2_GL=1;_CRT_SECURE_NO_WARNINGS=1</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -155,6 +155,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="3rdParty\json-c\arraylist.h" />
+    <ClInclude Include="3rdParty\json-c\config.h" />
+    <ClInclude Include="3rdParty\json-c\debug.h" />
+    <ClInclude Include="3rdParty\json-c\dreamcast_patch.h" />
+    <ClInclude Include="3rdParty\json-c\json.h" />
+    <ClInclude Include="3rdParty\json-c\json_config.h" />
+    <ClInclude Include="3rdParty\json-c\json_c_version.h" />
+    <ClInclude Include="3rdParty\json-c\json_inttypes.h" />
+    <ClInclude Include="3rdParty\json-c\json_object.h" />
+    <ClInclude Include="3rdParty\json-c\json_object_iterator.h" />
+    <ClInclude Include="3rdParty\json-c\json_object_private.h" />
+    <ClInclude Include="3rdParty\json-c\json_pointer.h" />
+    <ClInclude Include="3rdParty\json-c\json_tokener.h" />
+    <ClInclude Include="3rdParty\json-c\json_types.h" />
+    <ClInclude Include="3rdParty\json-c\json_util.h" />
+    <ClInclude Include="3rdParty\json-c\json_visit.h" />
+    <ClInclude Include="3rdParty\json-c\linkhash.h" />
+    <ClInclude Include="3rdParty\json-c\math_compat.h" />
+    <ClInclude Include="3rdParty\json-c\printbuf.h" />
+    <ClInclude Include="3rdParty\json-c\random_seed.h" />
+    <ClInclude Include="3rdParty\json-c\snprintf_compat.h" />
+    <ClInclude Include="3rdParty\json-c\strdup_compat.h" />
+    <ClInclude Include="3rdParty\json-c\strerror_override.h" />
+    <ClInclude Include="3rdParty\json-c\strerror_override_private.h" />
+    <ClInclude Include="3rdParty\json-c\vasprintf_compat.h" />
     <ClInclude Include="game\entity\Particle.h" />
     <ClInclude Include="game\entity\Rock.h" />
     <ClInclude Include="game\entity\Ship.h" />
@@ -217,6 +242,20 @@
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="3rdParty\json-c\arraylist.cpp" />
+    <ClCompile Include="3rdParty\json-c\debug.cpp" />
+    <ClCompile Include="3rdParty\json-c\dreamcast_patch.cpp" />
+    <ClCompile Include="3rdParty\json-c\json_c_version.cpp" />
+    <ClCompile Include="3rdParty\json-c\json_object.cpp" />
+    <ClCompile Include="3rdParty\json-c\json_object_iterator.cpp" />
+    <ClCompile Include="3rdParty\json-c\json_pointer.cpp" />
+    <ClCompile Include="3rdParty\json-c\json_tokener.cpp" />
+    <ClCompile Include="3rdParty\json-c\json_util.cpp" />
+    <ClCompile Include="3rdParty\json-c\json_visit.cpp" />
+    <ClCompile Include="3rdParty\json-c\linkhash.cpp" />
+    <ClCompile Include="3rdParty\json-c\printbuf.cpp" />
+    <ClCompile Include="3rdParty\json-c\random_seed.cpp" />
+    <ClCompile Include="3rdParty\json-c\strerror_override.cpp" />
     <ClCompile Include="game\entity\Particle.cpp" />
     <ClCompile Include="game\entity\Rock.cpp" />
     <ClCompile Include="game\entity\Ship.cpp" />

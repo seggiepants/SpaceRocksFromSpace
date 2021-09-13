@@ -1,4 +1,4 @@
-#include "../3rdParty/json/json.hpp"
+#include "../3rdParty/json-c/json.h"
 #include "../jam/Configuration.h"
 #include "../jam/BitmapFont.h"
 #include "../jam/Shared.h"
@@ -21,22 +21,27 @@ namespace jam
     {
         std::string texturePath = "";
         this->runes.clear();
-        nlohmann::json ret = jam::Configuration::LoadJsonFile(filePath);
-        texturePath = "assets/image/" + ret["image"].get<std::string>(); // p.replace_filename(ret["image"].get<std::string>()).string();
+        json_object* ret = jam::Configuration::LoadJsonFile(filePath);
+        json_object* image = json_object_object_get(ret, "image");
+
+        texturePath = "assets/image/" + std::string(json_object_get_string(image)); 
         if (!jam::backEnd->ResourceManager()->HasImage(texturePath))
         {
             jam::backEnd->ResourceManager()->PreloadImage(texturePath);
         }
         this->texture = jam::backEnd->ResourceManager()->GetImage(texturePath);
-        for (auto& item : ret["runes"])
+        
+        array_list* runes = json_object_get_array(json_object_object_get(ret, "runes"));
+        for(size_t i = 0; i < array_list_length(runes); i++)
         {
+            json_object* item = (json_object*) array_list_get_idx(runes, i);
             int x, y, w, h;
             char rune;
-            rune = item["rune"].get<std::string>()[0];
-            x = item["x"].get<int>();
-            y = item["y"].get<int>();
-            w = item["width"].get<int>();
-            h = item["height"].get<int>();
+            rune = json_object_get_string(json_object_object_get(item, "rune"))[0];
+            x = json_object_get_int(json_object_object_get(item, "x"));
+            y = json_object_get_int(json_object_object_get(item, "y"));
+            w = json_object_get_int(json_object_object_get(item, "w"));
+            h = json_object_get_int(json_object_object_get(item, "h"));
             this->runes[rune] = Rect{ x, y, w, h };
         }
     }

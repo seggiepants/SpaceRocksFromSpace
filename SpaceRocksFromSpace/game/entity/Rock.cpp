@@ -107,7 +107,7 @@ namespace game
 		float xa, ya, xb, yb;
 		xa = this->screenModel->at(this->screenModel->size() - 1).x;
 		ya = this->screenModel->at(this->screenModel->size() - 1).y;
-		for (int i = 0; i < this->screenModel->size(); i++)
+		for (int i = 0; i < (int)this->screenModel->size(); i++)
 		{
 			xb = xa;
 			yb = ya;
@@ -127,7 +127,7 @@ namespace game
 			jam::rgb white;
 			white.r = white.g = white.b = white.a = 255;
 			int iPrevious = this->screenModel->size() - 1;
-			for (int i = 0; i < this->screenModel->size(); i++)
+			for (int i = 0; i < (int)this->screenModel->size(); i++)
 			{
 				jam::Point2Df pointTo = this->screenModel->at(i);
 				jam::Point2Df pointFrom = this->screenModel->at(iPrevious);
@@ -158,11 +158,11 @@ namespace game
 
 	void Rock::RecalculateScreenModel()
 	{
-		float x, y, x1, y1, xScreen, yScreen;
+		float x, y, xScreen, yScreen;
 		float sinAngle, cosAngle;
 		sinAngle = sinf(this->angle);
 		cosAngle = cosf(this->angle);
-		for (int i = 0; i < this->model->size(); i++)
+		for (int i = 0; i < (int)this->model->size(); i++)
 		{
 			x = this->model->at(i).x * this->scale;
 			y = this->model->at(i).y * this->scale;
@@ -204,7 +204,7 @@ namespace game
 		this->y += this->moveSpeed * dt * sinHeading;
 		float xMin, yMin, xMax, yMax, xScreen, yScreen;
 		xMin = yMin = xMax = yMax = 0.0;
-		for (int i = 0; i < this->model->size(); i++)
+		for (int i = 0; i < (int)this->model->size(); i++)
 		{
 			float x1 = (this->model->at(i).x * this->scale);
 			float y1 = (this->model->at(i).y * this->scale);
